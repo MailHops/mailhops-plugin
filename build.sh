@@ -4,6 +4,8 @@ filename='mailhops'
 
 rm -f $filename.xpi
 
+find ./ -type f -name "._*" -exec rm {} \;
+
 mkdir build
 mkdir build/chrome
 
