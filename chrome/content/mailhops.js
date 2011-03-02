@@ -176,7 +176,7 @@ mailHops.displayResult = function ( distance, image, city, state, countryName, r
 		else
 			displayText +=' ( '+addCommas(Math.round(distance.kilometers))+' km traveled )';
 	}
-	else
+	else if(displayText=='')
 		displayText = ' Local message.';
 	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
   } 
