@@ -16,7 +16,9 @@ var mailHops =
   resultImage:	null,
   resultText:	null,
   container:	null,
-  isLoaded:      false
+  isLoaded:     false,
+  map:			'goog',
+  unit:			'mi'
 }
 
 mailHops.startLoading = function()
@@ -26,6 +28,10 @@ mailHops.startLoading = function()
   mailHops.resultBox = document.getElementById ( "mailhopsResult" ) ;
   mailHops.resultImage = document.getElementById ( "mailhopsResultImage" ) ;  
   mailHops.resultText = document.getElementById ( "mailhopsResultText" ) ;
+  //get preferences
+  mailHops.map = mailHops.getCharPref('mail.mailHops.map','goog');
+  mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
+  
 } ;
 
 mailHops.StreamListener =
@@ -155,13 +161,20 @@ mailHops.testIP = function(ip,header){
 mailHops.displayResult = function ( distance, image, city, state, route )
 {
   if(distance){
-    if(distance.miles > 0)
-		mailHops.resultText.textContent = city+', '+state+' ( '+Math.round(distance.miles)+' miles to you )';
-	else
+    if(distance.miles > 0){
+    	if(mailHops.unit=='mi')
+			mailHops.resultText.textContent = city+', '+state+' ( '+addCommas(Math.round(distance.miles))+' mi traveled )';
+		else
+			mailHops.resultText.textContent = city+', '+state+' ( '+addCommas(Math.round(distance.kilometers))+' km traveled )';
+	}
+	else if(city && state)
 		mailHops.resultText.textContent = city+', '+state;
+	else
+		mailHops.resultText.textContent = ' Local message.';
 	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
   } else {
   	mailHops.resultText.textContent = ' There was a problem.'; 
+  	mailHops.container.removeAttribute("onclick");
   }
   mailHops.resultImage.src=image; 
 } ;
@@ -178,6 +191,7 @@ mailHops.setupEventListener = function()
   }
 
   mailHops.startLoading() ;
+  mailHops.registerObserver() ;
  
   var listener = {} ;
   listener.onStartHeaders = function() { mailHops.clearRoute() ; } ;
@@ -185,6 +199,50 @@ mailHops.setupEventListener = function()
   gMessageListeners.push ( listener ) ;
 } ;
 
+//preferences observers
+mailHops.registerObserver = function()
+{
+  var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService ( Components.interfaces.nsIPrefService ) ;
+  mailHops._branch = prefService.getBranch ( "mail.mailHops." ) ;
+  mailHops._branch.QueryInterface ( Components.interfaces.nsIPrefBranchInternal ) ;
+  mailHops._branch.addObserver ( "" , mailHops , false ) ;
+} ;
+
+mailHops.unregisterObserver = function()
+{
+  if ( !mailHops._branch ){
+    return ;
+  }
+
+  mailHops._branch.removeObserver ( "" , mailHops ) ;
+} ;
+
+mailHops.observe = function ( aSubject , aTopic , aData )
+{
+  if ( aTopic != "nsPref:changed" ){
+    return ;
+  }
+
+  mailHops.startLoading();
+} ;
+
+mailHops.getCharPref = function ( strName , strDefault )
+{
+  var value;
+
+  try
+  {
+    value = pref.getCharPref ( strName ) ;
+  }
+  catch ( exception )
+  {
+    value = strDefault ;
+  }
+
+  return ( value ) ;
+} ;
+
+//mailhops lookup
 mailHops.lookup = function(route){
 
  //setup loading
@@ -202,7 +260,7 @@ mailHops.lookup = function(route){
    var data = nativeJSON.decode(xmlhttp.responseText);
    if(data && data.meta.code==200){
    	for(var i=0; i<data.response.route.length;i++){
-   		if(!data.response.route[i].local){
+   		if(!data.response.route[i].private && !data.response.route[i].client){
    			if(data.response.route[i].countryCode)
 	   			flag='chrome://mailhops/content/images/flags/'+data.response.route[i].countryCode.toLowerCase()+'.png';
    			city=data.response.route[i].city;
@@ -222,10 +280,23 @@ mailHops.lookup = function(route){
 
 };
 
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
 function launchMap(route)
 {
 	//launch mailhops api map
-	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&route='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=730,height=330');
+	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&m='+mailHops.map+'&u='+mailHops.unit+'&r='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=730,height=330');
 	openwin.focus();
 }
 

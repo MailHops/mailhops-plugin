@@ -8,7 +8,7 @@
 		<em:type>2</em:type>
 
 		<em:name>MailHops</em:name>
-		<em:version>0.1</em:version>
+		<em:version>0.2</em:version>
 		<em:description>MailHops maps the route an email took to get to you.</em:description>
 		
 		<em:iconURL>chrome://mailhops/content/images/mailhops32.png</em:iconURL>
@@ -16,6 +16,8 @@
 
 		<em:creator>Andrew Van Tassel</em:creator>
 		<em:developer>Andrew Van Tassel</em:developer>
+
+		<em:optionsURL>chrome://mailhops/content/preferences.xul</em:optionsURL>
 
 		<em:targetApplication resource="rdf:Thunderbird"/>
 	</Description>
