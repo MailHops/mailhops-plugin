@@ -1,0 +1,3 @@
+content  mailhops  jar:chrome/mailhops.jar!/content/
+skin  mailhops  classic/1.0  jar:chrome/mailhops.jar!/skin/classic/
+overlay  chrome://messenger/content/msgHdrViewOverlay.xul  chrome://mailhops/content/mailWindowOverlay.xul

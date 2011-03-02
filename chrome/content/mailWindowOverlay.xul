@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?xml-stylesheet href="chrome://mailhops/skin/mailhops.css" type="text/css"?>
+
+<overlay id="mailrouteOverlay" 
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml">
+
+	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
+
+	<rows id="expandedHeader2Rows">
+		<row id="mailhops" collapsed="false">
+			<label id="mailhopsLabel" value="route " class="headerName"/>
+               		<hbox id="mailhopsResult" flex="2">
+               			<image id="mailhopsResultImage" tooltiptext="Click to view the travel map of this message." width="16" height="16"/>
+               			<hbox id="mailhopsResultText"/>
+               		</hbox>
+		</row>
+	</rows>
+
+</overlay>

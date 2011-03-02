@@ -1,0 +1,7 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#mailhops {cursor:pointer;}
+
+#mailhopsResultText {padding-left:4px;}
+
+#mailHopsResultImage {padding-left:4px;display: none;}
