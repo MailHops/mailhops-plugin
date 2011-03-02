@@ -8,7 +8,7 @@
 		<em:type>2</em:type>
 
 		<em:name>MailHops</em:name>
-		<em:version>0.2</em:version>
+		<em:version>0.3</em:version>
 		<em:description>MailHops maps the route an email took to get to you.</em:description>
 		
 		<em:iconURL>chrome://mailhops/content/images/mailhops32.png</em:iconURL>

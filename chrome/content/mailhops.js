@@ -18,7 +18,8 @@ var mailHops =
   container:	null,
   isLoaded:     false,
   map:			'goog',
-  unit:			'mi'
+  unit:			'mi',
+  appVersion:	'MailHops Thunderbird 0.3'
 }
 
 mailHops.startLoading = function()
@@ -254,7 +255,7 @@ mailHops.lookup = function(route){
  var city;
  var state;
  
- xmlhttp.open("GET", 'http://api.mailhops.com/v1/lookup/?tb&route='+route.toString(),true);
+ xmlhttp.open("GET", 'http://api.mailhops.com/v1/lookup/?tb&app='+mailHops.appVersion+'&r='+route.toString(),true);
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState==4) {
    var data = nativeJSON.decode(xmlhttp.responseText);
@@ -296,7 +297,7 @@ function addCommas(nStr)
 function launchMap(route)
 {
 	//launch mailhops api map
-	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&m='+mailHops.map+'&u='+mailHops.unit+'&r='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=730,height=330');
+	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&app='+mailHops.appVersion+'&m='+mailHops.map+'&u='+mailHops.unit+'&r='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=730,height=330');
 	openwin.focus();
 }
 
