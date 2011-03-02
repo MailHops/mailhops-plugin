@@ -19,7 +19,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops Thunderbird 0.3'
+  appVersion:	'MailHops Thunderbird 0.4'
 }
 
 mailHops.startLoading = function()
@@ -159,24 +159,33 @@ mailHops.testIP = function(ip,header){
 	
 };
 
-mailHops.displayResult = function ( distance, image, city, state, route )
+mailHops.displayResult = function ( distance, image, city, state, countryName, route )
 {
-  if(distance){
+  var displayText='';
+  
+  if(city && state)
+		displayText = city+', '+state;
+  else if(countryName)
+  		displayText = countryName;
+  				
+  if(distance)
+  {
     if(distance.miles > 0){
     	if(mailHops.unit=='mi')
-			mailHops.resultText.textContent = city+', '+state+' ( '+addCommas(Math.round(distance.miles))+' mi traveled )';
+			displayText +=' ( '+addCommas(Math.round(distance.miles))+' mi traveled )';
 		else
-			mailHops.resultText.textContent = city+', '+state+' ( '+addCommas(Math.round(distance.kilometers))+' km traveled )';
+			displayText +=' ( '+addCommas(Math.round(distance.kilometers))+' km traveled )';
 	}
-	else if(city && state)
-		mailHops.resultText.textContent = city+', '+state;
 	else
-		mailHops.resultText.textContent = ' Local message.';
+		displayText = ' Local message.';
 	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
-  } else {
-  	mailHops.resultText.textContent = ' There was a problem.'; 
+  } 
+  else 
+  {
+  	displayText = ' There was a problem.'; 
   	mailHops.container.removeAttribute("onclick");
   }
+  mailHops.resultText.textContent = displayText;
   mailHops.resultImage.src=image; 
 } ;
 
@@ -254,6 +263,7 @@ mailHops.lookup = function(route){
  var flag= 'chrome://mailhops/content/images/local.png';
  var city;
  var state;
+ var countryName;
  
  xmlhttp.open("GET", 'http://api.mailhops.com/v1/lookup/?tb&app='+mailHops.appVersion+'&r='+route.toString(),true);
  xmlhttp.onreadystatechange=function() {
@@ -266,11 +276,12 @@ mailHops.lookup = function(route){
 	   			flag='chrome://mailhops/content/images/flags/'+data.response.route[i].countryCode.toLowerCase()+'.png';
    			city=data.response.route[i].city;
    			state=data.response.route[i].state;
+   			countryName=data.response.route[i].countryName;
    			break;
    		}   			
    	}
    	//display the result
-   	mailHops.displayResult(data.response.distance,flag,city,state,route);
+   	mailHops.displayResult(data.response.distance,flag,city,state,countryName,route);
    } else {
     //display the error
    	mailHops.displayResult(null,'chrome://mailhops/content/images/error.png',null,null,null);
