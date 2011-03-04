@@ -2,13 +2,13 @@
 * @author: Andrew Van Tassel
 * @email: andrew@andrewvantassel.com
 * @website: http://mailhops.com
-* @TODO: Add caching of lookup, display country flag in column
+* @TODO: cache result and display country flag in column
 */
 //import nativeJSON 
 var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 //IP regex
 var gIPRegEx=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/; 
-var gAllIPRegEx = /((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])/g;
+var gAllIPRegEx = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
 
 var mailHops =
 {
@@ -19,7 +19,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops Thunderbird 0.4'
+  appVersion:	'MailHops Thunderbird 0.4.1'
 }
 
 mailHops.startLoading = function()
@@ -31,8 +31,7 @@ mailHops.startLoading = function()
   mailHops.resultText = document.getElementById ( "mailhopsResultText" ) ;
   //get preferences
   mailHops.map = mailHops.getCharPref('mail.mailHops.map','goog');
-  mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
-  
+  mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi');  
 } ;
 
 mailHops.StreamListener =
@@ -107,26 +106,29 @@ mailHops.dispRoute = function()
   //get the originating IP address
 	if(headXOrigIP){
 		var ip = headXOrigIP.match(gAllIPRegEx);
-		if(ip != null && ip.length>0)
-			all_ips.push(ip[0])
+		if(ip != null && ip.length != 0)
+			all_ips.push( ip[0] );
 	}
   //loop through the received headers and parse for IP addresses	
-  if ( headReceived.length > 0 ){
-    for ( var i = 0 ; i < headReceived.length ; i++ ) {
-      	received_ips = headReceived[i].match(gAllIPRegEx);	
+  if ( headReceived.length != 0 ){
+    for ( var h=0; h<headReceived.length; h++ ) {
+      	received_ips = headReceived[h].match(gAllIPRegEx);	
       	//maybe multiple IPs in one Received: line	
       	if(received_ips != null){
-	      	for (var p=0; p < received_ips.length; p++){
+	      	for ( var r=0; r<received_ips.length; r++ ) {
 	      		//if we don't already have the IP then add it to the array
-		      	if(gIPRegEx.test(received_ips[p]) && all_ips.indexOf(received_ips[p]) == -1 && mailHops.testIP(received_ips[p],headReceived[i]))
-	    	    	all_ips.push(received_ips[p]);  
+		      	if(gIPRegEx.test(received_ips[r]) && all_ips.indexOf(received_ips[r]) == -1 && mailHops.testIP(received_ips[r],headReceived[h])){
+	    	    	all_ips.push( received_ips[r] );
+	    	    }
 	      	}
       	}
-    }
+    } 
   }
-  if ( all_ips.length > 0 ){
+  if ( all_ips.length != 0 ){
    mailHops.lookup ( all_ips ) ;
-  }  
+  } else {
+	  mailHops.displayResult('chrome://mailhops/content/images/local.png',null,null,null,null,null);
+  }
 };
 //another ip check, dates will throw off the regex
 mailHops.testIP = function(ip,header){
@@ -151,26 +153,31 @@ mailHops.testIP = function(ip,header){
 		else
 			retval = true;
 	}
-	catch(ex)
-	{
+	catch(ex) {
 		retval = true;
 	}
 	return retval;
 	
 };
 
-mailHops.displayResult = function ( distance, image, city, state, countryName, route )
+mailHops.displayResult = function ( image, distance, city, state, countryName, route )
 {
   var displayText='';
-  
-  if(city && state)
+  		
+  if(image.indexOf('error')!=-1) {
+  	displayText = ' There was a problem connecting to MailHops.'; 
+  	mailHops.container.removeAttribute("onclick");
+  }
+  else if(image.indexOf('local')!=-1) {
+  	displayText = ' Local message.';
+  	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
+  }				
+  else {
+  	if(city && state)
 		displayText = city+', '+state;
-  else if(countryName)
+	else if(countryName)
   		displayText = countryName;
-  				
-  if(distance)
-  {
-    if(distance.miles > 0){
+    if(distance && distance.miles > 0){
     	if(mailHops.unit=='mi')
 			displayText +=' ( '+addCommas(Math.round(distance.miles))+' mi traveled )';
 		else
@@ -180,11 +187,7 @@ mailHops.displayResult = function ( distance, image, city, state, countryName, r
 		displayText = ' Local message.';
 	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
   } 
-  else 
-  {
-  	displayText = ' There was a problem.'; 
-  	mailHops.container.removeAttribute("onclick");
-  }
+   
   mailHops.resultText.textContent = displayText;
   mailHops.resultImage.src=image; 
 } ;
@@ -268,23 +271,28 @@ mailHops.lookup = function(route){
  xmlhttp.open("GET", 'http://api.mailhops.com/v1/lookup/?tb&app='+mailHops.appVersion+'&r='+route.toString(),true);
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState==4) {
-   var data = nativeJSON.decode(xmlhttp.responseText);
-   if(data && data.meta.code==200){
-   	for(var i=0; i<data.response.route.length;i++){
-   		if(!data.response.route[i].private && !data.response.route[i].client){
-   			if(data.response.route[i].countryCode)
-	   			flag='chrome://mailhops/content/images/flags/'+data.response.route[i].countryCode.toLowerCase()+'.png';
-   			city=data.response.route[i].city;
-   			state=data.response.route[i].state;
-   			countryName=data.response.route[i].countryName;
-   			break;
-   		}   			
-   	}
-   	//display the result
-   	mailHops.displayResult(data.response.distance,flag,city,state,countryName,route);
-   } else {
-    //display the error
-   	mailHops.displayResult(null,'chrome://mailhops/content/images/error.png',null,null,null);
+  try{
+	   var data = nativeJSON.decode(xmlhttp.responseText);
+	   if(data && data.meta.code==200){
+	   	for(var i=0; i<data.response.route.length;i++){
+	   		if(!data.response.route[i].private && !data.response.route[i].client){
+	   			if(data.response.route[i].countryCode)
+		   			flag='chrome://mailhops/content/images/flags/'+data.response.route[i].countryCode.toLowerCase()+'.png';
+	   			city=data.response.route[i].city;
+	   			state=data.response.route[i].state;
+	   			countryName=data.response.route[i].countryName;
+	   			break;
+	   		}   			
+	   	}
+	   	//display the result
+	   	mailHops.displayResult(flag,data.response.distance,city,state,countryName,route);
+	   } else {
+	    //display the error
+	   	mailHops.displayResult('chrome://mailhops/content/images/error.png',null,null,null,null,null);
+	   }
+   }
+   catch (ex){ 
+	   mailHops.displayResult('chrome://mailhops/content/images/error.png',null,null,null,null,null);
    }
   }
  };

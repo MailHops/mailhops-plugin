@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://mailhops/skin/mailhops.css" type="text/css"?>
+
+<dialog id="mailHopsPreferences"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	buttons="accept,cancel"
+	onload="mailHopPreferences.loadPreferences();"
+	ondialogaccept="mailHopPreferences.savePreferences();"
+	title="MailHops Preferences">
+
+	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
+	<script type="application/x-javascript" src="chrome://mailhops/content/preferences.js"/>
+
+	<vbox width="200px">
+		<groupbox>
+			<caption label="Default Map"/>
+			<radiogroup id="mailhop.map">
+				<radio value="goog" label="Google" selected="true"/>
+				<radio value="bing" label="Bing"/>
+			</radiogroup>
+		</groupbox>
+		<groupbox>
+			<caption label="Default Unit"/>
+			<radiogroup id="mailhop.unit">
+				<radio value="mi" label="Miles" selected="true"/>
+				<radio value="km" label="Kilometers"/>
+			</radiogroup>
+		</groupbox>
+	</vbox>
+
+</dialog>
