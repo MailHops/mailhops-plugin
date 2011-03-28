@@ -26,7 +26,21 @@
 			<em:minVersion>3.0</em:minVersion>
 			<em:maxVersion>3.1</em:maxVersion>
 		</Description>
-				
+		
+		<!-- Postbox -->
+	      <Description>
+	        <em:id>postbox@postbox-inc.com</em:id>
+	        <em:minVersion>1.0b13</em:minVersion>
+	        <em:maxVersion>2.*</em:maxVersion>
+	      </Description> 
+	
+	      <!-- Postbox Express -->
+	      <Description>
+	        <em:id>express@postbox-inc.com</em:id>
+	        <em:minVersion>1.0b13</em:minVersion>
+	        <em:maxVersion>2.*</em:maxVersion>
+	      </Description>
+		
 		</em:targetApplication>
 	
 	</Description>
