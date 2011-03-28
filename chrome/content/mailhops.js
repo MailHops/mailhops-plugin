@@ -19,7 +19,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops Thunderbird 0.4.2'
+  appVersion:	'MailHops Thunderbird 0.4.3'
 }
 
 mailHops.startLoading = function()
@@ -178,11 +178,9 @@ mailHops.displayResult = function ( image, distance, city, state, countryName, r
   		
   if(image.indexOf('error')!=-1) {
   	displayText = ' There was a problem connecting to MailHops.'; 
-  	mailHops.container.removeAttribute("onclick");
   }
   else if(image.indexOf('local')!=-1) {
   	displayText = ' Local message.';
-  	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
   }				
   else {
   	if(city && state)
@@ -196,9 +194,13 @@ mailHops.displayResult = function ( image, distance, city, state, countryName, r
 			displayText +=' ( '+addCommas(Math.round(distance.kilometers))+' km traveled )';
 	}
 	else if(displayText=='')
-		displayText = ' Local message.';
-	mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
+		displayText = ' Local message.';	
   } 
+  //add event for route api map
+  	if(route)
+		mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
+	else
+		mailHops.container.removeAttribute("onclick");
    
   mailHops.resultText.textContent = displayText;
   mailHops.resultImage.src=image; 

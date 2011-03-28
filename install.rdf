@@ -8,7 +8,7 @@
 		<em:type>2</em:type>
 
 		<em:name>MailHops</em:name>
-		<em:version>0.4.2</em:version>
+		<em:version>0.4.3</em:version>
 		<em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>
 		
 		<em:iconURL>chrome://mailhops/content/images/mailhops32.png</em:iconURL>
@@ -19,12 +19,16 @@
 
 		<em:optionsURL>chrome://mailhops/content/preferences.xul</em:optionsURL>
 
-		<em:targetApplication resource="rdf:Thunderbird"/>
+		<em:targetApplication>
+		<!-- Thunderbird -->
+		<Description>
+			<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+			<em:minVersion>3.0</em:minVersion>
+			<em:maxVersion>3.1</em:maxVersion>
+		</Description>
+				
+		</em:targetApplication>
+	
 	</Description>
 	
-	<Description about="rdf:Thunderbird"
-		em:id="{3550f703-e582-4d05-9a08-453d09bdfdc6}"
-		em:minVersion="3.0"
-		em:maxVersion="3.1.*"/>
-
 </RDF>
