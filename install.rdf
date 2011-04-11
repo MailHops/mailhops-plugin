@@ -7,7 +7,7 @@
 		<em:id>postbox@mailhops.com</em:id>
 		<em:type>2</em:type>
 
-		<em:name>MailHops</em:name>
+		<em:name>MailHops for Postbox</em:name>
 		<em:version>0.4.3</em:version>
 		<em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>
 		
