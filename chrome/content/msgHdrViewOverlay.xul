@@ -8,14 +8,16 @@
 
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
 
-	<vbox id="expandedHeaders">
-    	<hbox id="mailhopsBox" class="mailheader" collapsed="false" flex="1">
-    		<label id="mailhopsLabel" class="headerName" value="route: "/>
-	    	<hbox id="mailhopsResult" flex="2">
-		    	<image id="mailhopsResultImage" tooltiptext="Click to view the travel map of this message." width="16" height="11"/>
-            	<hbox id="mailhopsResultText"></hbox>
+	<vbox id="headers">
+    	<hbox id="mailhopsBox" class="mailheader" collapsed="false" inminmode="true">
+    		<label id="mailhopsLabel" class="headerName plain" value="route: "/>
+    		<hbox flex="1">
+	    		<mailheadervalue id="mailhopsResult" flex="1">
+		    		<image id="mailhopsResultImage" tooltiptext="Click to view the travel map of this message." width="16px" height="11px"/>
+            		<hbox id="mailhopsResultText" class="headerValue plain"></hbox>
+	    		</mailheadervalue>
 	    	</hbox>
-    	</hbox>
+    	</hbox>    	
   	</vbox>
 
 </overlay>

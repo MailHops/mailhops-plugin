@@ -9,7 +9,7 @@ var gNativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(C
 //IP regex
 var gIPRegEx=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/; 
 var gAllIPRegEx = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
-var gAppName = window.navigator.appName!=null?window.navigator.appName:'';
+var gApp = 'Postbox';
 
 var mailHops =
 {
@@ -20,7 +20,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops '+gAppName+' 0.4.3'
+  appVersion:	'MailHops '+gApp+' 0.4.3'
 }
 
 mailHops.startLoading = function()

@@ -20,12 +20,6 @@
 		<em:optionsURL>chrome://mailhops/content/preferences.xul</em:optionsURL>
 
 		<em:targetApplication>
-		<!-- Thunderbird -->
-		<Description>
-			<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
-			<em:minVersion>3.0</em:minVersion>
-			<em:maxVersion>3.1</em:maxVersion>
-		</Description>
 		
  	  	<!-- Postbox -->
 	  	<Description>
