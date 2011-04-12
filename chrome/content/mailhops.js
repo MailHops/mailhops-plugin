@@ -20,7 +20,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops '+gApp+' 0.4.3'
+  appVersion:	'MailHops '+gApp+' 0.4.4'
 }
 
 mailHops.startLoading = function()
@@ -115,12 +115,11 @@ mailHops.dispRoute = function()
   if ( headReceived ){
   	var headReceivedArr = headReceived.split('\n');
   	if(headReceivedArr.length != 0){
-    	for ( var h=0; h<headReceivedArr.length; h++ ) {
+    	for ( var h=0; h<headReceivedArr.length; h++ ) {	    	
     		//build the received line by concat until semi-colon ; date/time
-    		if(headReceivedArr[h].indexOf(';')==-1){
-    			rline += headReceivedArr[h];
-    			continue;
-    		}    		
+    		rline += headReceivedArr[h];
+    		if(headReceivedArr[h].indexOf(';')==-1)
+    			continue;    			
     		received_ips = rline.match(gAllIPRegEx);	
 	      	//maybe multiple IPs in one Received: line	
 	      	if(received_ips != null && received_ips.length !=0){
