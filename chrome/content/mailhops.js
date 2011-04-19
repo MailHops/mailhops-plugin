@@ -4,12 +4,6 @@
 * @website: http://mailhops.com
 * @TODO: cache result and display country flag in column
 */
-//import nativeJSON 
-var gNativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-//IP regex
-var gIPRegEx=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/; 
-var gAllIPRegEx = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
-var gApp = 'Postbox';
 
 var mailHops =
 {
@@ -20,7 +14,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops '+gApp+' 0.4.4'
+  appVersion:	'MailHops Postbox 0.4.5'
 }
 
 mailHops.startLoading = function()
@@ -100,6 +94,10 @@ mailHops.loadHeaderData = function()
 mailHops.dispRoute = function()
 {
 
+//IP regex
+var regexIp=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/; 
+var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
+
   var headReceived = mailHops.headers.extractHeader ( "Received" , true ) ;
   var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false ) ;
   var received_ips;
@@ -107,7 +105,7 @@ mailHops.dispRoute = function()
   var rline='';
   //get the originating IP address
 	if(headXOrigIP){
-		var ip = headXOrigIP.match(gAllIPRegEx);
+		var ip = headXOrigIP.match(regexAllIp);
 		if(ip != null && ip.length != 0)
 			all_ips.push( ip[0] );
 	}
@@ -120,12 +118,12 @@ mailHops.dispRoute = function()
     		rline += headReceivedArr[h];
     		if(headReceivedArr[h].indexOf(';')==-1)
     			continue;    			
-    		received_ips = rline.match(gAllIPRegEx);	
+    		received_ips = rline.match(regexAllIp);	
 	      	//maybe multiple IPs in one Received: line	
 	      	if(received_ips != null && received_ips.length !=0){
 	      		for( var r=0; r<received_ips.length; r++ ){	      			
 	      			//only look at the first IP
-	      			if(gIPRegEx.test(received_ips[r]) && all_ips.indexOf(received_ips[r])==-1 && mailHops.testIP(received_ips[r],rline)){
+	      			if(regexIp.test(received_ips[r]) && all_ips.indexOf(received_ips[r])==-1 && mailHops.testIP(received_ips[r],rline)){
 						all_ips.push( received_ips[r] );
 						break;		    	    
 		    	}
@@ -275,6 +273,9 @@ mailHops.lookup = function(route){
  //setup loading
  mailHops.clearRoute();
   
+  //import nativeJSON 
+ var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+
  //call mailhops api for lookup	
  var xmlhttp = new XMLHttpRequest();
  var flag= 'chrome://mailhops/content/images/local.png';
@@ -286,7 +287,7 @@ mailHops.lookup = function(route){
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState==4) {
   try{
-	   var data = gNativeJSON.decode(xmlhttp.responseText);
+	   var data = nativeJSON.decode(xmlhttp.responseText);
 	   if(data && data.meta.code==200){
 	   	for(var i=0; i<data.response.route.length;i++){
 	   		if(!data.response.route[i].private && !data.response.route[i].client){
