@@ -14,7 +14,7 @@ var mailHops =
   isLoaded:     false,
   map:			'goog',
   unit:			'mi',
-  appVersion:	'MailHops Postbox 0.4.5'
+  appVersion:	'MailHops Postbox 0.4.6'
 }
 
 mailHops.startLoading = function()
@@ -26,7 +26,14 @@ mailHops.startLoading = function()
   mailHops.resultText = document.getElementById ( "mailhopsResultText" ) ;
   //get preferences
   mailHops.map = mailHops.getCharPref('mail.mailHops.map','goog');
-  mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi');  
+  mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi'); 
+  //event listner for route click to launch map
+  mailHops.container.addEventListener("click", function () { 
+  		var route = this.getAttribute("route");
+  		if(route)
+	  		launchMap(String(route)); 
+  	}
+  , false); 
 } ;
 
 mailHops.StreamListener =
@@ -195,11 +202,7 @@ mailHops.displayResult = function ( image, distance, city, state, countryName, r
 		displayText = ' Local message.';	
   } 
   //add event for route api map
-  	if(route)
-		mailHops.container.setAttribute("onclick","launchMap('"+route.toString()+"');");
-	else
-		mailHops.container.removeAttribute("onclick");
-   
+  mailHops.container.setAttribute("route", route);
   mailHops.resultText.textContent = displayText;
   mailHops.resultImage.src=image; 
 } ;
