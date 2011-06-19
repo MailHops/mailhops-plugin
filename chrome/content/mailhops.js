@@ -7,31 +7,31 @@
 
 var mailHops =
 {
-  resultBox:	null,
-  resultImage:	null,
-  resultText:	null,
-  container:	null,
-  isLoaded:     false,
-  map:			'goog',
-  unit:			'mi',
-  appVersion:	'MailHops Postbox 0.4.6'
+  resultTextDataPane:		null,
+  resultTextDataPane2:		null,
+  resultContainerDataPane:	null,
+  isLoaded:     			false,
+  map:						'goog',
+  unit:						'mi',
+  appVersion:				'MailHops Postbox 0.4.7'
 }
 
 mailHops.startLoading = function()
 {
   mailHops.isLoaded = true;
-  mailHops.container = document.getElementById ( "mailhopsBox" ) ;
-  mailHops.resultBox = document.getElementById ( "mailhopsResult" ) ;
-  mailHops.resultImage = document.getElementById ( "mailhopsResultImage" ) ;  
-  mailHops.resultText = document.getElementById ( "mailhopsResultText" ) ;
+
+  mailHops.resultContainerDataPane = document.getElementById ( "mailhopsDataPane");
+  mailHops.resultTextDataPane = document.getElementById ( "mailhopsDataPaneText");
+  mailHops.resultTextDataPane2 = document.getElementById ( "mailhopsDataPaneText2");
+    
   //get preferences
   mailHops.map = mailHops.getCharPref('mail.mailHops.map','goog');
   mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi'); 
   //event listner for route click to launch map
-  mailHops.container.addEventListener("click", function () { 
+  mailHops.resultContainerDataPane.addEventListener("click", function () { 
   		var route = this.getAttribute("route");
   		if(route)
-	  		launchMap(String(route)); 
+	  		mailHops.launchMap(String(route)); 
   	}
   , false); 
 } ;
@@ -180,6 +180,7 @@ mailHops.testIP = function(ip,header){
 mailHops.displayResult = function ( image, distance, city, state, countryName, route )
 {
   var displayText='';
+  var distanceText='';
   		
   if(image.indexOf('error')!=-1) {
   	displayText = ' There was a problem connecting to MailHops.'; 
@@ -194,22 +195,35 @@ mailHops.displayResult = function ( image, distance, city, state, countryName, r
   		displayText = countryName;
     if(distance && distance.miles > 0){
     	if(mailHops.unit=='mi')
-			displayText +=' ( '+addCommas(Math.round(distance.miles))+' mi traveled )';
+			distanceText =' ( '+mailHops.addCommas(Math.round(distance.miles))+' mi traveled )';
 		else
-			displayText +=' ( '+addCommas(Math.round(distance.kilometers))+' km traveled )';
+			distanceText =' ( '+mailHops.addCommas(Math.round(distance.kilometers))+' km traveled )';
 	}
 	else if(displayText=='')
 		displayText = ' Local message.';	
   } 
   //add event for route api map
-  mailHops.container.setAttribute("route", route);
-  mailHops.resultText.textContent = displayText;
-  mailHops.resultImage.src=image; 
+  if(mailHops.resultContainerDataPane){
+	  mailHops.resultContainerDataPane.setAttribute("route", route);
+	  mailHops.resultTextDataPane.style.backgroundImage = 'url('+image+')';
+	  mailHops.resultTextDataPane.value = displayText;	  
+	  mailHops.resultTextDataPane.setAttribute('tooltiptext',displayText+' '+distanceText); 
+	  
+	  mailHops.resultTextDataPane2.value = distanceText;	
+	  mailHops.resultTextDataPane2.setAttribute('tooltiptext',displayText+' '+distanceText);   
+  }
 } ;
 
 mailHops.clearRoute = function(){
-	mailHops.resultImage.src='chrome://mailhops/content/images/loader.gif';
-	mailHops.resultText.textContent = ' Looking Up Route'; 
+	
+	if(mailHops.resultContainerDataPane){
+		mailHops.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
+		mailHops.resultTextDataPane.value = ' Looking Up Route'; 
+		mailHops.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route'); 
+		
+		mailHops.resultTextDataPane2.value = '';
+		mailHops.resultTextDataPane2.setAttribute('tooltiptext',''); 
+	}
 } ;
 
 mailHops.setupEventListener = function()
@@ -318,7 +332,7 @@ mailHops.lookup = function(route){
 
 };
 
-function addCommas(nStr)
+mailHops.addCommas = function(nStr)
 {
 	nStr += '';
 	var x = nStr.split('.');
@@ -329,13 +343,13 @@ function addCommas(nStr)
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
 	return x1 + x2;
-}
+};
 
-function launchMap(route)
+mailHops.launchMap = function(route)
 {
 	//launch mailhops api map
-	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&app='+mailHops.appVersion+'&m='+mailHops.map+'&u='+mailHops.unit+'&r='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=730,height=330');
+	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&app='+mailHops.appVersion+'&m='+mailHops.map+'&u='+mailHops.unit+'&r='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=732,height=332');
 	openwin.focus();
-}
+};
 
 addEventListener ( "messagepane-loaded" , mailHops.setupEventListener , true ) ;
