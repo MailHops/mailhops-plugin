@@ -5,3 +5,49 @@
 #mailhopsResultText {padding-left:4px;}
 
 #mailHopsResultImage {padding-left:4px;display: none;}
+
+#mailhopsDataPaneDetailsLink{
+	margin-left: 10px;
+	text-align: center;
+	padding-right: 14px;
+}
+
+#mailhopsDataPaneDetailsLink.active{
+	color: #FFF;
+	margin-left: 10px;
+	background-color: #98a5b3;
+	-moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;
+    text-align: center;
+    padding-right: 14px;
+}
+
+.mailhopsDetail{
+	padding-bottom: 2px;
+}
+
+.mailHopsLinkContainer{
+	padding-bottom: 4px;
+}
+
+#mailhopsDetailsContainer{
+	margin-left: 10px;
+	margin-right: 10px;
+	display: none;
+	border: 1px solid #e1e2e5;
+	background-color: #f7f8f9;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#mailhopsDataPaneDetails{
+	padding: 4px;
+}
+
+#mailhopsDataPane{
+	padding-bottom: 4px;
+}

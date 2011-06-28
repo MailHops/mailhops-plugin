@@ -21,6 +21,7 @@
 				<radio value="bing" label="Bing"/>
 			</radiogroup>
 		</groupbox>
+		
 		<groupbox>
 			<caption label="Default Unit"/>
 			<radiogroup id="mailhop.unit">
@@ -28,6 +29,11 @@
 				<radio value="km" label="Kilometers"/>
 			</radiogroup>
 		</groupbox>
+		
+		<groupbox>
+			<caption label="Display Options"/>
+			<checkbox id="mailhop.show_details" label="Show Details" checked="false"/>
+		</groupbox>		
 	</vbox>
 
 </dialog>

@@ -14,10 +14,22 @@
 				<label class="dataPaneHeader" crop="right" value="Route"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
 			</hbox>
+			
 			<vbox id="mailhopsDataPane" flex="1">
-				<label id="mailhopsDataPaneText" class="text-link dataPaneAddressitem" tooltiptext=""></label>
-				<label id="mailhopsDataPaneText2" class="text-link dataPaneAddressitem" tooltiptext=""></label>
+				<label id="mailhopsDataPaneText" class="dataPaneAddressitem" tooltiptext=""></label>
+				<label id="mailhopsDataPaneText2" class="dataPaneAddressitem" tooltiptext=""></label>				
 			</vbox>	
+			
+			<hbox class="mailHopsLinkContainer">
+				<vbox><label id="mailhopsDataPaneMapLink" class="text-link dataPaneMoreLink" value="map" tooltiptext="Show Route Map"></label></vbox>
+				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="details" tooltiptext="Show Route Details"></label></vbox>
+			</hbox>
+						
+			<hbox id="mailhopsDetailsContainer">
+				<vbox id="mailhopsDataPaneDetails" flex="1">	
+				</vbox>
+			</hbox>			
+			
 		</vbox>	
 	</vbox>
 	
