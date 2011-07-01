@@ -13,11 +13,13 @@ var mailHops =
   resultContainerDetails: 	null,
   resultDetails:			null,
   resultMapLink:			null,
+  messageContainer:			null,
   isLoaded:     			false,
   showDetails:				false,
+  showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.4.8'  
+  appVersion:				'MailHops Postbox 0.5'  
 }
 
 mailHops.init = function()
@@ -36,6 +38,9 @@ mailHops.init = function()
   mailHops.resultDetails = document.getElementById ( "mailhopsDataPaneDetails");  
   
   mailHops.resultMapLink = document.getElementById ( "mailhopsDataPaneMapLink");  
+  
+  mailHops.messageContainer = document.getElementById ( "message-container");  
+  
       
   //event listner for route click to launch map
   mailHops.resultMapLink.addEventListener("click", function () { 
@@ -63,6 +68,7 @@ mailHops.loadPref = function()
   mailHops.map = mailHops.getCharPref('mail.mailHops.map','goog');
   mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
   mailHops.showDetails = mailHops.getCharPref('mail.mailHops.show_details','false')=='true'?true:false;
+  mailHops.showWeather = mailHops.getCharPref('mail.mailHops.show_weather','false')=='true'?true:false;
 };
 
 mailHops.StreamListener =
@@ -248,9 +254,28 @@ mailHops.displayResult = function ( header_route, response ){
 			else
 			   	label.setAttribute('tooltiptext',response.route[i].ip);
 			
-	   		//append details
+			//append details
 	   		mailHops.resultDetails.appendChild(label);
-	   		   			
+	   		
+	   		//append weather
+	   		if(mailHops.showWeather && response.route[i].weather){
+				var weather = document.createElement('label');
+				if(response.route[i].weather.image){
+					var wimage = response.route[i].weather.image.split('/');
+					if((wimage[5].indexOf('clear') != -1 || wimage[5].indexOf('sun') != -1) && !mailHops.isDay())
+						wimage[5] = 'clear_night.png';
+					else if(wimage[5].indexOf('cloudy') != -1 && !mailHops.isDay())
+						wimage[5] = 'cloudy_night.png';						
+					weather.style.backgroundImage = 'url(chrome://mailhops/content/images/weather/'+wimage[5]+')';
+				}
+				if(mailHops.unit=='mi')
+					weather.setAttribute('value',response.route[i].weather.cond+' '+response.route[i].weather.temp.F+'\u00B0F');	
+				else
+					weather.setAttribute('value',response.route[i].weather.cond+' '+response.route[i].weather.temp.C+'\u00B0C');
+				weather.setAttribute('class','dataPaneAddressitem mailhopsWeather');
+				mailHops.resultDetails.appendChild(weather);
+			}
+			   			
  }
 
  if(image.indexOf('local')!=-1) {
@@ -293,6 +318,13 @@ mailHops.displayResult = function ( header_route, response ){
   }
 };
 
+mailHops.isDay = function(){
+	var d = new Date();
+	if(d.getHours()>7 && d.getHours()<19)
+		return true;
+	else
+		return false;
+}
 //display the connection error message
 mailHops.displayError = function(){
 	  mailHops.resultMapLink.removeAttribute("route");
@@ -300,8 +332,9 @@ mailHops.displayError = function(){
 	  mailHops.resultTextDataPane.value = ' MailHops Failed.';	  
 	  mailHops.resultTextDataPane.setAttribute('tooltiptext',' Could not connect to MailHops.'); 
 	  
-	  mailHops.resultTextDataPane2.value = distanceText;	
-	  mailHops.resultTextDataPane2.setAttribute('tooltiptext',' Could not connect to MailHops.'); 
+	  mailHops.resultTextDataPane2.value = '';	
+	  mailHops.resultTextDataPane2.style.backgroundImage = '';
+	  mailHops.resultTextDataPane2.setAttribute('tooltiptext',''); 
 };
 
 mailHops.clearRoute = function(){
@@ -315,6 +348,7 @@ mailHops.clearRoute = function(){
 	mailHops.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route'); 
 	
 	mailHops.resultTextDataPane2.value = '';
+	mailHops.resultTextDataPane2.style.backgroundImage = '';
 	mailHops.resultTextDataPane2.setAttribute('tooltiptext',''); 
 	
 	//remove child details
@@ -390,7 +424,12 @@ mailHops.lookup = function(header_route){
  //call mailhops api for lookup	
  var xmlhttp = new XMLHttpRequest();
  
- xmlhttp.open("GET", 'http://api.mailhops.com/v1/lookup/?tb&app='+mailHops.appVersion+'&r='+String(header_route),true);
+ var lookupURL='http://api.mailhops.com/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route);
+ 
+ if(mailHops.showWeather)
+ 	lookupURL+='&w=1';
+ 	
+ xmlhttp.open("GET", lookupURL ,true);
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState==4) {
   try{
@@ -404,7 +443,7 @@ mailHops.lookup = function(header_route){
 	   }
    }
    catch (ex){ 
-	   mailHops.displayError();
+   	   mailHops.displayError();
    }
   }
  };
@@ -425,7 +464,10 @@ mailHops.addCommas = function(nStr){
 
 mailHops.launchMap = function(route){
 	//launch mailhops api map
-	var openwin = window.openDialog('http://api.mailhops.com/v1/map/?tb&app='+mailHops.appVersion+'&m='+mailHops.map+'&u='+mailHops.unit+'&r='+route,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=732,height=332');
+	var lookupURL='http://api.mailhops.com/v1/map/?pb&app='+mailHops.appVersion+'&m='+mailHops.map+'&u='+mailHops.unit+'&r='+String(route);
+	 if(mailHops.showWeather)
+	 	lookupURL+='&w=1';
+	var openwin = window.openDialog(lookupURL,"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=732,height=332');
 	openwin.focus();
 };
 
