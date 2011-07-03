@@ -34,6 +34,7 @@
 			<caption label="Display Options"/>
 			<checkbox id="mailhop.show_details" label="Show Details" checked="false"/>
 			<checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/>
+			<checkbox id="mailhop.show_auth" label="Show Authentication" checked="false"/>
 		</groupbox>		
 	</vbox>
 

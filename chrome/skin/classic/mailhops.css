@@ -24,6 +24,14 @@
     padding-right: 14px;
 }
 
+#dataPaneMailHopsAuthContainer{
+	display: none;
+}
+
+#mailhopsDataPane{
+	padding-bottom: 4px;
+}
+
 .mailhopsDetail{
 	padding-bottom: 2px;
 }
@@ -32,24 +40,16 @@
 	padding-bottom: 4px;
 }
 
-#mailhopsDetailsContainer{
+.mailhopsContainer{
 	margin-left: 10px;
 	margin-right: 10px;
-	display: none;
 	border: 1px solid #e1e2e5;
 	background-color: #f7f8f9;
 	-moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
     border-radius: 5px;
-}
-
-#mailhopsDataPaneDetails{
-	padding: 4px;
-}
-
-#mailhopsDataPane{
-	padding-bottom: 4px;
+    padding: 4px;
 }
 
 .mailhopsWeather{

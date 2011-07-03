@@ -22,14 +22,27 @@
 			
 			<hbox class="mailHopsLinkContainer">
 				<vbox><label id="mailhopsDataPaneMapLink" class="text-link dataPaneMoreLink" value="map" tooltiptext="Show Route Map"></label></vbox>
-				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="details" tooltiptext="Show Route Details"></label></vbox>
+				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="details" tooltiptext="Show Route Details"></label></vbox>				
 			</hbox>
-						
-			<hbox id="mailhopsDetailsContainer">
+			
+			<hbox id="mailhopsDetailsContainer" class="mailhopsContainer">
 				<vbox id="mailhopsDataPaneDetails" flex="1">	
 				</vbox>
-			</hbox>			
+			</hbox>
 			
+		</vbox>	
+		
+		<vbox id="dataPaneMailHopsAuthContainer" class="dataPaneBox">	
+			<hbox flex="1" pack="start" align="center">
+				<label class="dataPaneHeader" crop="right" value="Authentication"></label>
+				<separator class="dataPaneBoxSeparator" flex="1"></separator>
+			</hbox>
+
+			<vbox id="mailhopsAuthDataPane" flex="1">
+				<label id="mailhopsDataPaneMailer" class="dataPaneAddressitem" value="" tooltiptext="X-Mailer"></label>
+				<label id="mailhopsDataPaneSPF" class="dataPaneAddressitem" value="" tooltiptext="SPF"></label>
+				<label id="mailhopsDataPaneDKIM" class="dataPaneAddressitem" value="" tooltiptext="DKIM"></label>
+			</vbox>
 		</vbox>	
 	</vbox>
 	
