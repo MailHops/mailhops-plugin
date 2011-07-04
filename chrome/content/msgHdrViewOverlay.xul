@@ -2,7 +2,7 @@
 
 <?xml-stylesheet href="chrome://mailhops/skin/mailhops.css" type="text/css"?>
 
-<overlay id="mailrouteOverlay" 
+<overlay id="mailhopsOverlay" 
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml">
 
@@ -39,9 +39,10 @@
 			</hbox>
 
 			<vbox id="mailhopsAuthDataPane" flex="1">
-				<label id="mailhopsDataPaneMailer" class="dataPaneAddressitem" value="" tooltiptext="X-Mailer"></label>
-				<label id="mailhopsDataPaneSPF" class="dataPaneAddressitem" value="" tooltiptext="SPF"></label>
-				<label id="mailhopsDataPaneDKIM" class="dataPaneAddressitem" value="" tooltiptext="DKIM"></label>
+				<label id="mailhopsDataPaneMailer" class="dataPaneAddressitem auth-item" value="" tooltiptext="X-Mailer"></label>
+				<label id="mailhopsDataPaneSPF" class="dataPaneAddressitem auth-item" value="" tooltiptext="SPF"></label>
+				<label id="mailhopsDataPaneDKIM" class="dataPaneAddressitem auth-item" value="" tooltiptext="DKIM"></label>
+				<label id="mailhopsDataPaneDNSBL" class="dataPaneAddressitem auth-item" value="" tooltiptext="DNSBL"></label>
 			</vbox>
 		</vbox>	
 	</vbox>
