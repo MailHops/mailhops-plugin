@@ -42,7 +42,7 @@
 				<label id="mailhopsDataPaneMailer" class="dataPaneAddressitem auth-item" value="" tooltiptext="X-Mailer"></label>
 				<label id="mailhopsDataPaneSPF" class="dataPaneAddressitem auth-item" value="" tooltiptext="SPF"></label>
 				<label id="mailhopsDataPaneDKIM" class="dataPaneAddressitem auth-item" value="" tooltiptext="DKIM"></label>
-				<label id="mailhopsDataPaneDNSBL" class="dataPaneAddressitem auth-item" value="" tooltiptext="DNSBL"></label>
+				<label id="mailhopsDataPaneDNSBL" class="text-link dataPaneAddressitem auth-item" value="" tooltiptext="DNSBL"></label>
 			</vbox>
 		</vbox>	
 	</vbox>

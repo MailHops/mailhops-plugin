@@ -22,7 +22,7 @@ var mailHops =
   showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6'  
+  appVersion:				'MailHops Postbox 0.6.1'  
 }
 
 mailHops.init = function()
@@ -65,6 +65,12 @@ mailHops.init = function()
 	  	}
   	}
   , false); 
+  
+  mailHops.mailhopsDataPaneDNSBL.addEventListener("click", function () { 
+  		var ip = this.getAttribute('ip');
+  		mailHops.launchSpamHausURL(ip);
+  	}
+  , false);
 
 };
 
@@ -281,12 +287,22 @@ mailHops.displayResultAuth = function( header_xmailer, header_useragent, header_
 	//X-Mailer or User-Agent
 	if(header_xmailer){
 		mailHops.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
-		mailHops.mailhopsDataPaneMailer.setAttribute('value',header_xmailer);
+		if(header_xmailer.indexOf('(')!=-1)
+			mailHops.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('(')));
+		else if(header_xmailer.indexOf('[')!=-1)
+			mailHops.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('[')));
+		else
+			mailHops.mailhopsDataPaneMailer.setAttribute('value',header_xmailer);
 		mailHops.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_xmailer);   
 		mailHops.mailhopsDataPaneMailer.style.display='block';
 	} else if(header_useragent){
 		mailHops.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
-		mailHops.mailhopsDataPaneMailer.setAttribute('value',header_useragent);
+		if(header_useragent.indexOf('(')!=-1)
+			mailHops.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('(')));
+		else if(header_useragent.indexOf('[')!=-1)
+			mailHops.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('[')));
+		else
+			mailHops.mailhopsDataPaneMailer.setAttribute('value',header_useragent);		
 		mailHops.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_useragent); 
 		mailHops.mailhopsDataPaneMailer.style.display='block';
 	}	
@@ -384,6 +400,29 @@ mailHops.authExplainDNSBL = function(result){
 	}
 };
 
+mailHops.authExplainDNSBL_server = function(result){
+
+	switch(result){
+
+   		case '127.0.0.2':
+   		case '127.0.0.3':
+			return 'SBL';
+		
+		case '127.0.0.4':
+		case '127.0.0.5':
+		case '127.0.0.6':
+		case '127.0.0.7':
+			return 'XBL';
+		
+		case '127.0.0.10':
+		case '127.0.0.11':
+			return 'PBL';
+			
+		default:
+			return '';
+	}
+};
+
 mailHops.displayResult = function ( header_route, response ){
   var displayText='';
   var distanceText='';
@@ -454,11 +493,12 @@ mailHops.displayResult = function ( header_route, response ){
 			
 			//auth & dnsbl
 			if(!response.route[i].private && response.route[i].dnsbl && response.route[i].dnsbl.listed){
-				mailHops.mailhopsDataPaneDNSBL.setAttribute('value','Blacklisted');
+				mailHops.mailhopsDataPaneDNSBL.setAttribute('value','Blacklisted '+mailHops.authExplainDNSBL_server(response.route[i].dnsbl.record));
+				mailHops.mailhopsDataPaneDNSBL.setAttribute('ip',response.route[i].ip);
 				if(response.route[i].dnsbl.record)
-					mailHops.mailhopsDataPaneDNSBL.setAttribute('tooltiptext',mailHops.authExplainDNSBL(response.route[i].dnsbl.record));
+					mailHops.mailhopsDataPaneDNSBL.setAttribute('tooltiptext','Click for more details.\n'+mailHops.authExplainDNSBL(response.route[i].dnsbl.record));
 				else
-					mailHops.mailhopsDataPaneDNSBL.setAttribute('tooltiptext','');
+					mailHops.mailhopsDataPaneDNSBL.setAttribute('tooltiptext','Click for more details.');
 				mailHops.mailhopsDataPaneDNSBL.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/bomb.png)';
 				mailHops.mailhopsDataPaneDNSBL.style.display = 'block';
 			}
@@ -650,6 +690,11 @@ mailHops.addCommas = function(nStr){
 	return x1 + x2;
 };
 
+mailHops.launchSpamHausURL = function(ip){
+	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
+	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
+	messenger.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
+};
 mailHops.launchMap = function(route){
 	//launch mailhops api map
 	var lookupURL='http://api.mailhops.com/v1/map/?pb&app='+mailHops.appVersion+'&m='+mailHops.map+'&u='+mailHops.unit+'&r='+String(route);
