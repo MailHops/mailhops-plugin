@@ -7,7 +7,7 @@
 		<em:id>postbox@mailhops.com</em:id>
 		<em:type>2</em:type>
 		<em:name>MailHops</em:name>
-		<em:version>0.6.2</em:version>
+		<em:version>0.6.3</em:version>
 		<em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>
 		<em:iconURL>chrome://mailhops/content/images/mailhops32.png</em:iconURL>
 		<em:homepageURL>http://mailhops.com</em:homepageURL>
@@ -22,7 +22,7 @@
 	  	<Description> 
         	<em:id>postbox@postbox-inc.com</em:id>
 	        <em:minVersion>2.5.0b1</em:minVersion>
-        	<em:maxVersion>2.5.*</em:maxVersion>
+        	<em:maxVersion>3.*</em:maxVersion>
       	</Description> 
 		 
 		</em:targetApplication>

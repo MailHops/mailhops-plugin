@@ -22,7 +22,7 @@ var mailHops =
   showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6.2'  
+  appVersion:				'MailHops Postbox 0.6.3'  
 }
 
 mailHops.init = function()
