@@ -17,7 +17,7 @@ var mailHopPreferences =
 	else
 	    document.getElementById("mailhop.unit").selectedIndex = 1;
 	    
-	if(pref.getCharPref("mail.mailHops.show_details",'false')=='true')
+	if(pref.getCharPref("mail.mailHops.show_details",'true')=='true')
 		document.getElementById("mailhop.show_details").checked = true;
 	else
 		document.getElementById("mailhop.show_details").checked = false;

@@ -45,6 +45,19 @@
 				<label id="mailhopsDataPaneDNSBL" class="text-link dataPaneAddressitem auth-item" value="" tooltiptext="DNSBL"></label>
 			</vbox>
 		</vbox>	
+		
+		<vbox id="dataPaneMailHopsListContainer" class="dataPaneBox">	
+			<hbox flex="1" pack="start" align="center">
+				<label class="dataPaneHeader" crop="right" value="List Info"></label>
+				<separator class="dataPaneBoxSeparator" flex="1"></separator>
+			</hbox>
+			
+			<vbox id="mailhopsListDataPane" flex="1">
+			
+			</vbox>	
+				
+		</vbox>	
+		
 	</vbox>
 	
 </overlay>

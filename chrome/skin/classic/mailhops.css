@@ -16,10 +16,10 @@
 	color: #FFF;
 	margin-left: 10px;
 	background-color: #98a5b3;
-	-moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
     text-align: center;
     padding-right: 14px;
 }
@@ -54,5 +54,9 @@
 }
 
 .auth-item{
+	display: none;
+}
+
+#dataPaneMailHopsListContainer{
 	display: none;
 }
