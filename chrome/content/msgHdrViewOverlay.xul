@@ -48,14 +48,12 @@
 		
 		<vbox id="dataPaneMailHopsListContainer" class="dataPaneBox">	
 			<hbox flex="1" pack="start" align="center">
-				<label class="dataPaneHeader" crop="right" value="List Info"></label>
+				<label class="dataPaneHeader" crop="right" value="Lists"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
-			</hbox>
-			
+			</hbox>			
 			<vbox id="mailhopsListDataPane" flex="1">
 			
-			</vbox>	
-				
+			</vbox>				
 		</vbox>	
 		
 	</vbox>

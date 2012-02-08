@@ -169,8 +169,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
   //display auth
   mailHops.displayResultAuth(headXMailer,headUserAgent,headXMimeOLE,headAuth,headReceivedSPF);
   //display unsubscribe link
-  if(headListUnsubscribe)
-  	mailHops.displayResultLists(headListUnsubscribe);
+  mailHops.displayResultLists(headListUnsubscribe);
   
   var received_ips;
   var all_ips = new Array();
@@ -240,30 +239,40 @@ mailHops.testIP = function(ip,header){
 	return retval;	
 };
 
-mailHops.displayResultLists = function( header_unsubscribe){
+mailHops.displayResultLists = function( header_unsubscribe ){
 	
 	while(mailHops.resultListDataPane.firstChild) {
     	mailHops.resultListDataPane.removeChild(mailHops.resultListDataPane.firstChild);
 	}
 	
-	var listArr=header_unsubscribe.split(',');
-	var href='';
-	for(var h=0;h<listArr.length;h++){
-		href = listArr[h].replace('<','').replace('>','');
-		var link = document.createElement('a');
-		link.setAttribute('href',href);
-		if(href.indexOf('mailto:')!=-1)
-			link.innerHTML='Unsubscribe via Email';
-		else
-			link.innerHTML='Unsubscribe';
-		mailHops.resultListDataPane.appendChild(link);
+	if(header_unsubscribe){
+		var listArr=header_unsubscribe.split(',');
+		var href='';
+		if(listArr.length!=0){
+			for(var h=0;h<listArr.length;h++){
+				href = listArr[h].replace('<','').replace('>','');
+				var label = document.createElement('label');
+				
+				label.setAttribute('class','text-link dataPaneURLitem');
+		
+				if(href.indexOf('mailto:')!=-1){
+					label.setAttribute('value','Unsubscribe via Email');
+					
+					if(href.toLowerCase().indexOf('subject=')==-1){
+						if(href.indexOf('?')==-1)
+							href+='?subject=Unsubscribe';
+						else
+							href+='&subject=Unsubscribe';
+					}
+				}
+				else{
+					label.setAttribute('value','Unsubscribe');
+				}
+				label.setAttribute('href',href);				
+				mailHops.resultListDataPane.appendChild(label);
+			}
+		} 
 	}
-	if(!href)
-		mailHops.mailhopsListContainer.style.display='none';
-	else{
-		mailHops.mailhopsListContainer.style.display='block';
-	}
-	
 };
 
 mailHops.displayResultAuth = function( header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf ){
