@@ -30,6 +30,7 @@
 
 .mailhopsDetail{
 	padding-bottom: 2px;
+	cursor: pointer;
 }
 
 .mailHopsLinkContainer{

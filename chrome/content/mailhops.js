@@ -521,10 +521,15 @@ mailHops.displayResult = function ( header_route, response ){
 		   	else
 		   		label.style.backgroundImage = 'url(chrome://mailhops/content/images/local.png)';
 		   	label.setAttribute('class','dataPaneAddressitem mailhopsDetail');
-		   	if(response.route[i].city && response.route[i].state)
+		   	
+		   	if(response.route[i].city && response.route[i].state){
 			   	label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state);
-			else if(response.route[i].countryName)
+			   	label.setAttribute('onclick','mailHops.launchWhoIs("'+response.route[i].ip+'");');
+			}
+			else if(response.route[i].countryName){
 				label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].countryName);
+				label.setAttribute('onclick','mailHops.launchWhoIs("'+response.route[i].ip+'");');
+			}
 			else 
 				label.setAttribute('value','Hop #'+(i+1)+' Private');	
 			
@@ -537,7 +542,7 @@ mailHops.displayResult = function ( header_route, response ){
 			if(response.route[i].whois && response.route[i].whois.netname)
 			   	tiptext+=' '+response.route[i].whois.netname;
 			   	
-			label.setAttribute('tooltiptext',tiptext);
+			label.setAttribute('tooltiptext','Click for whois '+tiptext);
 			
 			//append details
 	   		mailHops.resultDetails.appendChild(label);
@@ -791,7 +796,11 @@ mailHops.addCommas = function(nStr){
 	}
 	return x1 + x2;
 };
-
+mailHops.launchWhoIs = function(ip){
+	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
+	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
+	messenger.launchExternalURL('http://www.mailhops.com/whois/'+ip);
+};
 mailHops.launchSpamHausURL = function(ip){
 	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
 	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
