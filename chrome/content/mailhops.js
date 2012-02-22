@@ -24,7 +24,7 @@ var mailHops =
   showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6.5'  
+  appVersion:				'MailHops Postbox 0.6.6'  
 }
 
 mailHops.init = function()
@@ -178,7 +178,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 	if(headXOrigIP){
 		var ip = headXOrigIP.match(regexAllIp);
 		if(ip != null && ip.length != 0)
-			all_ips.push( ip[0] );
+			all_ips.unshift( ip[0] );
 	}
   //loop through the received headers and parse for IP addresses	
   if ( headReceived ){
@@ -195,7 +195,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 	      		for( var r=0; r<received_ips.length; r++ ){	      			
 	      			//only look at the first IP
 	      			if(regexIp.test(received_ips[r]) && all_ips.indexOf(received_ips[r])==-1 && mailHops.testIP(received_ips[r],rline)){
-						all_ips.push( received_ips[r] );
+						all_ips.unshift( received_ips[r] );
 						break;		    	    
 		    	}
 		   	}
