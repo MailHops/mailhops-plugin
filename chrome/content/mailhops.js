@@ -24,7 +24,7 @@ var mailHops =
   showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6.6'  
+  appVersion:				'MailHops Postbox 0.6.7'  
 }
 
 mailHops.init = function()
@@ -488,7 +488,7 @@ mailHops.authExplainDNSBL_server = function(result){
 mailHops.displayResult = function ( header_route, response ){
   var displayText='';
   var distanceText='';
-  var image= 'chrome://mailhops/content/images/local.png';
+  var image='chrome://mailhops/content/images/local.png';
   var city;
   var state;
   var countryName;
@@ -597,7 +597,7 @@ mailHops.displayResult = function ( header_route, response ){
   if(header_route)  	
   	mailHops.resultMapLink.setAttribute("route", header_route);
   else
-	  mailHops.resultMapLink.removeAttribute("route");
+	mailHops.resultMapLink.removeAttribute("route");
 	  
   mailHops.resultTextDataPane.style.backgroundImage = 'url('+image+')';
   mailHops.resultTextDataPane.value = displayText;	  
@@ -639,7 +639,7 @@ mailHops.displayError = function(data){
 	  else
 	  	mailHops.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/error.png)';
 	  
-	  if(data.error){
+	  if(data && data.error){
 	  	mailHops.resultTextDataPane.value = mailHops.getErrorTitle(data.meta.code);	  
 	  	mailHops.resultTextDataPane.setAttribute('tooltiptext',data.error.message); 
 	  }else{
@@ -763,7 +763,7 @@ mailHops.lookup = function(header_route){
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState==4) {
   try{
-	   var data = nativeJSON.decode(xmlhttp.responseText);
+	   var data = JSON.parse(xmlhttp.responseText);
 	   if(data && data.meta.code==200){
 	   		//display the result
 	   		mailHops.displayResult(header_route,data.response);
