@@ -24,7 +24,7 @@ var mailHops =
   showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6.8'  
+  appVersion:				'MailHops Postbox 0.6.9'  
 }
 
 mailHops.init = function()
@@ -174,13 +174,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
   var received_ips;
   var all_ips = new Array();
   var rline='';
-  //get the originating IP address
-	if(headXOrigIP){
-		var ip = headXOrigIP.match(regexAllIp);
-		if(ip != null && ip.length != 0)
-			all_ips.unshift( ip[0] );
-	}
-  
+    
   //loop through the received headers and parse for IP addresses	
   if ( headReceived ){
   	var headReceivedArr = headReceived.split('\n');
@@ -207,6 +201,12 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
       }
     } 
   }
+  //get the originating IP address
+	if(headXOrigIP){
+		var ip = headXOrigIP.match(regexAllIp);
+		if(ip != null && ip.length != 0 && all_ips.indexOf(ip[0])==-1)
+			all_ips.unshift( ip[0] );
+	}
   if ( all_ips.length != 0 ){
    mailHops.lookup ( all_ips ) ;
   } else {
