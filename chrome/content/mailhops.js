@@ -24,7 +24,7 @@ var mailHops =
   showWeather:				false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6.7'  
+  appVersion:				'MailHops Postbox 0.6.8'  
 }
 
 mailHops.init = function()
@@ -180,6 +180,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 		if(ip != null && ip.length != 0)
 			all_ips.unshift( ip[0] );
 	}
+  
   //loop through the received headers and parse for IP addresses	
   if ( headReceived ){
   	var headReceivedArr = headReceived.split('\n');
@@ -190,9 +191,10 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
     		if(headReceivedArr[h].indexOf(';')==-1)
     			continue;    			
     		received_ips = rline.match(regexAllIp);	
-	      	//maybe multiple IPs in one Received: line	
+    		
+    		//maybe multiple IPs in one Received: line	
 	      	if(received_ips != null && received_ips.length !=0){
-	      		for( var r=0; r<received_ips.length; r++ ){	      			
+	      		for( var r=0; r<received_ips.length; r++ ){	  
 	      			//only look at the first IP
 	      			if(regexIp.test(received_ips[r]) && all_ips.indexOf(received_ips[r])==-1 && mailHops.testIP(received_ips[r],rline)){
 						all_ips.unshift( received_ips[r] );
@@ -213,29 +215,27 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 };
 //another ip check, dates will throw off the regex
 mailHops.testIP = function(ip,header){
-	var retval;
+	var retval=true;
 	try
 	{
-		if(header.indexOf(ip) == -1)
-			retval = true;
 		var firstchar = header.substring(header.indexOf(ip)-1);
 			firstchar = firstchar.substring(0,1);	
 		var lastchar = header.substring((header.indexOf(ip)+ip.length));
 			lastchar = lastchar.substring(0,1);
-		if(firstchar == '[' && lastchar == ']')
-			retval = true;
-		else if(firstchar == '(' && lastchar == ')')
-			retval = true;
-		else if(firstchar.match(/\.|\d|\-/))
-			retval = null;
-		else if(lastchar.match(/\.|\d|\-/))
+		
+		if(firstchar.match(/\.|\d|\-/))
 			retval = null;		
-		else
+		else if(lastchar.match(/\.|\d|\-/))
+			retval = null;
+					
+		if(header.indexOf('['+ip+']') != -1)
 			retval = true;
+		else if(header.indexOf('('+ip+')') != -1)
+			retval = true;		
 	}
 	catch(ex) {
 		retval = true;
-	}
+	}	
 	return retval;	
 };
 
