@@ -22,9 +22,10 @@ var mailHops =
   isLoaded:     			false,
   showDetails:				false,
   showWeather:				false,
+  showHost:					false,
   map:						'goog',
   unit:						'mi',
-  appVersion:				'MailHops Postbox 0.6.9'  
+  appVersion:				'MailHops Postbox 0.6.9.2'  
 }
 
 mailHops.init = function()
@@ -72,7 +73,7 @@ mailHops.init = function()
   , false); 
   
   mailHops.mailhopsDataPaneDNSBL.addEventListener("click", function () { 
-  		var ip = this.getAttribute('ip');
+  		var ip = this.getAttribute('data-ip');
   		mailHops.launchSpamHausURL(ip);
   	}
   , false);
@@ -86,6 +87,7 @@ mailHops.loadPref = function()
   mailHops.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
   mailHops.showDetails = mailHops.getCharPref('mail.mailHops.show_details','false')=='true'?true:false;
   mailHops.showWeather = mailHops.getCharPref('mail.mailHops.show_weather','false')=='true'?true:false;
+  mailHops.showHost = mailHops.getCharPref('mail.mailHops.show_host','false')=='true'?true:false;
 };
 
 mailHops.StreamListener =
@@ -190,12 +192,12 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 	      	if(received_ips != null && received_ips.length !=0){
 	      		for( var r=0; r<received_ips.length; r++ ){	  
 	      			//only look at the first IP
-	      			if(regexIp.test(received_ips[r]) && all_ips.indexOf(received_ips[r])==-1 && mailHops.testIP(received_ips[r],rline)){
-						all_ips.unshift( received_ips[r] );
+	      			if(regexIp.test(received_ips[r]) && mailHops.testIP(received_ips[r],rline)){
+	      				all_ips.unshift( received_ips[r] );
 						break;		    	    
-		    	}
-		   	}
-	      }
+		    		}
+		   		}
+	      	}
 	      //reset the line
 	      rline='';
       }
@@ -257,7 +259,6 @@ mailHops.displayResultLists = function( header_unsubscribe ){
 		
 				if(href.indexOf('mailto:')!=-1){
 					label.setAttribute('value','Unsubscribe via Email');
-					
 					if(href.toLowerCase().indexOf('subject=')==-1){
 						if(href.indexOf('?')==-1)
 							href+='?subject=Unsubscribe';
@@ -266,8 +267,9 @@ mailHops.displayResultLists = function( header_unsubscribe ){
 					}
 				}
 				else{
-					label.setAttribute('value','Unsubscribe');
+					label.setAttribute('value','Unsubscribe via Web');					
 				}
+				label.setAttribute('tooltiptext',href);
 				label.setAttribute('href',href);				
 				mailHops.resultListDataPane.appendChild(label);
 			}
@@ -535,18 +537,28 @@ mailHops.displayResult = function ( header_route, response ){
 			
 			//build tooltip
 			var tiptext = response.route[i].ip;
-			if(response.route[i].host)
-			   	tiptext+=' '+response.route[i].host;
-			if(response.route[i].whois && response.route[i].whois.descr)
-			   	tiptext+=' '+response.route[i].whois.descr;
-			if(response.route[i].whois && response.route[i].whois.netname)
-			   	tiptext+=' '+response.route[i].whois.netname;
-			   	
+			
+			if(!mailHops.showHost){
+				if(response.route[i].host)
+				   	tiptext+=' '+response.route[i].host;
+				if(response.route[i].whois && response.route[i].whois.descr)
+				   	tiptext+=' '+response.route[i].whois.descr;
+				if(response.route[i].whois && response.route[i].whois.netname)
+				   	tiptext+=' '+response.route[i].whois.netname;
+			}
+			
 			label.setAttribute('tooltiptext','Click for whois '+tiptext);
 			
 			//append details
 	   		mailHops.resultDetails.appendChild(label);
 	   		
+	   		//append host
+	   		if(mailHops.showHost && response.route[i].host){
+				var host = document.createElement('label');
+				host.setAttribute('value',response.route[i].host);
+				mailHops.resultDetails.appendChild(host);
+			}
+			
 	   		//append weather
 	   		if(mailHops.showWeather && response.route[i].weather){
 				var weather = document.createElement('label');
@@ -569,7 +581,7 @@ mailHops.displayResult = function ( header_route, response ){
 			//auth & dnsbl
 			if(!response.route[i].private && response.route[i].dnsbl && response.route[i].dnsbl.listed){
 				mailHops.mailhopsDataPaneDNSBL.setAttribute('value','Blacklisted '+mailHops.authExplainDNSBL_server(response.route[i].dnsbl.record));
-				mailHops.mailhopsDataPaneDNSBL.setAttribute('ip',response.route[i].ip);
+				mailHops.mailhopsDataPaneDNSBL.setAttribute('data-ip',response.route[i].ip);
 				if(response.route[i].dnsbl.record)
 					mailHops.mailhopsDataPaneDNSBL.setAttribute('tooltiptext','Click for more details.\n'+mailHops.authExplainDNSBL(response.route[i].dnsbl.record));
 				else

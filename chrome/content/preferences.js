@@ -27,6 +27,11 @@ var mailHopPreferences =
 	else
 		document.getElementById("mailhop.show_weather").checked = false;	
 	
+	if(pref.getCharPref("mail.mailHops.show_host",'false')=='true')
+		document.getElementById("mailhop.show_host").checked = true;
+	else
+		document.getElementById("mailhop.show_host").checked = false;	
+	
   } ,
   savePreferences: function()
   {
@@ -34,5 +39,6 @@ var mailHopPreferences =
     pref.setCharPref("mail.mailHops.unit", document.getElementById("mailhop.unit").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.show_details", String(document.getElementById("mailhop.show_details").checked)) ;
     pref.setCharPref("mail.mailHops.show_weather", String(document.getElementById("mailhop.show_weather").checked)) ;
+    pref.setCharPref("mail.mailHops.show_host", String(document.getElementById("mailhop.show_host").checked)) ;
   } 
 }
