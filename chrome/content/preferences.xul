@@ -13,29 +13,73 @@
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
 	<script type="application/x-javascript" src="chrome://mailhops/content/preferences.js"/>
 
-	<vbox width="200px">
-		<groupbox>
+	<vbox width="400px">
+	<tabbox id="mhTabs" selectedIndex="0">
+	  <tabs>
+	    <tab label="Defaults"/>
+	    <tab label="Display"/>
+	    <tab label="Authentication"/>
+	    <tab label="Hosting"/>
+	  </tabs>
+	  <tabpanels>
+	    <tabpanel>
+	    	<groupbox>
 			<caption label="Default Map"/>
 			<radiogroup id="mailhop.map">
 				<radio value="goog" label="Google" selected="true"/>
 				<radio value="bing" label="Bing"/>
 			</radiogroup>
-		</groupbox>
-		
-		<groupbox>
-			<caption label="Default Unit"/>
-			<radiogroup id="mailhop.unit">
-				<radio value="mi" label="Miles" selected="true"/>
-				<radio value="km" label="Kilometers"/>
-			</radiogroup>
-		</groupbox>
-		
-		<groupbox>
-			<caption label="Display Options"/>
-			<checkbox id="mailhop.show_details" label="Show Details" checked="false"/>
-			<checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/>
-			<checkbox id="mailhop.show_host" label="Show Host" checked="false"/>
-		</groupbox>		
+			</groupbox>
+			
+			<groupbox>
+				<caption label="Default Unit"/>
+				<radiogroup id="mailhop.unit">
+					<radio value="mi" label="Miles" selected="true"/>
+					<radio value="km" label="Kilometers"/>
+				</radiogroup>
+			</groupbox>
+	    </tabpanel>
+	    <tabpanel>
+	    	<groupbox>
+				<caption label="Display Boxes"/>
+				<checkbox id="mailhop.show_details" label="Show Details" checked="false"/>
+				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
+				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>			
+			</groupbox>	
+			<groupbox>
+				<caption label="Details Options"/>			
+				<checkbox id="mailhop.show_host" label="Show Host" checked="false"/>
+				<checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/>
+			</groupbox>
+	    </tabpanel>
+	    <tabpanel>
+	    	<groupbox>
+				<caption label="Authentication Options"/>			
+				<checkbox id="mailhop.show_mailer" label="Show Mailer" checked="true"/>
+				<checkbox id="mailhop.show_spf" label="Show SPF" checked="true"/>
+				<checkbox id="mailhop.show_dkim" label="Show DKIM" checked="true"/>
+				<checkbox id="mailhop.show_dnsbl" label="Show DNS Blacklist" checked="true"/>			
+			</groupbox>
+	    </tabpanel>
+	    <tabpanel>
+	    	<groupbox>
+				<caption label="MailHops API Hosting"/>	
+				<description>
+					MailHops API is also available for download if you would like to host your own.
+				</description>
+				<radiogroup id="mailhop.hosting">
+					<radio value="personal" label="Personal (Free)" selected="true"/>
+					<radio value="edu" label="Educational (Free)"/>
+					<radio value="business" label="Business (Not-Free)"/>
+				</radiogroup>
+				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms for the use of private hosting." checked="false" oncommand="ChangePrivate(this);"/>		
+				<label class="text-link" value="MailHops Terms and Conditions" href="http://www.mailhops.com/terms"/>
+				<textbox id="mailhop.api_url" value="http://api.mailhops.com" disabled="true"/>
+				<label class="text-link" onclick="TestConnection();" value="Test Connection" /> <label class="text-link" onclick="ResetConnection();" value="Reset Connection" />
+	  		</groupbox>
+	    </tabpanel>
+	  </tabpanels>
+	</tabbox>
 	</vbox>
 
 </dialog>
