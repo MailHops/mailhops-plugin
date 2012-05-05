@@ -18,7 +18,6 @@
 	  <tabs>
 	    <tab label="Defaults"/>
 	    <tab label="Display"/>
-	    <tab label="Authentication"/>
 	    <tab label="Hosting"/>
 	  </tabs>
 	  <tabpanels>
@@ -51,9 +50,7 @@
 				<checkbox id="mailhop.show_host" label="Show Host" checked="false"/>
 				<checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/>
 			</groupbox>
-	    </tabpanel>
-	    <tabpanel>
-	    	<groupbox>
+			<groupbox>
 				<caption label="Authentication Options"/>			
 				<checkbox id="mailhop.show_mailer" label="Show Mailer" checked="true"/>
 				<checkbox id="mailhop.show_spf" label="Show SPF" checked="true"/>
@@ -61,6 +58,7 @@
 				<checkbox id="mailhop.show_dnsbl" label="Show DNS Blacklist" checked="true"/>			
 			</groupbox>
 	    </tabpanel>
+	    
 	    <tabpanel>
 	    	<groupbox>
 				<caption label="MailHops API Hosting"/>	
@@ -72,8 +70,8 @@
 					<radio value="edu" label="Educational (Free)"/>
 					<radio value="business" label="Business (Not-Free)"/>
 				</radiogroup>
-				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms for the use of private hosting." checked="false" oncommand="ChangePrivate(this);"/>		
-				<label class="text-link" value="MailHops Terms and Conditions" href="http://www.mailhops.com/terms"/>
+				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms of use for hosting my own MailHops API." checked="false" oncommand="ChangePrivate(this);"/>		
+				<label class="text-link" value="MailHops Terms of Use" href="http://www.mailhops.com/terms"/>
 				<textbox id="mailhop.api_url" value="http://api.mailhops.com" disabled="true"/>
 				<label class="text-link" onclick="TestConnection();" value="Test Connection" /> <label class="text-link" onclick="ResetConnection();" value="Reset Connection" />
 	  		</groupbox>

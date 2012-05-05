@@ -22,7 +22,7 @@ var mailHops =
   resultListDataPane:		null,
   isLoaded:     			false,
   options:					{'map':'goog','unit':'mi','api_url':'http://api.mailhops.com'},
-  appVersion:				'MailHops Postbox 0.6.9.3'  
+  appVersion:				'MailHops Postbox 0.7'  
 }
 
 mailHops.init = function()
@@ -54,9 +54,8 @@ mailHops.init = function()
       
   //event listner for route click to launch map
   mailHops.resultMapLink.addEventListener("click", function () { 
-  		var route = this.getAttribute("route");
-  		if(route)
-	  		mailHops.launchMap(String(route)); 
+  		if(this.hasAttribute("data-route"))
+	  		mailHops.launchMap(String(this.getAttribute("data-route"))); 
   	}
   , false); 
   mailHops.resultDetailsLink.addEventListener("click", function () { 
@@ -72,8 +71,8 @@ mailHops.init = function()
   , false); 
   
   mailHops.mailhopsDataPaneDNSBL.addEventListener("click", function () { 
-  		var ip = this.getAttribute('data-ip');
-  		mailHops.launchSpamHausURL(ip);
+		if(this.hasAttribute('data-ip'))
+	  		mailHops.launchSpamHausURL(this.getAttribute('data-ip'));
   	}
   , false);
 
@@ -641,9 +640,9 @@ mailHops.displayResult = function ( header_route, response ){
   } 
     	   	
   if(header_route)  	
-  	mailHops.resultMapLink.setAttribute("route", header_route);
+  	mailHops.resultMapLink.setAttribute("data-route", header_route);
   else
-	mailHops.resultMapLink.removeAttribute("route");
+	mailHops.resultMapLink.removeAttribute("data-route");
 	  
   mailHops.resultTextDataPane.style.backgroundImage = 'url('+image+')';
   mailHops.resultTextDataPane.value = displayText;	  
@@ -836,20 +835,23 @@ mailHops.addCommas = function(nStr){
 mailHops.launchWhoIs = function(ip){
 	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
 	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
-	messenger.launchExternalURL(encodeURIComponent('http://www.mailhops.com/whois/'+ip));
+	messenger.launchExternalURL('http://www.mailhops.com/whois/'+ip);
 };
 mailHops.launchSpamHausURL = function(ip){
 	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
 	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
-	messenger.launchExternalURL(encodeURIComponent('http://www.spamhaus.org/query/bl?ip='+ip));
+	messenger.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
 };
+
 mailHops.launchMap = function(route){
-	//launch mailhops api map
-	var lookupURL=mailHops.options.api_url+'/v1/map/?pb&app='+mailHops.appVersion+'&m='+mailHops.options.map+'&u='+mailHops.options.unit+'&r='+String(route);
-	 if(mailHops.options.show_weather)
-	 	lookupURL+='&w=1';
-	var openwin = window.openDialog(encodeURIComponent(lookupURL),"MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=732,height=332');
-	openwin.focus();
+	
+	if(route != '')	{
+		var lookupURL=mailHops.options.api_url+'/v1/map/?pb&app='+mailHops.appVersion+'&m='+mailHops.options.map+'&u='+mailHops.options.unit+'&r='+String(route);
+		 if(mailHops.options.show_weather)
+		 	lookupURL+='&w=1';
+		 	
+		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=742,height=385', {src: lookupURL});
+	}
 };
 
 addEventListener ( "messagepane-loaded" , mailHops.setupEventListener , true ) ;
