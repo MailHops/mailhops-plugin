@@ -44,11 +44,13 @@
 				<checkbox id="mailhop.show_details" label="Show Details" checked="false"/>
 				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
 				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>			
+				<checkbox id="mailhop.show_meta" label="Show Meta" checked="false"/>
 			</groupbox>	
 			<groupbox>
 				<caption label="Details Options"/>			
-				<checkbox id="mailhop.show_host" label="Show Host" checked="false"/>
-				<checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/>
+				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="false"/></label>
+				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="false"/></label>
+				<label class="mailhopsWeatherPref"><checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/></label>
 			</groupbox>
 			<groupbox>
 				<caption label="Authentication Options"/>			

@@ -34,6 +34,11 @@ var mailHopPreferences =
 		document.getElementById("mailhop.show_details").checked = true;
 	else
 		document.getElementById("mailhop.show_details").checked = false;
+		
+	if(pref.getCharPref("mail.mailHops.show_meta",'false')=='true')
+		document.getElementById("mailhop.show_meta").checked = true;
+	else
+		document.getElementById("mailhop.show_meta").checked = false;	
 	
 	if(pref.getCharPref("mail.mailHops.show_lists",'true')=='true')
 		document.getElementById("mailhop.show_lists").checked = true;
@@ -54,7 +59,12 @@ var mailHopPreferences =
 	if(pref.getCharPref("mail.mailHops.show_host",'false')=='true')
 		document.getElementById("mailhop.show_host").checked = true;
 	else
-		document.getElementById("mailhop.show_host").checked = false;	
+		document.getElementById("mailhop.show_host").checked = false;
+		
+	if(pref.getCharPref("mail.mailHops.show_secure",'false')=='true')
+		document.getElementById("mailhop.show_secure").checked = true;
+	else
+		document.getElementById("mailhop.show_secure").checked = false;	
 	
 	//Auth Options	
 	if(pref.getCharPref("mail.mailHops.show_spf",'true')=='true')
@@ -100,8 +110,10 @@ var mailHopPreferences =
     pref.setCharPref("mail.mailHops.map", document.getElementById("mailhop.map").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.unit", document.getElementById("mailhop.unit").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.show_details", String(document.getElementById("mailhop.show_details").checked)) ;
+    pref.setCharPref("mail.mailHops.show_meta", String(document.getElementById("mailhop.show_meta").checked)) ;
     pref.setCharPref("mail.mailHops.show_weather", String(document.getElementById("mailhop.show_weather").checked)) ;
     pref.setCharPref("mail.mailHops.show_host", String(document.getElementById("mailhop.show_host").checked)) ;
+    pref.setCharPref("mail.mailHops.show_secure", String(document.getElementById("mailhop.show_secure").checked)) ;
     pref.setCharPref("mail.mailHops.show_spf", String(document.getElementById("mailhop.show_spf").checked)) ;
     pref.setCharPref("mail.mailHops.show_dkim", String(document.getElementById("mailhop.show_dkim").checked)) ;
     pref.setCharPref("mail.mailHops.show_mailer", String(document.getElementById("mailhop.show_mailer").checked)) ;

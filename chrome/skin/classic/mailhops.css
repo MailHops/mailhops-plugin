@@ -49,11 +49,40 @@
     padding: 4px;
 }
 
-.mailhopsWeather{
+.mailhopsWeather, .mailhopsHost, .mailhopsSecureHost, .mailhopsSecure{
 	margin-left: 30px;
 	padding-bottom: 2px;
 }
 
+.mailhopsSecureHost{
+	background-image: url(chrome://mailhops/content/images/secure_host.png);
+	background-repeat: no-repeat;
+}
+
+.mailhopsHost, .mailhopsHostPref{
+	background-image: url(chrome://mailhops/content/images/host.png);
+	background-repeat: no-repeat;
+}
+
+.mailhopsSecure, .mailhopsSecurePref{
+	background-image: url(chrome://mailhops/content/images/secure.png);
+	background-repeat: no-repeat;
+}
+
+.mailhopsWeatherPref{
+	background-image: url(chrome://mailhops/content/images/weather/sun.png);
+	background-repeat: no-repeat;	
+}
+
+.mailhopsWeatherPref checkbox, .mailhopsHostPref checkbox, .mailhopsSecurePref checkbox{
+	margin-left: 20px;
+	margin-top: 0px;
+}
+
 .auth-item{
 	display: none;
+}
+
+#mailhopsDataPaneMeta label{
+	padding-left: 20px;
 }
