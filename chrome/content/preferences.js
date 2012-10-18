@@ -103,6 +103,8 @@ var mailHopPreferences =
 		document.getElementById("mailhop.use_private").checked = false;
 	
 	this.api_url.value = pref.getCharPref("mail.mailHops.api_url",'http://api.mailhops.com');
+	
+	ResetLocation(document.getElementById("mailhop.refresh_location"));
 			
   } ,
   savePreferences: function()
@@ -137,7 +139,9 @@ function ChangePrivate(item){
   	}
 }
 
-function TestConnection(){
+function TestConnection(e){
+	e.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
+	
 	var xmlhttp = new XMLHttpRequest();
 	var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 	var lookupURL=mailHopPreferences.api_url.value+'/v1/lookup/?pb&app='+mailHops.appVersion+'&watchmouse';
@@ -147,18 +151,43 @@ function TestConnection(){
 	  try{
 		   var data = JSON.parse(xmlhttp.responseText);
 		   if(data && data.meta.code==200){
+			   	e.style.backgroundImage='';
 		   		alert('Connection Succeeded to '+mailHopPreferences.api_url.value+'!');
 		   } else {
 		    	//display the error
+		    	e.style.backgroundImage='';
 		   		alert('Connection Failed to '+mailHopPreferences.api_url.value+'!');
 		   }
 	   }
-	   catch (ex){ 
+	   catch (ex){
+		   e.style.backgroundImage=''; 
 	   	   alert('Connection Failed to '+mailHopPreferences.api_url.value+'!');
 	   }
 	  }
 	 };
  xmlhttp.send(null);
+}
+
+function ResetLocation(e){
+	e.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
+	document.getElementById("mailhop.client_location").value='Getting your location...';
+	mailHops.setClientLocation();
+	if(pref.getCharPref("mail.mailHops.client_location", '') != ''){
+		var response = JSON.parse(pref.getCharPref("mail.mailHops.client_location", ''));
+		var location = '';
+		if(response.route[0].city)
+			location+=response.route[0].city;
+		if(response.route[0].state)
+			location+=', '+response.route[0].state;
+		if(response.route[0].countryName)
+			location+=' ( '+response.route[0].countryName+' )';
+		//set location   			
+		document.getElementById("mailhop.client_location").value=location;
+		//set country flag
+		if(response.route[0].countryCode)
+		   	document.getElementById("mailhop.client_location").style.backgroundImage='url(chrome://mailhops/content/images/flags/'+response.route[0].countryCode.toLowerCase()+'.png)';
+	}	
+	e.style.backgroundImage='';
 }
 
 function ResetConnection(){

@@ -86,3 +86,5 @@
 #mailhopsDataPaneMeta label{
 	padding-left: 20px;
 }
+
+#mhTabs .act { padding-left: 20px; background-repeat: no-repeat; outline : none;}

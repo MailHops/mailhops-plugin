@@ -6,6 +6,7 @@
 
 var mailHops =
 {
+  msgURI:					null,
   resultTextDataPane:		null,
   resultTextDataPane2:		null,
   resultContainerDataPane:	null,
@@ -25,8 +26,9 @@ var mailHops =
   
   isLoaded:     			false,
   options:					{'map':'goog','unit':'mi','api_url':'http://api.mailhops.com'},
-  appVersion:				'MailHops Postbox 0.7.1',  
+  appVersion:				'MailHops Postbox 0.8',  
   message:					{secure:[]},
+  client_location:			null
 }
 
 mailHops.init = function()
@@ -114,10 +116,16 @@ mailHops.loadPref = function()
   mailHops.options.use_private = mailHops.getCharPref('mail.mailHops.use_private','false')=='true'?true:false;
   mailHops.options.hosting = mailHops.getCharPref('mail.mailHops.hosting','personal');
   
+  mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
+  
   if(mailHops.options.use_private)
   	mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','http://api.mailhops.com');    
   else
   	mailHops.options.api_url='http://api.mailhops.com';
+  
+  if(mailHops.options.client_location == ''){
+		mailHops.setClientLocation();	  
+  }
   
 };
 
@@ -177,7 +185,7 @@ mailHops.loadHeaderData = function()
   {
     return ;
   }
-
+  mailHops.msgURI = msgURI;
   var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance ( Components.interfaces.nsIMessenger ) ;
   var msgService = messenger.messageServiceFromURI ( msgURI ) ;
   msgService.CopyMessage ( msgURI , mailHops.StreamListener , false , null , msgWindow , {} ) ;
@@ -250,7 +258,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 			all_ips.unshift( ip[0] );
 	}
   if ( all_ips.length != 0 ){
-   mailHops.lookup ( all_ips ) ;
+   mailHops.lookupRoute ( all_ips ) ;
   } else {
 	  mailHops.displayResult();
   }
@@ -279,9 +287,9 @@ mailHops.testIP = function(ip,header){
 		//check if this IP was part of a secure transmission
 		if(retval){
 			if(header.indexOf('using SSL') != -1)
-				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),11));
+				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+11));
 			else if(header.indexOf('using TLS') != -1)
-				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),11));
+				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),header.indexOf('using TLS')+11));
 			else if(header.indexOf('version=TLSv1/SSLv3') != -1)
 				mailHops.message.secure.push(ip+':'+'using TLSv1/SSLv3');				
 		}		
@@ -576,8 +584,13 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 		document.getElementById('dataPaneMailHopsMetaContainer').style.display='none';
 	}	
 	   		
-  if(response){
+  if(response && response.route && response.route.length > 0){
   	
+  		if(mailHops.options.client_location){
+  			var client_location = JSON.parse(mailHops.options.client_location);
+	  		response.route.push(client_location.route[0]);
+  		}
+  		
    		for(var i=0; i<response.route.length;i++){
   			//get the first hop location
 	   		if(!gotFirst && !response.route[i].private && !response.route[i].client){
@@ -634,7 +647,7 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 				if(secureToolTipText){
 					var secure = document.createElement('label');
 					secure.setAttribute('class','dataPaneAddressitem mailhopsSecure');
-					secure.setAttribute('value','secured using '+secureToolTipText);
+					secure.setAttribute('value','secured '+secureToolTipText);
 					mailHops.resultDetails.appendChild(secure);
 				}
 			}
@@ -856,8 +869,35 @@ mailHops.getCharPref = function ( strName , strDefault ){
   return ( value ) ;
 };
 
+mailHops.setClientLocation = function(){
+	
+	var xmlhttp = new XMLHttpRequest();
+	if (!pref){
+	    var pref = Components.classes["@mozilla.org/preferences-service;1"].getService ( Components.interfaces.nsIPrefBranch ) ;
+	}
+	
+	 xmlhttp.open("GET", mailHops.options.api_url+'/v1/lookup/?tb&app='+mailHops.appVersion+'&r=&c=1',true);
+	 xmlhttp.onreadystatechange=function() {
+	  if (xmlhttp.readyState==4) {
+	  try{
+	  	   var data = JSON.parse(xmlhttp.responseText);
+		   if(data && data.meta.code==200){
+		   		//display the result
+		   		pref.setCharPref("mail.mailHops.client_location", JSON.stringify(data.response)) ;
+		   } else {
+			   pref.setCharPref("mail.mailHops.client_location", '') ;	   
+		   } 
+	   }
+	   catch (e){ 
+		pref.setCharPref("mail.mailHops.client_location", '') ;	   
+	   }
+	  }
+	 };
+	 xmlhttp.send(null);
+};
+
 //mailhops lookup
-mailHops.lookup = function(header_route){
+mailHops.lookupRoute = function(header_route){
 
  //setup loading
  mailHops.clearRoute();
@@ -865,22 +905,34 @@ mailHops.lookup = function(header_route){
   //import nativeJSON 
  var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 
+ //check for cache
+ var cached_results=mailHops.getResults();
+
+ if(cached_results){
+ 	 cached_results = JSON.parse(cached_results);
+	 mailHops.displayResult(header_route,cached_results.response);
+	 return;
+ }
+
  //call mailhops api for lookup	
  var xmlhttp = new XMLHttpRequest();
- 
  var lookupURL=mailHops.options.api_url+'/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route);
  
  if(mailHops.options.show_weather)
  	lookupURL+='&w=1';
- 	
+ if(mailHops.options.client_location != '')
+ 	lookupURL+='&c=0';
+ 		
  xmlhttp.open("GET", lookupURL ,true);
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState==4) {
   try{
 	   var data = JSON.parse(xmlhttp.responseText);
 	   if(data && data.meta.code==200){
+	   		//save the result
+	   		mailHops.saveResults(JSON.stringify(data));
 	   		//display the result
-	   		mailHops.displayResult(header_route,data.response,data.meta, lookupURL);
+	   		mailHops.displayResult(header_route,data.response,data.meta, lookupURL);	   		
 	   } else {
 	    	//display the error
 	   		mailHops.displayError(data);
@@ -906,13 +958,11 @@ mailHops.addCommas = function(nStr){
 	return x1 + x2;
 };
 mailHops.launchWhoIs = function(ip){
-	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
-	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
+	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
 	messenger.launchExternalURL('http://www.mailhops.com/whois/'+ip);
 };
 mailHops.launchSpamHausURL = function(ip){
-	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
-	messenger = messenger.QueryInterface(Components.interfaces.nsIMessenger);
+	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
 	messenger.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
 };
 
@@ -925,6 +975,35 @@ mailHops.launchMap = function(route){
 		 	
 		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=742,height=385', {src: lookupURL});
 	}
+};
+
+mailHops.saveResults = function(results){
+	 
+	if(!mailHops.msgURI)
+		return false;
+
+	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
+	var msgHdr = messenger.messageServiceFromURI(mailHops.msgURI).messageURIToMsgHdr(mailHops.msgURI);
+	
+	if(!msgHdr)
+		return false;
+	
+	msgHdr.setStringProperty( "MH-Route", results );
+	
+};
+
+mailHops.getResults = function(){
+
+	if(!mailHops.msgURI)
+		return false;
+		
+	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
+	var msgHdr = messenger.messageServiceFromURI(mailHops.msgURI).messageURIToMsgHdr(mailHops.msgURI);
+	
+	if(!msgHdr)
+		return false;
+		
+	return msgHdr.getStringProperty( "MH-Route" );
 };
 
 addEventListener ( "messagepane-loaded" , mailHops.setupEventListener , true ) ;

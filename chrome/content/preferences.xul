@@ -19,6 +19,7 @@
 	    <tab label="Defaults"/>
 	    <tab label="Display"/>
 	    <tab label="Hosting"/>
+	    <tab label="My Location"/>
 	  </tabs>
 	  <tabpanels>
 	    <tabpanel>
@@ -75,9 +76,22 @@
 				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms of use for hosting my own MailHops API." checked="false" oncommand="ChangePrivate(this);"/>		
 				<label class="text-link" value="MailHops Terms of Use" href="http://www.mailhops.com/terms"/>
 				<textbox id="mailhop.api_url" value="http://api.mailhops.com" disabled="true"/>
-				<label class="text-link" onclick="TestConnection();" value="Test Connection" /> <label class="text-link" onclick="ResetConnection();" value="Reset Connection" />
+				<label class="text-link act" onclick="TestConnection(this);" value="Test Connection" /> 
+				<label class="text-link act" onclick="ResetConnection();" value="Reset Connection" />
 	  		</groupbox>
 	    </tabpanel>
+	    
+	    <tabpanel>
+	    	<groupbox>
+				<caption label="My Location"/>	
+				<description>
+					Your location is cached to reduce the number of lookups by one.
+				</description>				
+				<label id="mailhop.client_location" class="act" value="Not Set" />
+				<label id="mailhop.refresh_location" class="text-link act" onclick="ResetLocation(this);" value="Refresh your location" />
+			</groupbox>
+	    </tabpanel>
+	    
 	  </tabpanels>
 	</tabbox>
 	</vbox>
