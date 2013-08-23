@@ -21,12 +21,11 @@ var mailHops =
   mailhopsListContainer:	null,
   mailhopsAuthContainer:	null,
   resultListDataPane:		null,
-  
   resultMeta:				null,
   
   isLoaded:     			false,
   options:					{'map':'goog','unit':'mi','api_url':'http://api.mailhops.com'},
-  appVersion:				'MailHops Postbox 0.8',  
+  appVersion:				'MailHops Postbox 0.8.2',  
   message:					{secure:[]},
   client_location:			null
 }
@@ -65,6 +64,7 @@ mailHops.init = function()
 	  		mailHops.launchMap(String(this.getAttribute("data-route"))); 
   	}
   , false); 
+  
   mailHops.resultDetailsLink.addEventListener("click", function () { 
   		if(mailHops.resultContainerDetails.style.display=='none'){
 	  		mailHops.resultContainerDetails.style.display = 'block';
@@ -85,6 +85,11 @@ mailHops.init = function()
   
   document.getElementById("mailhopsDataPanePrefsLink").addEventListener("click", function () { 
 		window.openDialog("chrome://mailhops/content/preferences.xul","mailHopsPreferences",null,null);
+  	}
+  , false);
+  
+  document.getElementById("mailhopsDataPaneRefreshLink").addEventListener("click", function () { 
+		mailHops.refreshCache();
   	}
   , false);
 };
@@ -563,7 +568,7 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
     	mailHops.resultDetails.removeChild(mailHops.resultDetails.firstChild);
   }
 
-	//append meta	   		
+  	//append meta	   		
 	if(mailHops.options.show_meta){
  	    document.getElementById('dataPaneMailHopsMetaContainer').style.display='';
 		while(mailHops.resultMeta.firstChild) {
@@ -582,7 +587,7 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 		
 	} else {
 		document.getElementById('dataPaneMailHopsMetaContainer').style.display='none';
-	}	
+  }	
 	   		
   if(response && response.route && response.route.length > 0){
   	
@@ -904,24 +909,25 @@ mailHops.lookupRoute = function(header_route){
   
   //import nativeJSON 
  var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-
- //check for cache
- var cached_results=mailHops.getResults();
-
- if(cached_results){
- 	 cached_results = JSON.parse(cached_results);
-	 mailHops.displayResult(header_route,cached_results.response);
-	 return;
- }
-
- //call mailhops api for lookup	
- var xmlhttp = new XMLHttpRequest();
+  
  var lookupURL=mailHops.options.api_url+'/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route);
  
  if(mailHops.options.show_weather)
  	lookupURL+='&w=1';
  if(mailHops.options.client_location != '')
  	lookupURL+='&c=0';
+ 	
+ //check for cache
+ var cached_results=mailHops.getResults();
+
+ if(cached_results){
+ 	 cached_results = JSON.parse(cached_results);
+	 mailHops.displayResult(header_route, cached_results.response, cached_results.meta, lookupURL);
+	 return;
+ }
+
+ //call mailhops api for lookup	
+ var xmlhttp = new XMLHttpRequest();
  		
  xmlhttp.open("GET", lookupURL ,true);
  xmlhttp.onreadystatechange=function() {
@@ -929,6 +935,8 @@ mailHops.lookupRoute = function(header_route){
   try{
 	   var data = JSON.parse(xmlhttp.responseText);
 	   if(data && data.meta.code==200){
+	   		var d = new Date();
+	   		data.meta.cached = d.toISOString();
 	   		//save the result
 	   		mailHops.saveResults(JSON.stringify(data));
 	   		//display the result
@@ -973,7 +981,7 @@ mailHops.launchMap = function(route){
 		 if(mailHops.options.show_weather)
 		 	lookupURL+='&w=1';
 		 	
-		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=742,height=385', {src: lookupURL});
+		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=742,height=385,resizable=yes', {src: lookupURL});
 	}
 };
 
@@ -1004,6 +1012,11 @@ mailHops.getResults = function(){
 		return false;
 		
 	return msgHdr.getStringProperty( "MH-Route" );
+};
+
+mailHops.refreshCache = function(){
+	mailHops.saveResults('');	
+	mailHops.getRoute();
 };
 
 addEventListener ( "messagepane-loaded" , mailHops.setupEventListener , true ) ;

@@ -23,7 +23,8 @@
 			<hbox class="mailHopsLinkContainer">
 				<vbox><label id="mailhopsDataPaneMapLink" class="text-link dataPaneMoreLink" value="map" tooltiptext="Show Route Map"></label></vbox>
 				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="details" tooltiptext="Show Route Details"></label></vbox>				
-				<vbox><label id="mailhopsDataPanePrefsLink" class="text-link dataPaneMoreLink" value="Options" tooltiptext="MailHops Preferences"></label></vbox>				
+				<vbox><label id="mailhopsDataPaneRefreshLink" class="text-link dataPaneMoreLink" value="refresh" tooltiptext="Refresh Cache"></label></vbox>								
+				<vbox><label id="mailhopsDataPanePrefsLink" class="text-link dataPaneMoreLink" value="options" tooltiptext="MailHops Preferences"></label></vbox>
 			</hbox>
 			
 			<hbox id="mailhopsDetailsContainer" class="mailhopsContainer">

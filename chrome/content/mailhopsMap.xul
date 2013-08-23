@@ -10,7 +10,7 @@
 	title="MailHops Map"
 	buttonlabelcancel="Close">
 
-<iframe id="mailhops_iframe" flex="1" width="732" height="332" style="overflow:hidden;"/>
+<iframe id="mailhops_iframe" flex="1" width="732" height="332" style="overflow:hidden;" type="content"/>
 		
 <script>
 function loadMap(){

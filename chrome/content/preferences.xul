@@ -19,7 +19,7 @@
 	    <tab label="Defaults"/>
 	    <tab label="Display"/>
 	    <tab label="Hosting"/>
-	    <tab label="My Location"/>
+	    <tab label="Current Location"/>
 	  </tabs>
 	  <tabpanels>
 	    <tabpanel>
@@ -74,21 +74,24 @@
 					<radio value="business" label="Business (Not-Free)"/>
 				</radiogroup>
 				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms of use for hosting my own MailHops API." checked="false" oncommand="ChangePrivate(this);"/>		
-				<label class="text-link" value="MailHops Terms of Use" href="http://www.mailhops.com/terms"/>
+				<label class="text-link plain" value="MailHops Terms of Use" href="http://www.mailhops.com/terms"/>
 				<textbox id="mailhop.api_url" value="http://api.mailhops.com" disabled="true"/>
-				<label class="text-link act" onclick="TestConnection(this);" value="Test Connection" /> 
-				<label class="text-link act" onclick="ResetConnection();" value="Reset Connection" />
+				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" /> 
+				<label class="text-link plain act" onclick="ResetConnection();" value="Reset Connection" />
 	  		</groupbox>
 	    </tabpanel>
 	    
 	    <tabpanel>
 	    	<groupbox>
-				<caption label="My Location"/>	
-				<description>
-					Your location is cached to reduce the number of lookups by one.
+				<caption label="Your Location"/>	
+				<description>					
+					Is cached on startup and clicking refresh below to reduce the number of lookups by one.
 				</description>				
 				<label id="mailhop.client_location" class="act" value="Not Set" />
-				<label id="mailhop.refresh_location" class="text-link act" onclick="ResetLocation(this);" value="Refresh your location" />
+				<label id="mailhop.client_location_ip" class="plain act" value="" />
+				<label id="mailhop.client_location_host" class="plain act" value="" />
+				<label id="mailhop.client_location_whois" class="text-link plain act" value="whois" tooltiptext="Click for whois" />
+				<label id="mailhop.refresh_location" class="text-link plain act" onclick="ResetLocation(this);" value="Refresh your location" />
 			</groupbox>
 	    </tabpanel>
 	    
