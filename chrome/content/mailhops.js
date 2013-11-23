@@ -24,10 +24,16 @@ var mailHops =
   resultMeta:				null,
   
   isLoaded:     			false,
-  options:					{'map':'goog','unit':'mi','api_url':'http://api.mailhops.com'},
+  options:					{'map':'goog','unit':'mi','api_url':'http://api.mailhops.com','debug':false},
   appVersion:				'MailHops Postbox 0.8.2',  
   message:					{secure:[]},
   client_location:			null
+}
+
+function LOG(msg) {
+  var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
+                                 .getService(Components.interfaces.nsIConsoleService);
+  consoleService.logStringMessage('MailHops: '+msg);
 }
 
 mailHops.init = function()
@@ -120,7 +126,8 @@ mailHops.loadPref = function()
   //Hosting
   mailHops.options.use_private = mailHops.getCharPref('mail.mailHops.use_private','false')=='true'?true:false;
   mailHops.options.hosting = mailHops.getCharPref('mail.mailHops.hosting','personal');
-  
+  mailHops.options.debug = mailHops.getCharPref('mail.mailHops.debug','false')=='true'?true:false;
+
   mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
   
   if(mailHops.options.use_private)
@@ -921,10 +928,15 @@ mailHops.lookupRoute = function(header_route){
  var cached_results=mailHops.getResults();
 
  if(cached_results){
+  if(mailHops.options.debug)
+    LOG('Found Cached Result');
  	 cached_results = JSON.parse(cached_results);
 	 mailHops.displayResult(header_route, cached_results.response, cached_results.meta, lookupURL);
 	 return;
  }
+
+if(mailHops.options.debug)
+    LOG(lookupURL);
 
  //call mailhops api for lookup	
  var xmlhttp = new XMLHttpRequest();
@@ -942,11 +954,15 @@ mailHops.lookupRoute = function(header_route){
 	   		//display the result
 	   		mailHops.displayResult(header_route,data.response,data.meta, lookupURL);	   		
 	   } else {
+      if(mailHops.options.debug)
+        LOG(JSON.stringify(data));
 	    	//display the error
 	   		mailHops.displayError(data);
 	   }
    }
    catch (ex){ 
+    if(mailHops.options.debug)
+        LOG(JSON.stringify(ex));
    	   mailHops.displayError();
    }
   }

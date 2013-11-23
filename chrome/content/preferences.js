@@ -102,6 +102,11 @@ var mailHopPreferences =
 	else
 		document.getElementById("mailhop.use_private").checked = false;
 	
+	if(pref.getCharPref("mail.mailHops.debug",'true')=='true')
+		document.getElementById("mailhop.debug").checked = true;
+	else
+		document.getElementById("mailhop.debug").checked = false;
+	
 	this.api_url.value = pref.getCharPref("mail.mailHops.api_url",'http://api.mailhops.com');
 	
 	ResetLocation(document.getElementById("mailhop.refresh_location"));
@@ -123,6 +128,7 @@ var mailHopPreferences =
     pref.setCharPref("mail.mailHops.show_lists", String(document.getElementById("mailhop.show_lists").checked)) ;
     pref.setCharPref("mail.mailHops.show_auth", String(document.getElementById("mailhop.show_auth").checked)) ;
     pref.setCharPref("mail.mailHops.use_private", String(document.getElementById("mailhop.use_private").checked)) ;
+    pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked)) ;
     pref.setCharPref("mail.mailHops.hosting", document.getElementById("mailhop.hosting").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.api_url", String(document.getElementById("mailhop.api_url").value)) ;
   } 

@@ -74,6 +74,7 @@
 					<radio value="business" label="Business (Not-Free)"/>
 				</radiogroup>
 				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms of use for hosting my own MailHops API." checked="false" oncommand="ChangePrivate(this);"/>		
+				<checkbox id="mailhop.debug" label="Debug" checked="false"/>		
 				<label class="text-link plain" value="MailHops Terms of Use" href="http://www.mailhops.com/terms"/>
 				<textbox id="mailhop.api_url" value="http://api.mailhops.com" disabled="true"/>
 				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" /> 
