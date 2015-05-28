@@ -1,3 +1,11 @@
-content  mailhops  jar:chrome/mailhops.jar!/content/
-skin  mailhops  classic/1.0  jar:chrome/mailhops.jar!/skin/classic/
+content   mailhops   				jar:chrome/mailhops.jar!/content/
+skin  	  mailhops   classic/1.0    jar:chrome/mailhops.jar!/skin/classic/
+locale    mailhops   en             jar:chrome/mailhops.jar!/locale/en/
+locale    mailhops   es             jar:chrome/mailhops.jar!/locale/es/
+locale    mailhops   fr             jar:chrome/mailhops.jar!/locale/fr/
+locale    mailhops   ja             jar:chrome/mailhops.jar!/locale/ja/
+locale    mailhops   pt-BR          jar:chrome/mailhops.jar!/locale/pt-BR/
+locale    mailhops   ru             jar:chrome/mailhops.jar!/locale/ru/
+locale    mailhops   zh-CN          jar:chrome/mailhops.jar!/locale/zh-CN/
+
 overlay  chrome://messenger/content/msgHdrViewOverlay.xul  chrome://mailhops/content/msgHdrViewOverlay.xul

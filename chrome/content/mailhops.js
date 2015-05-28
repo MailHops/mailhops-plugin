@@ -24,8 +24,8 @@ var mailHops =
   resultMeta:				null,
 
   isLoaded:     			false,
-  options:					{'map':'goog','unit':'mi','api_url':'http://api.mailhops.com','debug':false},
-  appVersion:				'MailHops Postbox 0.8.3',
+  options:					{'lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false},
+  appVersion:				'MailHops Postbox 0.8.4',
   message:					{secure:[]},
   client_location:			null
 }
@@ -103,19 +103,18 @@ mailHops.init = function()
 mailHops.loadPref = function()
 {
   //get preferences
-  mailHops.options.map = mailHops.getCharPref('mail.mailHops.map','goog');
+  mailHops.options.lan = mailHops.getCharPref('mail.mailHops.lang','en');
   mailHops.options.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
 
   //Display Boxes
-  mailHops.options.show_details = mailHops.getCharPref('mail.mailHops.show_details','false')=='true'?true:false;
-  mailHops.options.show_meta = mailHops.getCharPref('mail.mailHops.show_meta','false')=='true'?true:false;
+  mailHops.options.show_details = mailHops.getCharPref('mail.mailHops.show_details','true')=='true'?true:false;
+  mailHops.options.show_meta = mailHops.getCharPref('mail.mailHops.show_meta','true')=='true'?true:false;
   mailHops.options.show_auth = mailHops.getCharPref('mail.mailHops.show_auth','true')=='true'?true:false;
   mailHops.options.show_lists = mailHops.getCharPref('mail.mailHops.show_lists','true')=='true'?true:false;
 
   //Details options
-  mailHops.options.show_host = mailHops.getCharPref('mail.mailHops.show_host','false')=='true'?true:false;
-  mailHops.options.show_weather = mailHops.getCharPref('mail.mailHops.show_weather','false')=='true'?true:false;
-  mailHops.options.show_secure = mailHops.getCharPref('mail.mailHops.show_secure','false')=='true'?true:false;
+  mailHops.options.show_host = mailHops.getCharPref('mail.mailHops.show_host','true')=='true'?true:false;
+  mailHops.options.show_secure = mailHops.getCharPref('mail.mailHops.show_secure','true')=='true'?true:false;
 
   //Auth options
   mailHops.options.show_dkim = mailHops.getCharPref('mail.mailHops.show_dkim','true')=='true'?true:false;
@@ -266,7 +265,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
   }
   //get the originating IP address
 	if(headXOrigIP){
-		var ip = headXOrigIP.match(regexAllIp);
+    var ip = headXOrigIP.match(regexAllIp);
 		if(ip != null && ip.length != 0 && all_ips.indexOf(ip[0])==-1)
 			all_ips.unshift( ip[0] );
 	}
@@ -278,7 +277,9 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 };
 //another ip check, dates will throw off the regex
 mailHops.testIP = function(ip,header){
-	var retval=true;
+	var retval = true
+      , disAllowLastChars = ['?',';'];
+
 	try
 	{
 		var firstchar = header.substring(header.indexOf(ip)-1);
@@ -286,18 +287,17 @@ mailHops.testIP = function(ip,header){
 		var lastchar = header.substring((header.indexOf(ip)+ip.length));
 			lastchar = lastchar.substring(0,1);
 
-		if(firstchar.match(/\.|\d|\-/))
-			retval = null;
-		else if(lastchar.match(/\.|\d|\-/))
-			retval = null;
-
-		if(firstchar == '?' && lastchar == '?')
-			retval = null;
-		else if(header.indexOf('['+ip+']') != -1)
-			retval = true;
-		else if(header.indexOf('('+ip+')') != -1)
-			retval = true;
-		//check if this IP was part of a secure transmission
+		if(firstchar.match(/\.|\d|\-/)
+      || lastchar.match(/\.|\d|\-/)
+      || ( firstchar == '?' && lastchar == '?' ) 
+      || lastchar.indexOf(disAllowLastChars) !== -1){
+			return null;      
+    }
+    else if(header.indexOf('['+ip+']') !== -1 || header.indexOf('('+ip+')') !== -1){
+			retval = true;      
+    }
+		
+    //check if this IP was part of a secure transmission
 		if(retval){
 			if(header.indexOf('using SSL') != -1)
 				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+11));
@@ -676,25 +676,6 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 				mailHops.resultDetails.appendChild(host);
 			}
 
-	   		//append weather
-	   		if(mailHops.options.show_weather && response.route[i].weather){
-				var weather = document.createElement('label');
-				if(response.route[i].weather.image){
-					var wimage = response.route[i].weather.image.split('/');
-					if((wimage[5].indexOf('clear') != -1 || wimage[5].indexOf('sun') != -1) && !mailHops.isDay())
-						wimage[5] = 'clear_night.png';
-					else if(wimage[5].indexOf('cloudy') != -1 && !mailHops.isDay())
-						wimage[5] = 'cloudy_night.png';
-					weather.style.backgroundImage = 'url(chrome://mailhops/content/images/weather/'+wimage[5]+')';
-				}
-				if(mailHops.options.unit=='mi')
-					weather.setAttribute('value',response.route[i].weather.cond+' '+response.route[i].weather.temp.F+'\u00B0F');
-				else
-					weather.setAttribute('value',response.route[i].weather.cond+' '+response.route[i].weather.temp.C+'\u00B0C');
-				weather.setAttribute('class','dataPaneAddressitem mailhopsWeather');
-				mailHops.resultDetails.appendChild(weather);
-			}
-
 			//auth & dnsbl
 			if(!response.route[i].private && response.route[i].dnsbl && response.route[i].dnsbl.listed){
 				mailHops.mailhopsDataPaneDNSBL.setAttribute('value','Blacklisted '+mailHops.authExplainDNSBL_server(response.route[i].dnsbl.record));
@@ -918,10 +899,11 @@ mailHops.lookupRoute = function(header_route){
   //import nativeJSON
  var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 
- var lookupURL=mailHops.options.api_url+'/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route);
+ var lookupURL = mailHops.options.api_url+'/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route)+'&l='+mailHops.options.lan;
 
- if(mailHops.options.show_weather)
- 	lookupURL+='&w=1';
+ if(mailHops.options.debug)
+    LOG(lookupURL);
+
  if(mailHops.options.client_location != '')
  	lookupURL+='&c=0';
 
@@ -953,7 +935,7 @@ if(mailHops.options.debug)
 	   		//save the result
 	   		mailHops.saveResults(JSON.stringify(data));
 	   		//display the result
-	   		mailHops.displayResult(header_route,data.response,data.meta, lookupURL);
+	   		mailHops.displayResult(header_route, data.response, data.meta, lookupURL);
 	   } else {
       if(mailHops.options.debug)
         LOG(JSON.stringify(data));
@@ -994,11 +976,8 @@ mailHops.launchSpamHausURL = function(ip){
 mailHops.launchMap = function(route){
 
 	if(route != '')	{
-		var lookupURL=mailHops.options.api_url+'/v1/map/?pb&app='+mailHops.appVersion+'&m='+mailHops.options.map+'&u='+mailHops.options.unit+'&r='+String(route);
-		 if(mailHops.options.show_weather)
-		 	lookupURL+='&w=1';
-
-		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=742,height=385,resizable=yes', {src: lookupURL});
+		var lookupURL=mailHops.options.api_url+'/v1/map/?pb&app='+mailHops.appVersion+'&l='+mailHops.options.lan+'&u='+mailHops.options.unit+'&r='+String(route);
+		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});    
 	}
 };
 

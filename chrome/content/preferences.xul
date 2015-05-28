@@ -24,10 +24,16 @@
 	  <tabpanels>
 	    <tabpanel>
 	    	<groupbox>
-			<caption label="Default Map"/>
-			<radiogroup id="mailhop.map">
-				<radio value="goog" label="Google" selected="true"/>
-				<radio value="bing" label="Bing"/>
+			<caption label="Default Language"/>
+			<radiogroup id="mailhop.lang">
+				<radio value="en" label="English" selected="true"/>
+				<radio value="de" label="German"/>
+				<radio value="es" label="Spanish"/>
+				<radio value="fr" label="French"/>
+				<radio value="ja" label="Japanese"/>
+				<radio value="pt-BR" label="Portuguese"/>
+				<radio value="ru" label="Russian"/>
+				<radio value="zh-CH" label="Chinese"/>
 			</radiogroup>
 			</groupbox>
 			
@@ -50,8 +56,7 @@
 			<groupbox>
 				<caption label="Details Options"/>			
 				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="false"/></label>
-				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="false"/></label>
-				<label class="mailhopsWeatherPref"><checkbox id="mailhop.show_weather" label="Show Weather" checked="false"/></label>
+				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="false"/></label>				
 			</groupbox>
 			<groupbox>
 				<caption label="Authentication Options"/>			

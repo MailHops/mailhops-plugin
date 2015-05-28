@@ -1,0 +1,14 @@
+<!ENTITY mailhops_header_route_label           "MailHops Strecke">
+<!ENTITY mailhops_header_auth_label            "MailHops Mailer/Auth">
+<!ENTITY mailhops_header_lists_label           "MailHops MailHops Listen">
+<!ENTITY mailhops_header_meta_label            "MailHops Meta">
+
+<!ENTITY mailhops_route_nav_map_label          "Karte">
+<!ENTITY mailhops_route_nav_details_label      "Einzelheiten">
+<!ENTITY mailhops_route_nav_refresh_label      "erfrischen">
+<!ENTITY mailhops_route_nav_options_label      "Optionen">
+
+<!ENTITY mailhops_route_nav_map_tip          "Karte anzeigen">
+<!ENTITY mailhops_route_nav_details_tip      "Zeige Details">
+<!ENTITY mailhops_route_nav_refresh_tip      "Aktualisieren Cache">
+<!ENTITY mailhops_route_nav_options_tip      "Einstellungen">

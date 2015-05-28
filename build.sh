@@ -10,7 +10,7 @@ mkdir build
 mkdir build/chrome
 
 cd chrome
-zip -r $filename.jar . -i *.js *.xul *.png *.gif *.rdf *.css *.dtd
+zip -r $filename.jar . -i *.js *.xul *.png *.gif *.rdf *.css *.dtd *.properties
 mv $filename.jar ../build/chrome/
 
 cd ..

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE overlay SYSTEM "chrome://mailhops/locale/strings.dtd" >
 
 <?xml-stylesheet href="chrome://mailhops/skin/mailhops.css" type="text/css"?>
 
@@ -11,7 +12,7 @@
 	<vbox id="dataPane2">
 		<vbox id="dataPaneMailHopsContainer" class="dataPaneBox">	
 			<hbox flex="1" pack="start" align="center">
-				<label class="dataPaneHeader" crop="right" value="MailHops Route"></label>
+				<label class="dataPaneHeader" crop="right" value="&mailhops_header_route_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
 			</hbox>
 			
@@ -21,10 +22,10 @@
 			</vbox>	
 			
 			<hbox class="mailHopsLinkContainer">
-				<vbox><label id="mailhopsDataPaneMapLink" class="text-link dataPaneMoreLink" value="map" tooltiptext="Show Route Map"></label></vbox>
-				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="details" tooltiptext="Show Route Details"></label></vbox>				
-				<vbox><label id="mailhopsDataPaneRefreshLink" class="text-link dataPaneMoreLink" value="refresh" tooltiptext="Refresh Cache"></label></vbox>								
-				<vbox><label id="mailhopsDataPanePrefsLink" class="text-link dataPaneMoreLink" value="options" tooltiptext="MailHops Preferences"></label></vbox>
+				<vbox><label id="mailhopsDataPaneMapLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_map_label;" tooltiptext="&mailhops_route_nav_map_tip;"></label></vbox>
+				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_details_label;" tooltiptext="&mailhops_route_nav_details_tip;"></label></vbox>				
+				<vbox><label id="mailhopsDataPaneRefreshLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_refresh_label;" tooltiptext="&mailhops_route_nav_refresh_tip;"></label></vbox>								
+				<vbox><label id="mailhopsDataPanePrefsLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_options_label;" tooltiptext="&mailhops_route_nav_options_tip;"></label></vbox>
 			</hbox>
 			
 			<hbox id="mailhopsDetailsContainer" class="mailhopsContainer">
@@ -36,7 +37,7 @@
 		
 		<vbox id="dataPaneMailHopsAuthContainer" class="dataPaneBox">	
 			<hbox flex="1" pack="start" align="center">
-				<label class="dataPaneHeader" crop="right" value="MailHops Mailer/Auth"></label>
+				<label class="dataPaneHeader" crop="right" value="&mailhops_header_auth_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
 			</hbox>
 
@@ -50,7 +51,7 @@
 		
 		<vbox id="dataPaneMailHopsListContainer" class="dataPaneBox">	
 			<hbox flex="1" pack="start" align="center">
-				<label class="dataPaneHeader" crop="right" value="MailHops Lists"></label>
+				<label class="dataPaneHeader" crop="right" value="&mailhops_header_lists_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
 			</hbox>			
 			<vbox id="mailhopsListDataPane" flex="1"></vbox>				
@@ -58,7 +59,7 @@
 		
 		<vbox id="dataPaneMailHopsMetaContainer" class="dataPaneBox">	
 			<hbox flex="1" pack="start" align="center">
-				<label class="dataPaneHeader" crop="right" value="MailHops Meta"></label>
+				<label class="dataPaneHeader" crop="right" value="&mailhops_header_meta_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
 			</hbox>			
 			<vbox id="mailhopsDataPaneMeta" flex="1"></vbox>

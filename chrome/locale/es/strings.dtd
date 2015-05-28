@@ -1,0 +1,14 @@
+<!ENTITY mailhops_header_route_label           "MailHops Ruta">
+<!ENTITY mailhops_header_auth_label            "MailHops Mailer/Aut">
+<!ENTITY mailhops_header_lists_label           "MailHops Listas">
+<!ENTITY mailhops_header_meta_label            "MailHops Meta">
+
+<!ENTITY mailhops_route_nav_map_label          "mapa">
+<!ENTITY mailhops_route_nav_details_label      "detalles">
+<!ENTITY mailhops_route_nav_refresh_label      "refrescar">
+<!ENTITY mailhops_route_nav_options_label      "opciones">
+
+<!ENTITY mailhops_route_nav_map_tip          "Ver mapa">
+<!ENTITY mailhops_route_nav_details_tip      "Mostrar Detalles">
+<!ENTITY mailhops_route_nav_refresh_tip      "Actualizar caché">
+<!ENTITY mailhops_route_nav_options_tip      "Preferencias">
