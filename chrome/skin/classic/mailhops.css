@@ -46,10 +46,11 @@
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
     border-radius: 5px;
-    padding: 4px;
+    padding: 8px;
+    word-wrap: break-word;
 }
 
-.mailhopsWeather, .mailhopsHost, .mailhopsSecureHost, .mailhopsSecure{
+.mailhopsHost, .mailhopsSecureHost, .mailhopsSecure, .mailhopsW3w {
 	margin-left: 30px;
 	padding-bottom: 2px;
 }
@@ -69,14 +70,10 @@
 	background-repeat: no-repeat;
 }
 
-.mailhopsWeatherPref{
-	background-image: url(chrome://mailhops/content/images/weather/sun.png);
-	background-repeat: no-repeat;	
-}
-
-.mailhopsWeatherPref checkbox, .mailhopsHostPref checkbox, .mailhopsSecurePref checkbox{
-	margin-left: 20px;
-	margin-top: 0px;
+.mailhopsW3w {
+	background-image: url(chrome://mailhops/content/images/w3w.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
 .auth-item{

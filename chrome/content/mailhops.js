@@ -203,10 +203,15 @@ mailHops.loadHeaderData = function()
 };
 
 mailHops.getRoute = function(){
-//IP regex
-var regexIp=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/;
-var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
-
+  //IP regex
+  var regexIp=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/;
+  var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
+  
+  // TODO test IPV6 regex for Received headers, currently only used for X-Originating-IP
+  // IPv6 addresses including compressed and IPv4-embedded variants (RFC 2373)
+  // http://regexlib.com/REDetails.aspx?regexp_id=2919
+  var regexIPV6 = /(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))/;
+      
   var headReceived = mailHops.headers.extractHeader ( "Received" , true ) ;
   var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false ) ;
   //auth box
@@ -265,9 +270,16 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
   }
   //get the originating IP address
 	if(headXOrigIP){
-    var ip = headXOrigIP.match(regexAllIp);
-		if(ip != null && ip.length != 0 && all_ips.indexOf(ip[0])==-1)
-			all_ips.unshift( ip[0] );
+    //remove brackets
+    headXOrigIP = headXOrigIP.replace('[','').replace(']','');
+    //IPV6 check
+    if(headXOrigIP.indexOf(':') !== -1 && headXOrigIP.match(regexIPV6)){
+      all_ips.unshift( headXOrigIP );
+    } else {
+      var ip = headXOrigIP.match(regexAllIp);
+  		if(ip != null && ip.length != 0 && all_ips.indexOf(ip[0])==-1)
+  			all_ips.unshift( ip[0] );
+    }
 	}
   if ( all_ips.length != 0 ){
    mailHops.lookupRoute ( all_ips ) ;
@@ -277,8 +289,7 @@ var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{
 };
 //another ip check, dates will throw off the regex
 mailHops.testIP = function(ip,header){
-	var retval = true
-      , disAllowLastChars = ['?',';'];
+	var retval = true;
 
 	try
 	{
@@ -290,7 +301,7 @@ mailHops.testIP = function(ip,header){
 		if(firstchar.match(/\.|\d|\-/)
       || lastchar.match(/\.|\d|\-/)
       || ( firstchar == '?' && lastchar == '?' ) 
-      || lastchar.indexOf(disAllowLastChars) !== -1){
+      || lastchar == ';'){
 			return null;      
     }
     else if(header.indexOf('['+ip+']') !== -1 || header.indexOf('('+ip+')') !== -1){
@@ -688,7 +699,21 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 				mailHops.mailhopsDataPaneDNSBL.style.display = 'block';
 			}
 
- 	}
+      // if(response.route[i].ip.indexOf(':') !== -1){
+      //   var ipv6 = document.createElement('label');
+      //     ipv6.setAttribute('class','dataPaneAddressitem mailhopsipv6');
+      //     ipv6.setAttribute('value','IPV6');
+      //     mailHops.resultDetails.appendChild(ipv6); 
+      // }
+
+      if(response.route[i].w3w){
+          var w3w = document.createElement('label');
+          w3w.setAttribute('class','dataPaneAddressitem mailhopsW3w');
+          w3w.setAttribute('value',response.route[i].w3w.words.join('.'));
+          w3w.setAttribute('onclick','mailHops.launchExternalURL("'+response.route[i].w3w.url+'");');
+          mailHops.resultDetails.appendChild(w3w);
+      }
+ 	  }
  }
 
  if(image.indexOf('local')!=-1) {
@@ -964,13 +989,15 @@ mailHops.addCommas = function(nStr){
 	}
 	return x1 + x2;
 };
+mailHops.launchExternalURL = function(url){
+  var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
+  messenger.launchExternalURL(url);
+};
 mailHops.launchWhoIs = function(ip){
-	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
-	messenger.launchExternalURL('http://www.mailhops.com/whois/'+ip);
+	mailHops.launchExternalURL('http://www.mailhops.com/whois/'+ip);
 };
 mailHops.launchSpamHausURL = function(ip){
-	var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
-	messenger.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
+	mailHops.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
 };
 
 mailHops.launchMap = function(route){
