@@ -9,6 +9,7 @@ var mailHops =
   msgURI:					null,
   resultTextDataPane:		null,
   resultTextDataPane2:		null,
+  resultTextDataPane3:    null,
   resultContainerDataPane:	null,
   resultDetailsLink:		null,
   resultContainerDetails: 	null,
@@ -46,6 +47,7 @@ mailHops.init = function()
   mailHops.resultContainerDataPane = document.getElementById ( "mailhopsDataPane");
   mailHops.resultTextDataPane = document.getElementById ( "mailhopsDataPaneText");
   mailHops.resultTextDataPane2 = document.getElementById ( "mailhopsDataPaneText2");
+  mailHops.resultTextDataPane3 = document.getElementById ( "mailhopsDataPaneText3");
 
   mailHops.resultDetailsLink = document.getElementById ( "mailhopsDataPaneDetailsLink");
   mailHops.resultContainerDetails = document.getElementById ( "mailhopsDetailsContainer");
@@ -105,6 +107,7 @@ mailHops.loadPref = function()
   //get preferences
   mailHops.options.lan = mailHops.getCharPref('mail.mailHops.lang','en');
   mailHops.options.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
+  mailHops.options.fkey = mailHops.getCharPref('mail.mailHops.fkey','');//forecast.io api_key
 
   //Display Boxes
   mailHops.options.show_details = mailHops.getCharPref('mail.mailHops.show_details','true')=='true'?true:false;
@@ -122,18 +125,12 @@ mailHops.loadPref = function()
   mailHops.options.show_mailer = mailHops.getCharPref('mail.mailHops.show_mailer','true')=='true'?true:false;
   mailHops.options.show_dnsbl = mailHops.getCharPref('mail.mailHops.show_dnsbl','true')=='true'?true:false;
 
-  //Hosting
-  mailHops.options.use_private = mailHops.getCharPref('mail.mailHops.use_private','false')=='true'?true:false;
-  mailHops.options.hosting = mailHops.getCharPref('mail.mailHops.hosting','personal');
   mailHops.options.debug = mailHops.getCharPref('mail.mailHops.debug','false')=='true'?true:false;
 
   mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
 
-  if(mailHops.options.use_private)
-  	mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','http://api.mailhops.com');
-  else
-  	mailHops.options.api_url='http://api.mailhops.com';
-
+  mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','http://api.mailhops.com');
+  
   if(mailHops.options.client_location == ''){
 		mailHops.setClientLocation();
   }
@@ -573,14 +570,15 @@ mailHops.authExplainDNSBL_server = function(result){
 };
 
 mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
-  var displayText='';
-  var distanceText='';
-  var image='chrome://mailhops/content/images/local.png';
-  var city;
-  var state;
-  var countryName;
-  var gotFirst=false;
-  var secureToolTipText=false;
+  var displayText=''
+  , distanceText=''
+  , image='chrome://mailhops/content/images/local.png'
+  , city=null
+  , state=null
+  , countryName=null
+  , gotFirst=false
+  , secureToolTipText=false
+  , weather=null;
 
   //remove child details
   while(mailHops.resultDetails.firstChild) {
@@ -639,13 +637,13 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 		   	if(response.route[i].city && response.route[i].state){
 			   	label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state);
 			   	label.setAttribute('onclick','mailHops.launchWhoIs("'+response.route[i].ip+'");');
-			}
-			else if(response.route[i].countryName){
-				label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].countryName);
-				label.setAttribute('onclick','mailHops.launchWhoIs("'+response.route[i].ip+'");');
-			}
-			else
-				label.setAttribute('value','Hop #'+(i+1)+' Private');
+  			}
+  			else if(response.route[i].countryName){
+  				label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].countryName);
+  				label.setAttribute('onclick','mailHops.launchWhoIs("'+response.route[i].ip+'");');
+  			}
+  			else
+  				label.setAttribute('value','Hop #'+(i+1)+' Private');
 
 			//build tooltip
 			var tiptext = response.route[i].ip;
@@ -663,6 +661,11 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
 
 			//append details
 	   		mailHops.resultDetails.appendChild(label);
+
+        //append weather
+        if(!weather && response.route[i].weather){
+          weather = response.route[i].weather;
+        }
 
 	   		if(mailHops.options.show_secure){
 				//reset the tooltip
@@ -750,6 +753,14 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
   } else {
   	mailHops.resultTextDataPane2.style.display = 'none';
   }
+
+  //set weather of sender
+  if(weather){
+    mailHops.resultTextDataPane3.style.display = 'block';
+    mailHops.resultTextDataPane3.value = weather.summary+' '+Math.round(weather.temp)+'\u00B0';
+    mailHops.resultTextDataPane3.style.backgroundImage = 'url('+mailHops.getWeatherIcon(weather.icon)+')';
+  }
+
   //show the detail link
   mailHops.resultDetailsLink.style.display = 'block';
   mailHops.resultMapLink.style.display = 'block';
@@ -773,14 +784,6 @@ mailHops.getSecureTrans = function(ip){
 	return false;
 };
 
-mailHops.isDay = function(){
-	var d = new Date();
-	if(d.getHours()>7 && d.getHours()<19)
-		return true;
-	else
-		return false;
-};
-
 //display the connection error message
 mailHops.displayError = function(data){
 	  mailHops.resultMapLink.removeAttribute("route");
@@ -800,6 +803,9 @@ mailHops.displayError = function(data){
 	  mailHops.resultTextDataPane2.value = '';
 	  mailHops.resultTextDataPane2.style.backgroundImage = '';
 	  mailHops.resultTextDataPane2.setAttribute('tooltiptext','');
+
+    mailHops.resultTextDataPane3.style.display = 'none';
+    mailHops.resultTextDataPane3.value = '';    
 };
 
 mailHops.getErrorTitle = function(error_code){
@@ -830,6 +836,9 @@ mailHops.clearRoute = function(){
 	mailHops.resultTextDataPane2.value = '';
 	mailHops.resultTextDataPane2.style.backgroundImage = '';
 	mailHops.resultTextDataPane2.setAttribute('tooltiptext','');
+
+  mailHops.resultTextDataPane3.style.display = 'none';
+  mailHops.resultTextDataPane3.value = '';    
 
 	//remove child details
 	while(mailHops.resultDetails.firstChild) {
@@ -924,7 +933,10 @@ mailHops.lookupRoute = function(header_route){
   //import nativeJSON
  var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 
- var lookupURL = mailHops.options.api_url+'/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route)+'&l='+mailHops.options.lan;
+ var lookupURL = mailHops.options.api_url+'/v1/lookup/?pb&app='+mailHops.appVersion+'&r='+String(header_route)+'&l='+mailHops.options.lan+'&u='+mailHops.options.unit;
+
+ if(mailHops.options.fkey != '')
+  lookupURL += '&fkey='+mailHops.options.fkey;
 
  if(mailHops.options.debug)
     LOG(lookupURL);
@@ -1004,8 +1016,34 @@ mailHops.launchMap = function(route){
 
 	if(route != '')	{
 		var lookupURL=mailHops.options.api_url+'/v1/map/?pb&app='+mailHops.appVersion+'&l='+mailHops.options.lan+'&u='+mailHops.options.unit+'&r='+String(route);
+
+    if(mailHops.options.fkey != '')
+      lookupURL += '&fkey='+mailHops.options.fkey;
+
 		window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});    
 	}
+};
+
+// weather.style.backgroundImage = 'url(chrome://mailhops/content/images/weather
+
+mailHops.getWeatherIcon = function(icon){
+    var forecast_icons = {'clear-day': {'day':'sun', 'night':'sun'}
+        , 'clear-night': {'day':'clear_night', 'night':'clear_night'}
+        , 'rain': {'day':'rain','night':'rain'}
+        , 'snow': {'day':'snow','night':'snow'}
+        , 'sleet': {'day':'rain','night':'rain'}
+        , 'wind': {'day':'clouds','night':'clouds'}
+        , 'fog': {'day':'clouds','night':'clouds'}
+        , 'cloudy': {'day':'cloudy','night':'cloudy_night'}
+        , 'partly-cloudy-day': {'day':'cloudy','night':'cloudy'}
+        , 'partly-cloudy-night': {'day':'cloudy_night','night':'cloudy_night'}
+        , 'hail': {'day':'rain','night':'rain'}
+        , 'thunderstorm': {'day':'thunderstorm','night':'thunderstorm'}
+        , 'tornado': {'day':'thunderstorm','night':'thunderstorm'}
+    };
+    var hr = (new Date).getHours();
+    var time = (hr >= 4 && hr <= 18)?'day':'night';
+    return 'chrome://mailhops/content/images/weather/'+forecast_icons[icon][time]+'.png';
 };
 
 mailHops.saveResults = function(results){

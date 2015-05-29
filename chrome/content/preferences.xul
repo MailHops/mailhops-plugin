@@ -18,7 +18,7 @@
 	  <tabs>
 	    <tab label="Defaults"/>
 	    <tab label="Display"/>
-	    <tab label="Hosting"/>
+	    <tab label="API &amp; Hosting"/>
 	    <tab label="Current Location"/>
 	  </tabs>
 	  <tabpanels>
@@ -38,25 +38,25 @@
 			</groupbox>
 			
 			<groupbox>
-				<caption label="Default Unit"/>
+				<caption label="Default Units"/>
 				<radiogroup id="mailhop.unit">
-					<radio value="mi" label="Miles" selected="true"/>
-					<radio value="km" label="Kilometers"/>
+					<radio value="mi" label="Miles and ºF" selected="true"/>
+					<radio value="km" label="Kilometers and ºC"/>
 				</radiogroup>
 			</groupbox>
 	    </tabpanel>
-	    <tabpanel>
+	    <tabpanel> 
 	    	<groupbox>
 				<caption label="Display Boxes"/>
-				<checkbox id="mailhop.show_details" label="Show Details" checked="false"/>
+				<checkbox id="mailhop.show_details" label="Show Details" checked="true"/>
 				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
 				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>			
-				<checkbox id="mailhop.show_meta" label="Show Meta" checked="false"/>
+				<checkbox id="mailhop.show_meta" label="Show Meta" checked="true"/>
 			</groupbox>	
 			<groupbox>
 				<caption label="Details Options"/>			
-				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="false"/></label>
-				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="false"/></label>				
+				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="true"/></label>
+				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="true"/></label>
 			</groupbox>
 			<groupbox>
 				<caption label="Authentication Options"/>			
@@ -73,17 +73,22 @@
 				<description>
 					MailHops API is also available for download if you would like to host your own.
 				</description>
-				<radiogroup id="mailhop.hosting">
-					<radio value="personal" label="Personal (Free)" selected="true"/>
-					<radio value="edu" label="Educational (Free)"/>
-					<radio value="business" label="Business (Not-Free)"/>
-				</radiogroup>
-				<checkbox id="mailhop.use_private" label="Yes, I Agree to MailHops terms of use for hosting my own MailHops API." checked="false" oncommand="ChangePrivate(this);"/>		
-				<checkbox id="mailhop.debug" label="Debug" checked="false"/>		
-				<label class="text-link plain" value="MailHops Terms of Use" href="http://www.mailhops.com/terms"/>
-				<textbox id="mailhop.api_url" value="http://api.mailhops.com" disabled="true"/>
+				
+				<textbox id="mailhop.api_url" value="http://api.mailhops.com"/>
+
 				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" /> 
+				
 				<label class="text-link plain act" onclick="ResetConnection();" value="Reset Connection" />
+
+				<checkbox id="mailhop.debug" label="Debug" checked="false"/>		
+
+				<description>
+					MailHops API uses Forecast.IO to get the weather of the sender, register for an API Key to enable this feature.
+				</description>
+				
+				<textbox id="mailhop.fkey" value=""/>
+
+				<label class="text-link plain" value="Forecast.IO" href="https://developer.forecast.io/"/>
 	  		</groupbox>
 	    </tabpanel>
 	    

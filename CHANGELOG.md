@@ -10,7 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - IPV6 support
 - Language support for 'de','en','es','fr','ja','pt-BR','ru','zh-CN'
-- What3Words, see README for adding and API key
+- What3Words, gets the 3 words for the geo of the sender
+- Forecast.IO, gets the weather from the sender, API key needs to be added in preferences
 
 ### Fixed
 - Fix mismatch IP from Microsoft SMTP id in received header

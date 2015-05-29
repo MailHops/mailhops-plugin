@@ -18,7 +18,8 @@
 			
 			<vbox id="mailhopsDataPane" flex="1">
 				<label id="mailhopsDataPaneText" class="dataPaneAddressitem" tooltiptext=""></label>
-				<label id="mailhopsDataPaneText2" class="dataPaneAddressitem" tooltiptext=""></label>				
+				<label id="mailhopsDataPaneText2" class="dataPaneAddressitem" tooltiptext=""></label>
+				<label id="mailhopsDataPaneText3" class="dataPaneAddressitem" tooltiptext=""></label>				
 			</vbox>	
 			
 			<hbox class="mailHopsLinkContainer">

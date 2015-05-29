@@ -5,20 +5,16 @@ if (!pref)
 
 var mailHopPreferences =
 {
-  use_private: null,
-   
   api_url: null,
+
+  fkey: '', //forecast.io api key
   
-  hosting: null,
-  	
   loadPreferences: function()
   {
-  	this.use_private = document.getElementById("mailhop.use_private");
-  	
   	this.api_url = document.getElementById("mailhop.api_url");
-  	
-  	this.hosting = document.getElementById("mailhop.hosting");
-  
+
+  	this.fkey = document.getElementById("mailhop.fkey");
+
   	if(pref.getCharPref("mail.mailHops.lang",'en')=='en')
 	    document.getElementById("mailhop.lang").selectedIndex = 0;
 	else
@@ -35,7 +31,7 @@ var mailHopPreferences =
 	else
 		document.getElementById("mailhop.show_details").checked = false;
 		
-	if(pref.getCharPref("mail.mailHops.show_meta",'false')=='true')
+	if(pref.getCharPref("mail.mailHops.show_meta",'true')=='true')
 		document.getElementById("mailhop.show_meta").checked = true;
 	else
 		document.getElementById("mailhop.show_meta").checked = false;	
@@ -51,12 +47,12 @@ var mailHopPreferences =
 		document.getElementById("mailhop.show_auth").checked = false;
 		
 	//Details Options		
-	if(pref.getCharPref("mail.mailHops.show_host",'false')=='true')
+	if(pref.getCharPref("mail.mailHops.show_host",'true')=='true')
 		document.getElementById("mailhop.show_host").checked = true;
 	else
 		document.getElementById("mailhop.show_host").checked = false;
 		
-	if(pref.getCharPref("mail.mailHops.show_secure",'false')=='true')
+	if(pref.getCharPref("mail.mailHops.show_secure",'true')=='true')
 		document.getElementById("mailhop.show_secure").checked = true;
 	else
 		document.getElementById("mailhop.show_secure").checked = false;	
@@ -82,27 +78,14 @@ var mailHopPreferences =
 	else
 		document.getElementById("mailhop.show_dnsbl").checked = false;
 	
-	//Hosting Options
-	if(pref.getCharPref("mail.mailHops.hosting",'personal')=='personal')
-		document.getElementById("mailhop.hosting").selectedIndex = 0;
-	else if(pref.getCharPref("mail.mailHops.hosting",'personal')=='edu')
-		document.getElementById("mailhop.hosting").selectedIndex = 1;
-	else
-		document.getElementById("mailhop.hosting").selectedIndex = 2;		
-	
-	if(pref.getCharPref("mail.mailHops.use_private",'false')=='true'){
-		document.getElementById("mailhop.use_private").checked = true;
-		this.api_url.removeAttribute("disabled");
-	}
-	else
-		document.getElementById("mailhop.use_private").checked = false;
-	
 	if(pref.getCharPref("mail.mailHops.debug",'true')=='true')
 		document.getElementById("mailhop.debug").checked = true;
 	else
 		document.getElementById("mailhop.debug").checked = false;
 	
 	this.api_url.value = pref.getCharPref("mail.mailHops.api_url",'http://api.mailhops.com');
+
+	this.fkey.value = pref.getCharPref("mail.mailHops.fkey",'');
 	
 	ResetLocation(document.getElementById("mailhop.refresh_location"));
 			
@@ -120,23 +103,11 @@ var mailHopPreferences =
     pref.setCharPref("mail.mailHops.show_mailer", String(document.getElementById("mailhop.show_mailer").checked)) ;
     pref.setCharPref("mail.mailHops.show_dnsbl", String(document.getElementById("mailhop.show_dnsbl").checked)) ;
     pref.setCharPref("mail.mailHops.show_lists", String(document.getElementById("mailhop.show_lists").checked)) ;
-    pref.setCharPref("mail.mailHops.show_auth", String(document.getElementById("mailhop.show_auth").checked)) ;
-    pref.setCharPref("mail.mailHops.use_private", String(document.getElementById("mailhop.use_private").checked)) ;
+    pref.setCharPref("mail.mailHops.show_auth", String(document.getElementById("mailhop.show_auth").checked)) ;    
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked)) ;
-    pref.setCharPref("mail.mailHops.hosting", document.getElementById("mailhop.hosting").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.api_url", String(document.getElementById("mailhop.api_url").value)) ;
+    pref.setCharPref("mail.mailHops.fkey", String(document.getElementById("mailhop.fkey").value)) ;
   } 
-}
-
-function ChangePrivate(item){
-	if(item.checked){
-  		mailHopPreferences.api_url.removeAttribute("disabled");
-  		mailHopPreferences.api_url.focus();
-  	}
-  	else{
-  		mailHopPreferences.api_url.setAttribute("disabled","true");
-  		mailHopPreferences.api_url.value='http://api.mailhops.com';
-  	}
 }
 
 function TestConnection(e){
