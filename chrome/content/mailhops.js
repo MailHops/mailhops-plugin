@@ -757,6 +757,7 @@ mailHops.displayResult = function ( header_route, response, meta, lookup_url ){
   //set weather of sender
   if(weather){
     mailHops.resultTextDataPane3.style.display = 'block';
+    mailHops.resultTextDataPane3.setAttribute('tooltiptext',new Date(weather.time*1000));
     mailHops.resultTextDataPane3.value = weather.summary+' '+Math.round(weather.temp)+'\u00B0';
     mailHops.resultTextDataPane3.style.backgroundImage = 'url('+mailHops.getWeatherIcon(weather.icon)+')';
   }
@@ -1034,7 +1035,7 @@ mailHops.getWeatherIcon = function(icon){
         , 'sleet': {'day':'rain','night':'rain'}
         , 'wind': {'day':'clouds','night':'clouds'}
         , 'fog': {'day':'clouds','night':'clouds'}
-        , 'cloudy': {'day':'cloudy','night':'cloudy_night'}
+        , 'cloudy': {'day':'clouds','night':'cloudy_night'}
         , 'partly-cloudy-day': {'day':'cloudy','night':'cloudy'}
         , 'partly-cloudy-night': {'day':'cloudy_night','night':'cloudy_night'}
         , 'hail': {'day':'rain','night':'rain'}

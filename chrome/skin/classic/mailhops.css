@@ -64,12 +64,12 @@ button {
 	background-repeat: no-repeat;
 }
 
-.mailhopsHost, .mailhopsHostPref{
+.mailhopsHost{
 	background-image: url(chrome://mailhops/content/images/host.png);
 	background-repeat: no-repeat;
 }
 
-.mailhopsSecure, .mailhopsSecurePref{
+.mailhopsSecure{
 	background-image: url(chrome://mailhops/content/images/secure.png);
 	background-repeat: no-repeat;
 }
