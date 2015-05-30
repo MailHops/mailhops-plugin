@@ -26,7 +26,7 @@ var mailHops =
 
   isLoaded:     			false,
   options:					{'lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false},
-  appVersion:				'MailHops Postbox 0.8.4',
+  appVersion:				'MailHops Postbox 0.9.0',
   message:					{secure:[]},
   client_location:			null
 }
