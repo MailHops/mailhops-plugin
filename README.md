@@ -1,4 +1,4 @@
-# MailHops Postbox Plugin
+# MailHops Thunderbird and Postbox Plugin
 [www.MailHops.com](http://www.mailhops.com)
 
 <img src="http://www.mailhops.com/images/logos/mailhops395.png" width="200" alt="MailHops logo" title="MailHops" align="right" />
@@ -25,5 +25,4 @@ Host your own API
 - [API](https://github.com/avantassel/mailhops-api)
 
 ## Plugins
-- [Postbox](https://github.com/avantassel/mailhops-postbox)
-- [Thunderbird](https://github.com/avantassel/mailhops-thunderbird)
+- [Postbox](https://github.com/avantassel/mailhops-plugin)
