@@ -27,6 +27,14 @@ mailHops.init = function() {
   //load preferences
   mailHops.loadPref();
   
+  document.getElementById("mailhopsDataPanePrefsLink").addEventListener("click", function () {
+        window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
+      });
+
+  document.getElementById("mailhopsDataPaneRefreshLink").addEventListener("click", function () {
+        mailHops.refreshCache();
+      });
+
   mailHops.isLoaded = true;
   
 };
@@ -65,14 +73,6 @@ mailHops.loadPref = function()
       mailHops.options.client_location=response;
     });
   }
-
-  document.getElementById("mailhopsDataPanePrefsLink").addEventListener("click", function () {
-        window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
-      });
-
-  document.getElementById("mailhopsDataPaneRefreshLink").addEventListener("click", function () {
-        mailHops.refreshCache();
-      });
 
   //init display
   mailHopsDisplay.init( mailHops.options );

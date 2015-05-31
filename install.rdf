@@ -13,7 +13,7 @@
 		<em:homepageURL>http://www.mailhops.com</em:homepageURL>
 		<em:creator>Andrew Van Tassel</em:creator>
 		<em:optionsURL>chrome://mailhops/content/preferences.xul</em:optionsURL>
-		<em:updateURL>https://dl.dropbox.com/u/1533417/mailhops_update.rdf</em:updateURL>
+		<!-- <em:updateURL>https://dl.dropbox.com/u/1533417/mailhops_update.rdf</em:updateURL> -->
 
 	 	<!-- Postbox -->
 		<em:targetApplication>		 
