@@ -23,3 +23,6 @@ $ ./build.sh
 ## API
 Host your own API
 - [API](https://github.com/avantassel/mailhops-api)
+
+## Plugins
+- [Download](https://addons.mozilla.org/en-US/thunderbird/addon/mailhops/)
