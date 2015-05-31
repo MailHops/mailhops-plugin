@@ -23,6 +23,3 @@ $ ./build.sh
 ## API
 Host your own API
 - [API](https://github.com/avantassel/mailhops-api)
-
-## Plugins
-- [Postbox](https://github.com/avantassel/mailhops-plugin)
