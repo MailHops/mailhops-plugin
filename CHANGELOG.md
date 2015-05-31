@@ -1,6 +1,11 @@
 # Change Log
-All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [1.0.0] - 2015-05-31
+### Changed
+- Combined Thunderbird and Postbox code into one plugin
+
+### Fixed
+- Fix mismatch IP from Microsoft SMTP id in received header
 
 ## [0.9.0] - 2015-05-30
 ### Changed

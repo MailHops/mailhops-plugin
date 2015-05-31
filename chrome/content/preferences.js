@@ -1,16 +1,14 @@
-if (!pref)
-{
+if (!pref) {
   var pref = Components.classes["@mozilla.org/preferences-service;1"].getService ( Components.interfaces.nsIPrefBranch ) ;
 }
 
-var mailHopPreferences =
-{
+var mailHopPreferences = {
   api_url: null,
 
   fkey: '', //forecast.io api key
   
-  loadPreferences: function()
-  {
+  loadPreferences: function(){
+
   	this.api_url = document.getElementById("mailhop.api_url");
 
   	this.fkey = document.getElementById("mailhop.fkey");
@@ -89,9 +87,8 @@ var mailHopPreferences =
 	
 	ResetLocation(document.getElementById("mailhop.refresh_location"));
 			
-  } ,
-  savePreferences: function()
-  {
+  },
+  savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.unit", document.getElementById("mailhop.unit").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.show_details", String(document.getElementById("mailhop.show_details").checked)) ;
@@ -107,15 +104,17 @@ var mailHopPreferences =
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked)) ;
     pref.setCharPref("mail.mailHops.api_url", String(document.getElementById("mailhop.api_url").value)) ;
     pref.setCharPref("mail.mailHops.fkey", String(document.getElementById("mailhop.fkey").value)) ;
+
+    return true;
   } 
-}
+};
 
 function TestConnection(e){
 	e.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
 	
 	var xmlhttp = new XMLHttpRequest();
 	var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-	var lookupURL=mailHopPreferences.api_url.value+'/v1/lookup/?pb&app='+mailHops.appVersion+'&healthcheck';
+	var lookupURL = mailHopPreferences.api_url.value+'/v1/lookup/?app='+mailHops.options.version+'&healthcheck';
 	xmlhttp.open("GET", lookupURL ,true);
 	 xmlhttp.onreadystatechange=function() {
 	  if (xmlhttp.readyState==4) {
@@ -149,12 +148,9 @@ function ResetLocation(e){
 	document.getElementById("mailhop.client_location_host").value = '';
 	document.getElementById("mailhop.client_location_whois").value = '';
 	
-	mailHops.setClientLocation();
-	//give the above process a few seconds
-	setTimeout(function(){
-	
-		if(pref.getCharPref("mail.mailHops.client_location", '') != ''){
-			var response = JSON.parse(pref.getCharPref("mail.mailHops.client_location", ''));
+	mailHops.setClientLocation(function(response){
+		
+		if(response){
 			var location = '';
 			if(response.route[0].city)
 				location+=response.route[0].city;
@@ -181,10 +177,13 @@ function ResetLocation(e){
 			//set country flag
 			if(response.route[0].countryCode)
 			   	document.getElementById("mailhop.client_location").style.backgroundImage='url(chrome://mailhops/content/images/flags/'+response.route[0].countryCode.toLowerCase()+'.png)';
-		}	
-		e.style.backgroundImage='';
-	
-	}, 1000);
+			
+			e.style.backgroundImage='';		
+		} else {
+			e.style.backgroundImage='';	
+			document.getElementById("mailhop.client_location").value='Failed connecting...';
+		}
+	},mailHopPreferences.api_url.value);
 }
 
 function ResetConnection(){

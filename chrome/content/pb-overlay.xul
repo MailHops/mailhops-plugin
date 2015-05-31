@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE overlay SYSTEM "chrome://mailhops/locale/strings.dtd" >
 
-<?xml-stylesheet href="chrome://mailhops/skin/mailhops.css" type="text/css"?>
+<?xml-stylesheet href="chrome://mailhops/skin/pb-styles.css" type="text/css"?>
 
 <overlay id="mailhopsOverlay" 
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml">
 
+	<script type="application/x-javascript" src="chrome://mailhops/content/utils.js"/>
+	<script type="application/x-javascript" src="chrome://mailhops/content/pb-overlay.js"/>
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
 
 	<vbox id="dataPane2">

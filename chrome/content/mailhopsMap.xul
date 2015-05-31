@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="chrome://mailhops/skin/mailhops.css" type="text/css"?>
 
 <dialog id="mailHopsMap"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -10,7 +9,7 @@
 	title="MailHops Map"
 	buttonlabelcancel="Close">
 
-<iframe id="mailhops_iframe" flex="1" width="1024" height="768" style="overflow:hidden;" type="content"/>
+<iframe id="mailhops_iframe" flex="1" width="1024" height="768" style="overflow:hidden;" type="content"></iframe>
 		
 <script>
 function loadMap(){

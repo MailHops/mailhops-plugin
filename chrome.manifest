@@ -9,4 +9,8 @@ locale    mailhops   pt-BR          jar:chrome/mailhops.jar!/locale/pt-BR/
 locale    mailhops   ru             jar:chrome/mailhops.jar!/locale/ru/
 locale    mailhops   zh-CN          jar:chrome/mailhops.jar!/locale/zh-CN/
 
-overlay  chrome://messenger/content/msgHdrViewOverlay.xul  chrome://mailhops/content/msgHdrViewOverlay.xul
+# Postbox
+overlay  chrome://messenger/content/msgHdrViewOverlay.xul chrome://mailhops/content/pb-overlay.xul application=postbox@postbox-inc.com
+
+# Thunberbird
+overlay  chrome://messenger/content/msgHdrViewOverlay.xul chrome://mailhops/content/tb-overlay.xul application={3550f703-e582-4d05-9a08-453d09bdfdc6}
