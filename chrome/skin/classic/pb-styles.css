@@ -88,4 +88,10 @@ button {
 	padding-left: 20px;
 }
 
-#mhTabs .act { padding-left: 20px; background-repeat: no-repeat; outline : none;}
+#mhTabs .act { 
+	padding: 5px 10px 5px 20px;
+	outline: none;
+	display: inline-block;
+	position: relative;
+	background-repeat: no-repeat;
+}

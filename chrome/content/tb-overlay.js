@@ -152,13 +152,20 @@ var mailHopsDisplay =
     }
   },
 
-  clear: function(){
+  clear: function(no_ips){
 
     this.mailhopsDataPaneDNSBL.style.display = 'none';
     this.mailhopsResultWeather.style.display = 'none';
-    this.resultText.style.backgroundImage='url(chrome://mailhops/content/images/loader.gif)';
-    this.resultText.setAttribute('value',' Looking Up Route');
-
+    
+    if(no_ips){
+      this.resultText.style.backgroundImage='url(chrome://mailhops/content/images/loader.gif)';
+      this.resultText.setAttribute('value',' Looking Up Route');
+      this.resultText.setAttribute('tooltiptext',' Looking Up Route');
+    } else {
+      this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
+      this.resultText.value = ' Looking Up Route';
+      this.resultText.setAttribute('tooltiptext','Looking Up Route');   
+    }
   },
 
   route: function ( header_route, message, response, meta, lookup_url ){

@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.1] - 2015-06-10
+### Added
+- Context.IO sponsored message, build something awesome with their API!
+
+### Fixed
+- Removed loading indicator when no received headers found
+- Secure message parsing
+
 ## [1.0.0] - 2015-05-31
 ### Changed
 - Combined Thunderbird and Postbox code into one plugin

@@ -72,24 +72,23 @@
 	    	<groupbox>
 				<caption label="MailHops API Hosting"/>	
 				<description>
-					MailHops API is also available for download if you would like to host your own.
+					MailHops API hosting is sponsored by <label class="text-link plain" value="Context.IO" href="https://context.io"/>.
+					<image src="chrome://mailhops/content/images/contextio-200.png" width="200"/>
 				</description>
 				
-				<textbox id="mailhop.api_url" value="http://api.mailhops.com"/>
+				<textbox id="mailhop.api_url" value="http://api.mailhops.com" focused="true"/>
 
 				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" /> 
 				
 				<label class="text-link plain act" onclick="ResetConnection();" value="Reset Connection" />
 
-				<checkbox id="mailhop.debug" label="Debug" checked="false"/>		
-
 				<description>
-					MailHops API uses Forecast.IO to get the weather of the sender, register for an API Key to enable this feature.
+					MailHops API uses <label class="text-link plain" value="Forecast.IO" href="https://developer.forecast.io/"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
 				
 				<textbox id="mailhop.fkey" value=""/>
 
-				<label class="text-link plain" value="Forecast.IO" href="https://developer.forecast.io/"/>
+				<checkbox id="mailhop.debug" label="Debug" checked="false"/>		
 	  		</groupbox>
 	    </tabpanel>
 	    

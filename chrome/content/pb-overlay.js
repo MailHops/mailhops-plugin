@@ -223,7 +223,7 @@ var mailHopsDisplay =
 	  if(data && data.error){
 	  	this.resultTextDataPane.value = mailHopsUtils.error(data.meta.code);
 	  	this.resultTextDataPane.setAttribute('tooltiptext',data.error.message);
-	  }else{
+	  } else {
 	  	this.resultTextDataPane.value = ' Service Unavailable.';
 	  	this.resultTextDataPane.setAttribute('tooltiptext',' Could not connect to MailHops API.');
 	  }
@@ -236,16 +236,22 @@ var mailHopsDisplay =
     this.resultTextDataPane3.value = '';
   },
 
-  clear: function(){
+  clear: function(no_ips){
   	this.resultTextDataPane2.style.display = 'none';
 	this.resultContainerDetails.style.display = 'none';
 	this.resultDetailsLink.style.display = 'none';
 	this.resultMapLink.style.display = 'none';
 	this.mailhopsDataPaneDNSBL.style.display = 'none';
 
-	this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
-	this.resultTextDataPane.value = ' Looking Up Route';
-	this.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route');
+	if(no_ips){
+		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/help.png)';
+		this.resultTextDataPane.value = ' No IPs';
+		this.resultTextDataPane.setAttribute('tooltiptext','There were no received headers found');		
+	} else {
+		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
+		this.resultTextDataPane.value = ' Looking Up Route';
+		this.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route');		
+	}
 
 	this.resultTextDataPane2.value = '';
 	this.resultTextDataPane2.style.backgroundImage = '';

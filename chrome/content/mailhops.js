@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Postbox 1.0.0','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Postbox 1.0.1','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -214,7 +214,7 @@ mailHops.getRoute = function(){
   if ( all_ips.length != 0 ){
    mailHops.lookupRoute ( all_ips ) ;
   } else {
-	  mailHopsDisplay.clear();
+	  mailHopsDisplay.clear( true );
   }
 };
 //another ip check, dates will throw off the regex
@@ -240,10 +240,18 @@ mailHops.testIP = function(ip,header){
 		
     //check if this IP was part of a secure transmission
 		if(retval){
-			if(header.indexOf('using SSL') != -1)
-				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+11));
-			else if(header.indexOf('using TLS') != -1)
-				mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),header.indexOf('using TLS')+11));
+      if(header.indexOf('using SSL') != -1){
+        if(header.substring(header.indexOf('using SSL')+11,header.indexOf('using SSL')+12) == '.')
+          mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+14));
+        else
+				  mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+11));
+      }
+			else if(header.indexOf('using TLS') != -1){
+        if(header.substring(header.indexOf('using TLS')+11,header.indexOf('using TLS')+12) == '.')
+				  mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),header.indexOf('using TLS')+14));
+        else
+          mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),header.indexOf('using TLS')+11));
+      }
 			else if(header.indexOf('version=TLSv1/SSLv3') != -1)
 				mailHops.message.secure.push(ip+':'+'using TLSv1/SSLv3');
 		}
