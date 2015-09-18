@@ -271,12 +271,9 @@ var mailHopsDisplay =
 	  var displayText=''
 		  , distanceText=''
 		  , image='chrome://mailhops/content/images/local.png'
-		  , city=null
-		  , state=null
-		  , countryName=null
-		  , gotFirst=false
 		  , secureToolTipText=false
-		  , weather=null;
+		  , weather=null
+		  , first=null;
 
 	  //remove child details
 	  while(this.resultDetails.firstChild) {
@@ -310,16 +307,10 @@ var mailHopsDisplay =
 
    		for(var i=0; i<response.route.length;i++){
   			//get the first hop location
-	   		if(!gotFirst && !response.route[i].private && !response.route[i].client){
+	   		if(!first && !response.route[i].private && !response.route[i].client){
+	   			first = response.route[i];
 	   			if(!!response.route[i].countryCode)
 		   			image='chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png';
-		   		if(!!response.route[i].city)
-		   			city=response.route[i].city;
-		   		if(!!response.route[i].state)
-		   			state=response.route[i].state;
-		   		if(!!response.route[i].countryName)
-		   			countryName=response.route[i].countryName;
-	   			gotFirst=true;
 	   		}
 
 	   		var label = document.createElement('label');
@@ -422,12 +413,14 @@ var mailHopsDisplay =
   	displayText = ' Local message.';
   } else {
   	
-  	if(!!city && !!state)
-        displayText = city+', '+state;
-    else if(!!city)  
-        displayText = city+', '+countryCode;
-  	else if(!!countryName)
-  		displayText = countryName;
+  	if(!!first){
+      if(!!first.city && !!first.state)
+          displayText = first.city+', '+first.state;
+      else if(!!first.city)
+          displayText = first.city+', '+first.countryCode;
+      else if(!!first.countryName)
+          displayText = first.countryName;
+    }
 
     if(response.distance && response.distance.miles > 0){
     	if(this.options.unit=='mi')
