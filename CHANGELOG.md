@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.2] - 2015-09-17
+
+### Added
+- Map provider in preferences
+
+### Fixed
+- Save language in preferences
+
 ## [1.0.1] - 2015-06-10
 ### Added
 - Context.IO sponsored message, build something awesome with their API!
