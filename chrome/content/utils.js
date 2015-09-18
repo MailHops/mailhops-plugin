@@ -143,6 +143,9 @@ launchMap: function(route,options){
     if(options.fkey != '')
       lookupURL += '&fkey='+options.fkey;
 
+    if(options.map_provider)
+      lookupURL += '&mp='+options.map_provider;
+
       window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});    
    }
 },

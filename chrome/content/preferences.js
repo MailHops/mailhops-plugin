@@ -13,11 +13,10 @@ var mailHopPreferences = {
 
   	this.fkey = document.getElementById("mailhop.fkey");
 
-  	if(pref.getCharPref("mail.mailHops.lang",'en')=='en')
-	    document.getElementById("mailhop.lang").selectedIndex = 0;
-	else
-	    document.getElementById("mailhop.lang").selectedIndex = 1;
-	    
+	document.getElementById("mailhop.lang").value = pref.getCharPref("mail.mailHops.lang",'en');
+	
+	document.getElementById("mailhop.map_provider").value = pref.getCharPref("mail.mailHops.map_provider",'OpenStreetMap.Mapnik');
+
 	if(pref.getCharPref("mail.mailHops.unit",'mi')=='mi')
 	    document.getElementById("mailhop.unit").selectedIndex = 0;
 	else
@@ -90,6 +89,7 @@ var mailHopPreferences = {
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value) ;
+    pref.setCharPref("mail.mailHops.map_provider", document.getElementById("mailhop.map_provider").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.unit", document.getElementById("mailhop.unit").selectedItem.value) ;
     pref.setCharPref("mail.mailHops.show_details", String(document.getElementById("mailhop.show_details").checked)) ;
     pref.setCharPref("mail.mailHops.show_meta", String(document.getElementById("mailhop.show_meta").checked)) ;

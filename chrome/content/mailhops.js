@@ -67,6 +67,8 @@ mailHops.loadPref = function()
   mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
 
   mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','http://api.mailhops.com');
+
+  mailHops.options.map_provider = mailHops.getCharPref('mail.mailHops.map_provider','OpenStreetMap.Mapnik');
   
   if(mailHops.options.client_location == ''){
 		mailHops.setClientLocation(function(response){

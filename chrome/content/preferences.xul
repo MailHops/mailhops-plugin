@@ -45,6 +45,114 @@
 					<radio value="km" label="Kilometers and ºC"/>
 				</radiogroup>
 			</groupbox>
+
+			<groupbox>
+				<caption label="Default Map"/>
+				<menulist id="mailhop.map_provider">
+					<menupopup>
+					<menuitem value="OpenStreetMap.Mapnik" label="OpenStreetMap.Mapnik" />
+					<menuitem value="OpenStreetMap.BlackAndWhite" label="OpenStreetMap.BlackAndWhite" />
+					<menuitem value="OpenStreetMap.DE" label="OpenStreetMap.DE" />
+					<menuitem value="OpenStreetMap.France" label="OpenStreetMap.France" />
+					<menuitem value="OpenStreetMap.HOT" label="OpenStreetMap.HOT" />
+					<menuitem value="OpenSeaMap" label="OpenSeaMap" />
+					<menuitem value="OpenTopoMap" label="OpenTopoMap" />
+					<menuitem value="Thunderforest.OpenCycleMap" label="Thunderforest.OpenCycleMap" />
+					<menuitem value="Thunderforest.Transport" label="Thunderforest.Transport" />
+					<menuitem value="Thunderforest.TransportDark" label="Thunderforest.TransportDark" />
+					<menuitem value="Thunderforest.Landscape" label="Thunderforest.Landscape" />
+					<menuitem value="Thunderforest.Outdoors" label="Thunderforest.Outdoors" />
+					<menuitem value="OpenMapSurfer.Roads" label="OpenMapSurfer.Roads" />
+					<menuitem value="OpenMapSurfer.AdminBounds" label="OpenMapSurfer.AdminBounds" />
+					<menuitem value="OpenMapSurfer.Grayscale" label="OpenMapSurfer.Grayscale" />
+					<menuitem value="Hydda.Full" label="Hydda.Full" />
+					<menuitem value="Hydda.Base" label="Hydda.Base" />
+					<menuitem value="Hydda.RoadsAndLabels" label="Hydda.RoadsAndLabels" />
+					<menuitem value="MapQuestOpen.OSM" label="MapQuestOpen.OSM" />
+					<menuitem value="MapQuestOpen.Aerial" label="MapQuestOpen.Aerial" />
+					<menuitem value="MapQuestOpen.HybridOverlay" label="MapQuestOpen.HybridOverlay" />
+					<menuitem value="MapBox" label="MapBox" />
+					<menuitem value="Stamen.Toner" label="Stamen.Toner" />
+					<menuitem value="Stamen.TonerBackground" label="Stamen.TonerBackground" />
+					<menuitem value="Stamen.TonerHybrid" label="Stamen.TonerHybrid" />
+					<menuitem value="Stamen.TonerLines" label="Stamen.TonerLines" />
+					<menuitem value="Stamen.TonerLabels" label="Stamen.TonerLabels" />
+					<menuitem value="Stamen.TonerLite" label="Stamen.TonerLite" />
+					<menuitem value="Stamen.Watercolor" label="Stamen.Watercolor" />
+					<menuitem value="Stamen.Terrain" label="Stamen.Terrain" />
+					<menuitem value="Stamen.TerrainBackground" label="Stamen.TerrainBackground" />
+					<menuitem value="Stamen.TopOSMRelief" label="Stamen.TopOSMRelief" />
+					<menuitem value="Stamen.TopOSMFeatures" label="Stamen.TopOSMFeatures" />
+					<menuitem value="Esri.WorldStreetMap" label="Esri.WorldStreetMap" />
+					<menuitem value="Esri.DeLorme" label="Esri.DeLorme" />
+					<menuitem value="Esri.WorldTopoMap" label="Esri.WorldTopoMap" />
+					<menuitem value="Esri.WorldImagery" label="Esri.WorldImagery" />
+					<menuitem value="Esri.WorldTerrain" label="Esri.WorldTerrain" />
+					<menuitem value="Esri.WorldShadedRelief" label="Esri.WorldShadedRelief" />
+					<menuitem value="Esri.WorldPhysical" label="Esri.WorldPhysical" />
+					<menuitem value="Esri.OceanBasemap" label="Esri.OceanBasemap" />
+					<menuitem value="Esri.NatGeoWorldMap" label="Esri.NatGeoWorldMap" />
+					<menuitem value="Esri.WorldGrayCanvas" label="Esri.WorldGrayCanvas" />
+					<menuitem value="OpenWeatherMap.Clouds" label="OpenWeatherMap.Clouds" />
+					<menuitem value="OpenWeatherMap.CloudsClassic" label="OpenWeatherMap.CloudsClassic" />
+					<menuitem value="OpenWeatherMap.Precipitation" label="OpenWeatherMap.Precipitation" />
+					<menuitem value="OpenWeatherMap.PrecipitationClassic" label="OpenWeatherMap.PrecipitationClassic" />
+					<menuitem value="OpenWeatherMap.Rain" label="OpenWeatherMap.Rain" />
+					<menuitem value="OpenWeatherMap.RainClassic" label="OpenWeatherMap.RainClassic" />
+					<menuitem value="OpenWeatherMap.Pressure" label="OpenWeatherMap.Pressure" />
+					<menuitem value="OpenWeatherMap.PressureContour" label="OpenWeatherMap.PressureContour" />
+					<menuitem value="OpenWeatherMap.Wind" label="OpenWeatherMap.Wind" />
+					<menuitem value="OpenWeatherMap.Temperature" label="OpenWeatherMap.Temperature" />
+					<menuitem value="OpenWeatherMap.Snow" label="OpenWeatherMap.Snow" />
+					<menuitem value="HERE.normalDay" label="HERE.normalDay" />
+					<menuitem value="HERE.normalDayCustom" label="HERE.normalDayCustom" />
+					<menuitem value="HERE.normalDayGrey" label="HERE.normalDayGrey" />
+					<menuitem value="HERE.normalDayMobile" label="HERE.normalDayMobile" />
+					<menuitem value="HERE.normalDayGreyMobile" label="HERE.normalDayGreyMobile" />
+					<menuitem value="HERE.normalDayTransit" label="HERE.normalDayTransit" />
+					<menuitem value="HERE.normalDayTransitMobile" label="HERE.normalDayTransitMobile" />
+					<menuitem value="HERE.normalNight" label="HERE.normalNight" />
+					<menuitem value="HERE.normalNightMobile" label="HERE.normalNightMobile" />
+					<menuitem value="HERE.normalNightGrey" label="HERE.normalNightGrey" />
+					<menuitem value="HERE.normalNightGreyMobile" label="HERE.normalNightGreyMobile" />
+					<menuitem value="HERE.carnavDayGrey" label="HERE.carnavDayGrey" />
+					<menuitem value="HERE.hybridDay" label="HERE.hybridDay" />
+					<menuitem value="HERE.hybridDayMobile" label="HERE.hybridDayMobile" />
+					<menuitem value="HERE.pedestrianDay" label="HERE.pedestrianDay" />
+					<menuitem value="HERE.pedestrianNight" label="HERE.pedestrianNight" />
+					<menuitem value="HERE.satelliteDay" label="HERE.satelliteDay" />
+					<menuitem value="HERE.terrainDay" label="HERE.terrainDay" />
+					<menuitem value="HERE.terrainDayMobile" label="HERE.terrainDayMobile" />
+					<menuitem value="Acetate.basemap" label="Acetate.basemap" />
+					<menuitem value="Acetate.terrain" label="Acetate.terrain" />
+					<menuitem value="Acetate.all" label="Acetate.all" />
+					<menuitem value="Acetate.foreground" label="Acetate.foreground" />
+					<menuitem value="Acetate.roads" label="Acetate.roads" />
+					<menuitem value="Acetate.labels" label="Acetate.labels" />
+					<menuitem value="Acetate.hillshading" label="Acetate.hillshading" />
+					<menuitem value="FreeMapSK" label="FreeMapSK" />
+					<menuitem value="MtbMap" label="MtbMap" />
+					<menuitem value="CartoDB.Positron" label="CartoDB.Positron" />
+					<menuitem value="CartoDB.PositronNoLabels" label="CartoDB.PositronNoLabels" />
+					<menuitem value="CartoDB.DarkMatter" label="CartoDB.DarkMatter" />
+					<menuitem value="CartoDB.DarkMatterNoLabels" label="CartoDB.DarkMatterNoLabels" />
+					<menuitem value="HikeBike.HikeBike" label="HikeBike.HikeBike" />
+					<menuitem value="HikeBike.HillShading" label="HikeBike.HillShading" />
+					<menuitem value="BasemapAT.basemap" label="BasemapAT.basemap" />
+					<menuitem value="BasemapAT.grau" label="BasemapAT.grau" />
+					<menuitem value="BasemapAT.overlay" label="BasemapAT.overlay" />
+					<menuitem value="BasemapAT.highdpi" label="BasemapAT.highdpi" />
+					<menuitem value="BasemapAT.orthofoto" label="BasemapAT.orthofoto" />
+					<menuitem value="NASAGIBS.ModisTerraTrueColorCR" label="NASAGIBS.ModisTerraTrueColorCR" />
+					<menuitem value="NASAGIBS.ModisTerraBands367CR" label="NASAGIBS.ModisTerraBands367CR" />
+					<menuitem value="NASAGIBS.ViirsEarthAtNight2012" label="NASAGIBS.ViirsEarthAtNight2012" />
+					<menuitem value="NASAGIBS.ModisTerraLSTDay" label="NASAGIBS.ModisTerraLSTDay" />
+					<menuitem value="NASAGIBS.ModisTerraSnowCover" label="NASAGIBS.ModisTerraSnowCover" />
+					<menuitem value="NASAGIBS.ModisTerraAOD" label="NASAGIBS.ModisTerraAOD" />
+					<menuitem value="NASAGIBS.ModisTerraChlorophyll" label="NASAGIBS.ModisTerraChlorophyll" />
+					</menupopup>
+				</menulist>
+			</groupbox>
 	    </tabpanel>
 	    <tabpanel> 
 	    	<groupbox>
@@ -55,12 +163,12 @@
 				<checkbox id="mailhop.show_meta" label="Show Meta" checked="true"/>
 			</groupbox>	
 			<groupbox>
-				<caption label="Details Options"/>			
+				<caption label="Details menuitems"/>			
 				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="true"/></label>
 				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="true"/></label>
 			</groupbox>
 			<groupbox>
-				<caption label="Authentication Options"/>			
+				<caption label="Authentication menuitems"/>			
 				<checkbox id="mailhop.show_mailer" label="Show Mailer" checked="true"/>
 				<checkbox id="mailhop.show_spf" label="Show SPF" checked="true"/>
 				<checkbox id="mailhop.show_dkim" label="Show DKIM" checked="true"/>
