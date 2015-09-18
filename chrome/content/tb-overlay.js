@@ -193,13 +193,13 @@ var mailHopsDisplay =
       for(var i=0; i<response.route.length;i++){
             //get the first hop location
             if(!gotFirst && !response.route[i].private && !response.route[i].client){
-              if(response.route[i].countryCode)
+              if(!!response.route[i].countryCode)
                 image='chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png';
-              if(response.route[i].city)
+              if(!!response.route[i].city)
                 city=response.route[i].city;
-              if(response.route[i].state)
+              if(!!response.route[i].state)
                 state=response.route[i].state;
-              if(response.route[i].countryName)
+              if(!!response.route[i].countryName)
                 countryName=response.route[i].countryName;
               gotFirst=true;
             }
@@ -286,7 +286,7 @@ var mailHopsDisplay =
     if(!!city && !!state)
         displayText = city+', '+state;
     else if(!!city)  
-        displayText = city;
+        displayText = city+', '+countryCode;
     else if(!!countryName)
         displayText = countryName;
 

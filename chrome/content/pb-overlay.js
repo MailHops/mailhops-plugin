@@ -425,7 +425,7 @@ var mailHopsDisplay =
   	if(!!city && !!state)
         displayText = city+', '+state;
     else if(!!city)  
-        displayText = city;
+        displayText = city+', '+countryCode;
   	else if(!!countryName)
   		displayText = countryName;
 
