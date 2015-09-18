@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.2','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 1.0.3','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };

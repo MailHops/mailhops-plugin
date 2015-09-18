@@ -214,8 +214,12 @@ var mailHopsDisplay =
             else
               menuitem.setAttribute('image','chrome://mailhops/content/images/local.png');
 
-            if(response.route[i].city && response.route[i].state){
-              label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state;
+            if(response.route[i].city){
+              if(response.route[i].city && response.route[i].state)
+                label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state;
+              else
+                label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].countryCode;
+
               menuitem.setAttribute('tooltiptext','Click for WhoIs');
               menuitem.setAttribute('data-ip',response.route[i].ip);
               menuitem.addEventListener("click", function () {
@@ -278,15 +282,19 @@ var mailHopsDisplay =
   if(image.indexOf('local')!=-1) {
     displayText = ' Local message.';
   } else {
-    if(city && state)
-      displayText = city+', '+state;
-    else if(countryName)
+    
+    if(!!city && !!state)
+        displayText = city+', '+state;
+    else if(!!city)  
+        displayText = city;
+    else if(!!countryName)
         displayText = countryName;
-      if(response.distance && response.distance.miles > 0){
-        if(this.options.unit=='mi')
-          distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
-        else
-          distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
+
+    if(response.distance && response.distance.miles > 0){
+      if(this.options.unit=='mi')
+        distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
+      else
+        distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
     } else if(displayText=='')
       displayText = ' Local message.';
   }

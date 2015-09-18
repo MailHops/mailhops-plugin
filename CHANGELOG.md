@@ -1,12 +1,13 @@
 # Change Log
 
-## [1.0.2] - 2015-09-17
+## [1.0.3] - 2015-09-17
 
 ### Added
 - Map provider in preferences
 
 ### Fixed
 - Save language in preferences
+- Display if only city in response
 
 ## [1.0.1] - 2015-06-10
 ### Added

@@ -311,13 +311,13 @@ var mailHopsDisplay =
    		for(var i=0; i<response.route.length;i++){
   			//get the first hop location
 	   		if(!gotFirst && !response.route[i].private && !response.route[i].client){
-	   			if(response.route[i].countryCode)
+	   			if(!!response.route[i].countryCode)
 		   			image='chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png';
-		   		if(response.route[i].city)
+		   		if(!!response.route[i].city)
 		   			city=response.route[i].city;
-		   		if(response.route[i].state)
+		   		if(!!response.route[i].state)
 		   			state=response.route[i].state;
-		   		if(response.route[i].countryName)
+		   		if(!!response.route[i].countryName)
 		   			countryName=response.route[i].countryName;
 	   			gotFirst=true;
 	   		}
@@ -329,10 +329,14 @@ var mailHopsDisplay =
 		   		label.style.backgroundImage = 'url(chrome://mailhops/content/images/local.png)';
 		   	label.setAttribute('class','dataPaneAddressitem mailhopsDetail');
 
-		   	if(response.route[i].city && response.route[i].state){
-			   	label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state);
-			   	label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
-  			}
+	   		if(response.route[i].city && response.route[i].state){
+		   		label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state);
+	   			label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
+	   		}
+		   	else if(response.route[i].city){
+		   		label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].countryCode);
+		   		label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
+		   	}
   			else if(response.route[i].countryName){
   				label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].countryName);
   				label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
@@ -417,10 +421,14 @@ var mailHopsDisplay =
  if(image.indexOf('local')!=-1) {
   	displayText = ' Local message.';
   } else {
-  	if(city && state)
-		displayText = city+', '+state;
-	else if(countryName)
+  	
+  	if(!!city && !!state)
+        displayText = city+', '+state;
+    else if(!!city)  
+        displayText = city;
+  	else if(!!countryName)
   		displayText = countryName;
+
     if(response.distance && response.distance.miles > 0){
     	if(this.options.unit=='mi')
 			distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
