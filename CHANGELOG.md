@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.0.3] - 2015-09-17
+## [1.0.3] - 2015-09-18
 
 ### Added
 - Map provider in preferences
