@@ -9,12 +9,6 @@
 	title="MailHops Map"
 	buttonlabelcancel="Close">
 
-<script>
-window.saveTemplate = function(template){
-	alert(template);
-};
-</script>
-
 <iframe id="mailhops_iframe" flex="1" width="1024" height="768" style="overflow:hidden;" type="content"></iframe>
 		
 <script>
