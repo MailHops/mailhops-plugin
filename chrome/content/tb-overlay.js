@@ -1,5 +1,5 @@
 var mailHopsDisplay =
-{	
+{
   resultBox:              null,
   resultText:             null,
   resultDetails:          null,
@@ -13,7 +13,7 @@ var mailHopsDisplay =
   options:                null,
 
   init: function(options){
-    
+
     this.options = options;
 
     this.container = document.getElementById ( "mailhopsBox" ) ;
@@ -156,7 +156,7 @@ var mailHopsDisplay =
 
     this.mailhopsDataPaneDNSBL.style.display = 'none';
     this.mailhopsResultWeather.style.display = 'none';
-    
+
     if(no_ips){
       this.resultText.style.backgroundImage='url(chrome://mailhops/content/images/loader.gif)';
       this.resultText.setAttribute('value',' Looking Up Route');
@@ -164,7 +164,7 @@ var mailHopsDisplay =
     } else {
       this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
       this.resultText.value = ' Looking Up Route';
-      this.resultText.setAttribute('tooltiptext','Looking Up Route');   
+      this.resultText.setAttribute('tooltiptext','Looking Up Route');
     }
   },
 
@@ -185,7 +185,8 @@ var mailHopsDisplay =
 
       if(this.options.client_location){
         var client_location = JSON.parse(this.options.client_location);
-        response.route.push(client_location.route[0]);
+        if(response.route[response.route.length-1].ip != client_location.route[0].ip)
+	  		   response.route.push(client_location.route[0]);
       }
       for(var i=0; i<response.route.length;i++){
             //get the first hop location
@@ -273,7 +274,7 @@ var mailHopsDisplay =
   if(image.indexOf('local')!=-1) {
     displayText = ' Local message.';
   } else {
-    
+
     if(!!first){
       if(!!first.city && !!first.state)
           displayText = first.city+', '+first.state;

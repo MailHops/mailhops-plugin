@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.3','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 1.0.4','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -26,7 +26,7 @@ mailHops.init = function() {
 
   //load preferences
   mailHops.loadPref();
-  
+
   document.getElementById("mailhopsDataPanePrefsLink").addEventListener("click", function () {
         window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
       });
@@ -36,7 +36,7 @@ mailHops.init = function() {
       });
 
   mailHops.isLoaded = true;
-  
+
 };
 
 mailHops.loadPref = function()
@@ -69,7 +69,7 @@ mailHops.loadPref = function()
   mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','http://api.mailhops.com');
 
   mailHops.options.map_provider = mailHops.getCharPref('mail.mailHops.map_provider','OpenStreetMap.Mapnik');
-  
+
   if(mailHops.options.client_location == ''){
 		mailHops.setClientLocation(function(response){
       mailHops.options.client_location=response;
@@ -142,12 +142,12 @@ mailHops.getRoute = function(){
   //IP regex
   var regexIp=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/;
   var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
-  
+
   // TODO test IPV6 regex for Received headers, currently only used for X-Originating-IP
   // IPv6 addresses including compressed and IPv4-embedded variants (RFC 2373)
   // http://regexlib.com/REDetails.aspx?regexp_id=2919
   var regexIPV6 = /(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))/;
-      
+
   var headReceived = mailHops.headers.extractHeader ( "Received" , true ) ;
   var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false ) ;
   //auth box
@@ -191,7 +191,7 @@ mailHops.getRoute = function(){
 	      				all_ips.unshift( received_ips[r] );
 						    //don't want duplicate IPs from the same Received header
                 if(r < received_ips.length && received_ips[r] == received_ips[r+1])
-                   break;     
+                   break;
 		    		}
 		   		}
 	      	}
@@ -232,14 +232,14 @@ mailHops.testIP = function(ip,header){
 
 		if(firstchar.match(/\.|\d|\-/)
       || lastchar.match(/\.|\d|\-/)
-      || ( firstchar == '?' && lastchar == '?' ) 
+      || ( firstchar == '?' && lastchar == '?' )
       || lastchar == ';'){
-			return null;      
+			return null;
     }
     else if(header.indexOf('['+ip+']') !== -1 || header.indexOf('('+ip+')') !== -1){
-			retval = true;      
+			retval = true;
     }
-		
+
     //check if this IP was part of a secure transmission
 		if(retval){
       if(header.indexOf('using SSL') != -1){
@@ -362,9 +362,6 @@ mailHops.lookupRoute = function(header_route){
 
  if(mailHops.options.fkey != '')
     lookupURL += '&fkey='+mailHops.options.fkey;
-
- if(mailHops.options.client_location != '')
-    lookupURL+='&c=0';
 
  mailHops.LOG(lookupURL);
 

@@ -1,5 +1,5 @@
 var mailHopsDisplay =
-{	
+{
   resultTextDataPane:		null,
   resultTextDataPane2:		null,
   resultTextDataPane3:      null,
@@ -19,7 +19,7 @@ var mailHopsDisplay =
   options: 					null,
 
   init: function(options){
-  	  
+
   	  this.options = options;
 
   	  this.resultContainerDataPane = document.getElementById ( "mailhopsDataPane");
@@ -48,7 +48,7 @@ var mailHopsDisplay =
  	    document.getElementById('dataPaneMailHopsMetaContainer').style.display='';
  	  else
  	  	document.getElementById('dataPaneMailHopsMetaContainer').style.display='none';
- 	    
+
 	  //event listner for route click to launch map
 	  this.resultMapLink.addEventListener("click", function () {
 	  		if(this.hasAttribute("data-route"))
@@ -246,11 +246,11 @@ var mailHopsDisplay =
 	if(no_ips){
 		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/help.png)';
 		this.resultTextDataPane.value = ' No IPs';
-		this.resultTextDataPane.setAttribute('tooltiptext','There were no received headers found');		
+		this.resultTextDataPane.setAttribute('tooltiptext','There were no received headers found');
 	} else {
 		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
 		this.resultTextDataPane.value = ' Looking Up Route';
-		this.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route');		
+		this.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route');
 	}
 
 	this.resultTextDataPane2.value = '';
@@ -258,7 +258,7 @@ var mailHopsDisplay =
 	this.resultTextDataPane2.setAttribute('tooltiptext','');
 
     this.resultTextDataPane3.style.display = 'none';
-    this.resultTextDataPane3.value = '';    
+    this.resultTextDataPane3.value = '';
 
 	//remove child details
 	while(this.resultDetails.firstChild) {
@@ -267,7 +267,7 @@ var mailHopsDisplay =
   },
 
   route: function(header_route, message, response, meta, lookup_url){
-		
+
 	  var displayText=''
 		  , distanceText=''
 		  , image='chrome://mailhops/content/images/local.png'
@@ -296,13 +296,14 @@ var mailHopsDisplay =
 			mlabel.setAttribute('href',lookup_url);
 			this.resultMeta.appendChild(mlabel);
 
-	} 
+	}
 
   if(response && response.route && response.route.length > 0){
 
   		if(this.options.client_location){
   			var client_location = JSON.parse(this.options.client_location);
-	  		response.route.push(client_location.route[0]);
+        if(response.route[response.route.length-1].ip != client_location.route[0].ip)
+	  		   response.route.push(client_location.route[0]);
   		}
 
    		for(var i=0; i<response.route.length;i++){
@@ -396,7 +397,7 @@ var mailHopsDisplay =
 	      //   var ipv6 = document.createElement('label');
 	      //     ipv6.setAttribute('class','dataPaneAddressitem mailhopsipv6');
 	      //     ipv6.setAttribute('value','IPV6');
-	      //     this.resultDetails.appendChild(ipv6); 
+	      //     this.resultDetails.appendChild(ipv6);
 	      // }
 
 	      if(response.route[i].w3w){
@@ -412,7 +413,7 @@ var mailHopsDisplay =
  if(image.indexOf('local')!=-1) {
   	displayText = ' Local message.';
   } else {
-  	
+
   	if(!!first){
       if(!!first.city && !!first.state)
           displayText = first.city+', '+first.state;
