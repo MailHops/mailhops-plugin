@@ -3,7 +3,7 @@
 
 <?xml-stylesheet href="chrome://mailhops/skin/tb-styles.css" type="text/css"?>
 
-<overlay id="mailhopsOverlay" 
+<overlay id="mailhopsOverlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml">
 
@@ -17,29 +17,29 @@
        		<hbox id="mailhopsResult" flex="1">
        			<label id="mailhopsResultText"></label>
        			<label id="mailhopsResultWeather"></label>
-       			
+
        			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="hops" tooltiptext="Click to view route.">
-       				<menupopup id="mailhopsDataPaneDetails">						
+       				<menupopup id="mailhopsDataPaneDetails">
 					</menupopup>
-				</button>	
-				
-				<button id="mailhopsMapLink" class="msgHeaderView-button msgHeaderView-flat-button" label="map"></button>				
+				</button>
 
-				<button id="mailhopsDataPaneRefreshLink" class="msgHeaderView-button msgHeaderView-flat-button" label="refresh"></button>
+				<button id="mailhopsMapLink" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_map_label;"></button>
 
-				<button id="mailhopsDataPanePrefsLink" class="msgHeaderView-button msgHeaderView-flat-button" label="options"></button>
-    			
+				<button id="mailhopsDataPaneRefreshLink" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_refresh_label;"></button>
+
+				<button id="mailhopsDataPanePrefsLink" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_options_label;"></button>
+
 				<label id="mailhopsDataPaneMailer" class="auth-item" value="" tooltiptext="Mailer"></label>
-				
+
 				<label id="mailhopsDataPaneSPF" class="auth-item" value="" tooltiptext="SPF"></label>
-				
+
 				<label id="mailhopsDataPaneDKIM" class="auth-item" value="" tooltiptext="DKIM"></label>
-				
+
 				<label id="mailhopsDataPaneDNSBL" class="text-link auth-item" value="" tooltiptext="DNSBL"></label>
-									
+
        		</hbox>
-               		
+
 		</row>
 	</rows>
-		
+
 </overlay>
