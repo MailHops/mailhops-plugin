@@ -302,8 +302,15 @@ var mailHopsDisplay =
 
   		if(this.options.client_location){
   			var client_location = JSON.parse(this.options.client_location);
-        if(response.route[response.route.length-1].ip != client_location.route[0].ip)
-	  		   response.route.push(client_location.route[0]);
+        //get distance from last route to client_location and add to response.distance.miles or kilometers
+        if(!response.route[response.route.length-1]['private']){
+          if(this.options.unit=='km')
+            response.distance.kilometers += mailHopsUtils.getDistance(response.route[response.route.length-1],client_location.route[0],this.options.unit);
+          else
+            response.distance.miles += mailHopsUtils.getDistance(response.route[response.route.length-1],client_location.route[0],this.options.unit);
+        }
+        //push client location to the end of the route
+        response.route.push(client_location.route[0]);
   		}
 
    		for(var i=0; i<response.route.length;i++){
@@ -423,14 +430,14 @@ var mailHopsDisplay =
           displayText = first.countryName;
     }
 
-    if(response.distance && response.distance.miles > 0){
-    	if(this.options.unit=='mi')
-			distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
-		else
-			distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
-	}
-	else if(displayText=='')
-		displayText = ' Local message.';
+    if(response.distance){
+    	if(this.options.unit=='km' && response.distance.kilometers > 0)
+			   distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
+		  else if(response.distance.miles > 0)
+			   distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
+	  }
+  	else if(displayText=='')
+  		displayText = ' Local message.';
   }
 
   if(header_route)

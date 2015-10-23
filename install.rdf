@@ -5,7 +5,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:type>2</em:type>
 		<em:id>thunderbird@mailhops.com</em:id>
-		<em:version>1.0.4</em:version>
+		<em:version>1.0.5</em:version>
 
 		<em:name>MailHops</em:name>
 		<em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>

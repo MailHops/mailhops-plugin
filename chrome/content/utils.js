@@ -73,7 +73,7 @@ dnsbl: function(result,abbr){
    	case '127.0.0.3':
          if(abbr)
             return 'SBL';
-         else   
+         else
 			     return 'Static UBE sources, verified spam services and ROKSO spammers.';
 
 		case '127.0.0.4':
@@ -82,14 +82,14 @@ dnsbl: function(result,abbr){
 		case '127.0.0.7':
          if(abbr)
             return 'XBL';
-         else   
+         else
             return 'Illegal 3rd party exploits, including proxies, worms and trojan exploits.';
 
 		case '127.0.0.10':
 		case '127.0.0.11':
          if(abbr)
             return 'PBL';
-         else   
+         else
 			     return 'IP ranges which should not be delivering unauthenticated SMTP email.';
 
 		default:
@@ -146,7 +146,7 @@ launchMap: function(route,options){
     if(options.map_provider)
       lookupURL += '&mp='+options.map_provider;
 
-      window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});    
+      window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});
    }
 },
 
@@ -177,6 +177,30 @@ getWeatherIcon: function(icon){
     var hr = (new Date).getHours();
     var time = (hr >= 4 && hr <= 18)?'day':'night';
     return 'chrome://mailhops/content/images/weather/'+forecast_icons[icon][time]+'.png';
-}
+},
+
+getDistance: function(from, to, unit) {
+    if(!from || !to || !from['lat'] || !to['lat'])
+      return 0;
+      
+		lat = parseFloat(from['lat']);
+		lon1 = parseFloat(from['lng']);
+		lat2 = parseFloat(to['lat']);
+		lon2 = parseFloat(to['lng']);
+    unit = unit || 'mi';//mi or km
+
+		lat *= (Math.PI/180);
+		lon1 *= (Math.PI/180);
+		lat2 *= (Math.PI/180);
+		lon2 *= (Math.PI/180);
+
+		dist = 2*Math.asin(Math.sqrt( Math.pow((Math.sin((lat-lat2)/2)),2) + Math.cos(lat)*Math.cos(lat2)*Math.pow((Math.sin((lon1-lon2)/2)),2))) * 6378.137;
+
+		if (unit == 'mi') {
+			dist = (dist / 1.609344);
+		}
+
+		return dist;
+	}
 
 };

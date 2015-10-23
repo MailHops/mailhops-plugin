@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.4','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 1.0.5','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -362,6 +362,9 @@ mailHops.lookupRoute = function(header_route){
 
  if(mailHops.options.fkey != '')
     lookupURL += '&fkey='+mailHops.options.fkey;
+
+ if(mailHops.options.client_location != '')
+    lookupURL+='&c=0';
 
  mailHops.LOG(lookupURL);
 
