@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.0.6] - 2015-11-12
+
+### Fixed
+- Missing try/catch around JSON.parse
+
+
 ## [1.0.3] - 2015-09-18
 
 ### Added
@@ -9,6 +15,7 @@
 - Save language in preferences
 - Display if only city in response
 
+
 ## [1.0.1] - 2015-06-10
 ### Added
 - Context.IO sponsored message, build something awesome with their API!
@@ -17,12 +24,14 @@
 - Removed loading indicator when no received headers found
 - Secure message parsing
 
+
 ## [1.0.0] - 2015-05-31
 ### Changed
 - Combined Thunderbird and Postbox code into one plugin
 
 ### Fixed
 - Fix mismatch IP from Microsoft SMTP id in received header
+
 
 ## [0.9.0] - 2015-05-30
 ### Changed
