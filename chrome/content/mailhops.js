@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.5','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 1.0.6','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -86,8 +86,7 @@ mailHops.StreamListener =
   found: false ,
   onDataAvailable: function ( request , context , inputStream , offset , count )
   {
-    try
-    {
+    try {
       var sis = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance ( Components.interfaces.nsIScriptableInputStream ) ;
       sis.init( inputStream ) ;
 
@@ -104,8 +103,10 @@ mailHops.StreamListener =
           this.found = true ;
         }
       }
+    } catch(e) {
+      //failed to read input stream
+      mailHops.LOG('StreamListener Error: '+JSON.stringify(e));
     }
-    catch ( ex ) { }
   } ,
   onStartRequest: function ( request , context )
   {
@@ -223,8 +224,7 @@ mailHops.getRoute = function(){
 mailHops.testIP = function(ip,header){
 	var retval = true;
 
-	try
-	{
+	try {
 		var firstchar = header.substring(header.indexOf(ip)-1);
 			firstchar = firstchar.substring(0,1);
 		var lastchar = header.substring((header.indexOf(ip)+ip.length));
@@ -257,9 +257,9 @@ mailHops.testIP = function(ip,header){
 			else if(header.indexOf('version=TLSv1/SSLv3') != -1)
 				mailHops.message.secure.push(ip+':'+'using TLSv1/SSLv3');
 		}
-	}
-	catch(ex) {
+	} catch(e) {
 		retval = true;
+    mailHops.LOG('testIP Error: '+JSON.stringify(e));
 	}
 	return retval;
 };
@@ -306,16 +306,11 @@ mailHops.getCharPref = function ( strName , strDefault ){
   if (!pref){
       var pref = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefBranch ) ;
   }
-
-  try
-  {
+  try {
     value = pref.getCharPref ( strName ) ;
-  }
-  catch ( exception )
-  {
+  } catch(e){
     value = strDefault ;
   }
-
   return ( value ) ;
 };
 
@@ -333,7 +328,7 @@ mailHops.setClientLocation = function(cb,api_url){
 
 	 xmlhttp.onreadystatechange=function() {
 	  if (xmlhttp.readyState==4) {
-	  try{
+	  try {
          var data = JSON.parse(xmlhttp.responseText);
 		   if(data && data.meta.code==200){
 		   		//display the result
@@ -343,7 +338,7 @@ mailHops.setClientLocation = function(cb,api_url){
 			   pref.setCharPref("mail.mailHops.client_location", '') ;
          cb('');
 		   }
-	   } catch (e){
+	   } catch(e){
 		  pref.setCharPref("mail.mailHops.client_location", '') ;
       cb('');
 	   }
@@ -373,9 +368,13 @@ mailHops.lookupRoute = function(header_route){
 
  if(cached_results){
    mailHops.LOG('Found Cached Result');
- 	 cached_results = JSON.parse(cached_results);
-	 mailHopsDisplay.route(header_route, mailHops.message, cached_results.response, cached_results.meta, lookupURL);
-	 return;
+   try {
+   	 cached_results = JSON.parse(cached_results);
+  	 mailHopsDisplay.route(header_route, mailHops.message, cached_results.response, cached_results.meta, lookupURL);
+	   return;
+   } catch(e){
+     mailHops.LOG('Failed to parse cached result: '+JSON.stringify(e));
+   }
  }
 
  //call mailhops api for lookup
@@ -400,8 +399,8 @@ mailHops.lookupRoute = function(header_route){
   	    	//display the error
   	   		mailHopsDisplay.error(data);
   	   }
-     } catch (ex){
-         mailHops.LOG(JSON.stringify(ex));
+     } catch(e){
+         mailHops.LOG(JSON.stringify(e));
      	   mailHopsDisplay.error();
      }
   }
