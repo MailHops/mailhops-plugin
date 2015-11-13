@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.6','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 1.0.7','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -222,7 +222,7 @@ mailHops.getRoute = function(){
 };
 //another ip check, dates will throw off the regex
 mailHops.testIP = function(ip,header){
-	var retval = true;
+	var validIP = true;
 
 	try {
 		var firstchar = header.substring(header.indexOf(ip)-1);
@@ -231,17 +231,14 @@ mailHops.testIP = function(ip,header){
 			lastchar = lastchar.substring(0,1);
 
 		if(firstchar.match(/\.|\d|\-/)
-      || lastchar.match(/\.|\d|\-/)
-      || ( firstchar == '?' && lastchar == '?' )
-      || lastchar == ';'){
-			return null;
-    }
-    else if(header.indexOf('['+ip+']') !== -1 || header.indexOf('('+ip+')') !== -1){
-			retval = true;
-    }
-
-    //check if this IP was part of a secure transmission
-		if(retval){
+        || lastchar.match(/\.|\d|\-/)
+        || ( firstchar == '?' && lastchar == '?' )
+        || lastchar == ';'
+        || parseInt(ip.substring(0,ip.indexOf('.'))) >= 240 //IANA-RESERVED
+    ){
+			validIP = false;
+    } else {
+      //check if this IP was part of a secure transmission
       if(header.indexOf('using SSL') != -1){
         if(header.substring(header.indexOf('using SSL')+11,header.indexOf('using SSL')+12) == '.')
           mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+14));
@@ -258,10 +255,9 @@ mailHops.testIP = function(ip,header){
 				mailHops.message.secure.push(ip+':'+'using TLSv1/SSLv3');
 		}
 	} catch(e) {
-		retval = true;
-    mailHops.LOG('testIP Error: '+JSON.stringify(e));
+		mailHops.LOG('testIP Error: '+JSON.stringify(e));
 	}
-	return retval;
+	return validIP;
 };
 
 mailHops.setupEventListener = function(){

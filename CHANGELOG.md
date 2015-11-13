@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.0.7] - 2015-11-13
+
+### Fixed
+- Check that IP address starts with digit less than 240 (IANA-RESERVED)
+
+
 ## [1.0.6] - 2015-11-12
 
 ### Fixed
