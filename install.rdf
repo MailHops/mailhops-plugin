@@ -5,12 +5,12 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:type>2</em:type>
 		<em:id>thunderbird@mailhops.com</em:id>
-		<em:version>1.0.7</em:version>
+		<em:version>1.0.8</em:version>
 
 		<em:name>MailHops</em:name>
 		<em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>
 		<em:iconURL>chrome://mailhops/content/images/mailhops32.png</em:iconURL>
-		<em:homepageURL>http://www.mailhops.com</em:homepageURL>
+		<em:homepageURL>https://www.mailhops.com</em:homepageURL>
 		<em:creator>Andrew Van Tassel</em:creator>
 		<em:optionsURL>chrome://mailhops/content/preferences.xul</em:optionsURL>
 		<!-- <em:updateURL>https://dl.dropbox.com/u/1533417/mailhops_update.rdf</em:updateURL> -->

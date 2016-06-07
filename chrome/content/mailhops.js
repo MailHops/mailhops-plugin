@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.7','lan':'en','unit':'mi','api_url':'http://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 1.0.8','lan':'en','unit':'mi','api_url':'https://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -66,7 +66,7 @@ mailHops.loadPref = function()
 
   mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
 
-  mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','http://api.mailhops.com');
+  mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','https://api.mailhops.com');
 
   mailHops.options.map_provider = mailHops.getCharPref('mail.mailHops.map_provider','OpenStreetMap.Mapnik');
 

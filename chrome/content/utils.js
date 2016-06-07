@@ -128,11 +128,11 @@ launchExternalURL: function(url){
 },
 
 launchWhoIs: function(ip){
-   this.launchExternalURL('http://www.mailhops.com/whois/'+ip);
+   this.launchExternalURL('https://www.mailhops.com/whois/' + ip);
 },
 
 launchSpamHausURL: function(ip){
-   this.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
+   this.launchExternalURL('http://www.spamhaus.org/query/bl?ip=' + ip);
 },
 
 launchMap: function(route,options){
@@ -182,7 +182,7 @@ getWeatherIcon: function(icon){
 getDistance: function(from, to, unit) {
     if(!from || !to || !from['lat'] || !to['lat'])
       return 0;
-      
+
 		lat = parseFloat(from['lat']);
 		lon1 = parseFloat(from['lng']);
 		lat2 = parseFloat(to['lat']);

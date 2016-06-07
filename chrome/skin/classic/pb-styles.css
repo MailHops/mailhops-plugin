@@ -12,7 +12,7 @@
 	padding-right: 14px;
 }
 
-button { 
+button {
 	padding: 10px;
 }
 
@@ -88,10 +88,27 @@ button {
 	padding-left: 20px;
 }
 
-#mhTabs .act { 
+#mhTabs .act {
 	padding: 5px 10px 5px 20px;
 	outline: none;
 	display: inline-block;
 	position: relative;
 	background-repeat: no-repeat;
+}
+
+#mailHopsPreferences {
+		font-family: 'Raleway',Arial,sans-serif;
+		font-size: 14px;
+}
+
+textbox {
+	font-size: 14px;
+	padding: 5px;
+	color: #777;
+}
+
+tab {
+	font-size: 14px;
+	padding: 5px;
+	color: #333;
 }

@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.0.8] - 2016-5-25
+
+### Added
+- Sponsorship logic
+- New logo
+- SSL Default
+
 ## [1.0.7] - 2015-11-13
 
 ### Fixed

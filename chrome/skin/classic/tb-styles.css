@@ -9,3 +9,20 @@
 #mhTabs .act { padding-left: 20px; background-repeat: no-repeat; outline : none;}
 
 #mailhopsResultWeather { display: none; background-repeat: no-repeat; padding-left: 18px; }
+
+#mailHopsPreferences {
+		font-family: 'Raleway',Arial,sans-serif;
+		font-size: 14px;
+}
+
+textbox {
+	font-size: 14px;
+	padding: 5px;
+	color: #777;
+}
+
+tab {
+	font-size: 14px;
+	padding: 5px;
+	color: #333;
+}

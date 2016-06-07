@@ -37,7 +37,7 @@
 				<radio value="zh-CH" label="Chinese"/>
 			</radiogroup>
 			</groupbox>
-			
+
 			<groupbox>
 				<caption label="Default Units"/>
 				<radiogroup id="mailhop.unit">
@@ -154,58 +154,74 @@
 				</menulist>
 			</groupbox>
 	    </tabpanel>
-	    <tabpanel> 
+	    <tabpanel>
 	    	<groupbox>
 				<caption label="Display Boxes"/>
 				<checkbox id="mailhop.show_details" label="Show Details" checked="true"/>
 				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
-				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>			
+				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>
 				<checkbox id="mailhop.show_meta" label="Show Meta" checked="true"/>
-			</groupbox>	
+			</groupbox>
 			<groupbox>
-				<caption label="Details menuitems"/>			
+				<caption label="Details menuitems"/>
 				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="true"/></label>
 				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="true"/></label>
 			</groupbox>
 			<groupbox>
-				<caption label="Authentication menuitems"/>			
+				<caption label="Authentication menuitems"/>
 				<checkbox id="mailhop.show_mailer" label="Show Mailer" checked="true"/>
 				<checkbox id="mailhop.show_spf" label="Show SPF" checked="true"/>
 				<checkbox id="mailhop.show_dkim" label="Show DKIM" checked="true"/>
-				<checkbox id="mailhop.show_dnsbl" label="Show DNS Blacklist" checked="true"/>			
+				<checkbox id="mailhop.show_dnsbl" label="Show DNS Blacklist" checked="true"/>
 			</groupbox>
 	    </tabpanel>
-	    
+
 	    <tabpanel>
 	    	<groupbox>
-				<caption label="MailHops API Hosting"/>	
+				<caption label="MailHops API Hosting"/>
 				<description>
-					MailHops API hosting is sponsored by <label class="text-link plain" value="Context.IO" href="https://context.io"/>.
-					<image src="chrome://mailhops/content/images/contextio-200.png" width="200"/>
+					MailHops API hosting is sponsored by
+					<image src="https://mailhops.com/images/sponsor.png" width="200"/>
 				</description>
-				
-				<textbox id="mailhop.api_url" value="http://api.mailhops.com" focused="true"/>
 
-				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" /> 
-				
+				<grid flex="1">
+				  <columns>
+						<column/>
+						<column flex="1"/>
+				  </columns>
+				  <rows>
+				    <row>
+								<menulist id="mailhop.api_ssl">
+									<menupopup>
+										<menuitem value="true" label="https://" />
+										<menuitem value="false" label="http://" />
+									</menupopup>
+								</menulist>
+								<textbox id="mailhop.api_url" value="api.mailhops.com" flex="1"/>
+							</row>
+						</rows>
+				</grid>
+
+				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" />
+
 				<label class="text-link plain act" onclick="ResetConnection();" value="Reset Connection" />
 
 				<description>
 					MailHops API uses <label class="text-link plain" value="Forecast.IO" href="https://developer.forecast.io/"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
-				
+
 				<textbox id="mailhop.fkey" value=""/>
 
-				<checkbox id="mailhop.debug" label="Debug" checked="false"/>		
+				<checkbox id="mailhop.debug" label="Debug" checked="false"/>
 	  		</groupbox>
 	    </tabpanel>
-	    
+
 	    <tabpanel>
 	    	<groupbox>
-				<caption label="Your Location"/>	
-				<description>					
+				<caption label="Your Location"/>
+				<description>
 					Is cached on startup and clicking refresh below to reduce the number of lookups by one.
-				</description>				
+				</description>
 				<label id="mailhop.client_location" class="act" value="Not Set" />
 				<label id="mailhop.client_location_ip" class="plain act" value="" />
 				<label id="mailhop.client_location_host" class="plain act" value="" />
@@ -213,7 +229,7 @@
 				<label id="mailhop.refresh_location" class="text-link plain act" onclick="ResetLocation(this);" value="Refresh your location" />
 			</groupbox>
 	    </tabpanel>
-	    
+
 	  </tabpanels>
 	</tabbox>
 	</vbox>
