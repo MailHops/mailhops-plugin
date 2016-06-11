@@ -3,7 +3,7 @@
 
 <?xml-stylesheet href="chrome://mailhops/skin/pb-styles.css" type="text/css"?>
 
-<overlay id="mailhopsOverlay" 
+<overlay id="mailhopsOverlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml">
 
@@ -12,33 +12,32 @@
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
 
 	<vbox id="dataPane2">
-		<vbox id="dataPaneMailHopsContainer" class="dataPaneBox">	
+		<vbox id="dataPaneMailHopsContainer" class="dataPaneBox">
 			<hbox flex="1" pack="start" align="center">
 				<label class="dataPaneHeader" crop="right" value="&mailhops_header_route_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
 			</hbox>
-			
+
+      <hbox class="mailHopsLinkContainer">
+				<vbox><button id="mailhopsDataPaneMapLink" class="navButton">&mailhops_route_nav_map_label;</button></vbox>
+				<vbox><button id="mailhopsDataPaneRefreshLink" class="navButton">&mailhops_route_nav_refresh_label;</button></vbox>
+				<vbox><button id="mailhopsDataPanePrefsLink" class="navButton">&mailhops_route_nav_options_label;</button></vbox>
+			</hbox>
+
 			<vbox id="mailhopsDataPane" flex="1">
 				<label id="mailhopsDataPaneText" class="dataPaneAddressitem" tooltiptext=""></label>
 				<label id="mailhopsDataPaneText2" class="dataPaneAddressitem" tooltiptext=""></label>
-				<label id="mailhopsDataPaneText3" class="dataPaneAddressitem" tooltiptext=""></label>				
-			</vbox>	
-			
-			<hbox class="mailHopsLinkContainer">
-				<vbox><label id="mailhopsDataPaneMapLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_map_label;" tooltiptext="&mailhops_route_nav_map_tip;"></label></vbox>
-				<vbox><label id="mailhopsDataPaneDetailsLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_details_label;" tooltiptext="&mailhops_route_nav_details_tip;"></label></vbox>				
-				<vbox><label id="mailhopsDataPaneRefreshLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_refresh_label;" tooltiptext="&mailhops_route_nav_refresh_tip;"></label></vbox>								
-				<vbox><label id="mailhopsDataPanePrefsLink" class="text-link dataPaneMoreLink" value="&mailhops_route_nav_options_label;" tooltiptext="&mailhops_route_nav_options_tip;"></label></vbox>
-			</hbox>
-			
+				<label id="mailhopsDataPaneText3" class="dataPaneAddressitem" tooltiptext=""></label>
+			</vbox>
+
 			<hbox id="mailhopsDetailsContainer" class="mailhopsContainer">
-				<vbox id="mailhopsDataPaneDetails" flex="1">	
+				<vbox id="mailhopsDataPaneDetails" flex="1">
 				</vbox>
 			</hbox>
-			
-		</vbox>	
-		
-		<vbox id="dataPaneMailHopsAuthContainer" class="dataPaneBox">	
+
+		</vbox>
+
+		<vbox id="dataPaneMailHopsAuthContainer" class="dataPaneBox">
 			<hbox flex="1" pack="start" align="center">
 				<label class="dataPaneHeader" crop="right" value="&mailhops_header_auth_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
@@ -50,24 +49,24 @@
 				<label id="mailhopsDataPaneDKIM" class="dataPaneAddressitem auth-item" value="" tooltiptext="DKIM"></label>
 				<label id="mailhopsDataPaneDNSBL" class="text-link dataPaneAddressitem auth-item" value="" tooltiptext="DNSBL"></label>
 			</vbox>
-		</vbox>	
-		
-		<vbox id="dataPaneMailHopsListContainer" class="dataPaneBox">	
+		</vbox>
+
+		<vbox id="dataPaneMailHopsListContainer" class="dataPaneBox">
 			<hbox flex="1" pack="start" align="center">
 				<label class="dataPaneHeader" crop="right" value="&mailhops_header_lists_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
-			</hbox>			
-			<vbox id="mailhopsListDataPane" flex="1"></vbox>				
-		</vbox>	
-		
-		<vbox id="dataPaneMailHopsMetaContainer" class="dataPaneBox">	
+			</hbox>
+			<vbox id="mailhopsListDataPane" flex="1"></vbox>
+		</vbox>
+
+		<vbox id="dataPaneMailHopsMetaContainer" class="dataPaneBox">
 			<hbox flex="1" pack="start" align="center">
 				<label class="dataPaneHeader" crop="right" value="&mailhops_header_meta_label;"></label>
 				<separator class="dataPaneBoxSeparator" flex="1"></separator>
-			</hbox>			
+			</hbox>
 			<vbox id="mailhopsDataPaneMeta" flex="1"></vbox>
 		</vbox>
-		
+
 	</vbox>
-	
+
 </overlay>

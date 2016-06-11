@@ -7,8 +7,3 @@
 <!ENTITY mailhops_route_nav_details_label      "細部">
 <!ENTITY mailhops_route_nav_refresh_label      "リフレッシュ">
 <!ENTITY mailhops_route_nav_options_label      "オプション">
-
-<!ENTITY mailhops_route_nav_map_tip          "地図を表示します">
-<!ENTITY mailhops_route_nav_details_tip      "詳細を表示">
-<!ENTITY mailhops_route_nav_refresh_tip      "キャッシュのリフレッシュ">
-<!ENTITY mailhops_route_nav_options_tip      "環境設定">

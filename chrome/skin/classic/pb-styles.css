@@ -112,3 +112,23 @@ tab {
 	padding: 5px;
 	color: #333;
 }
+
+.fa-lock {
+	padding-top: 7px;
+	color: rgba(73,163,127,1);
+}
+
+.fa-unlock-alt {
+	padding-top: 7px;
+	color: rgba(255,0,0,1);
+}
+
+button {
+	height: 35px;
+}
+
+button.navButton  {
+	height: 25px;
+	width: 10px;
+	text-align: center;
+}

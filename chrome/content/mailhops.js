@@ -162,7 +162,7 @@ mailHops.getRoute = function(){
 
   var received_ips;
   var all_ips = new Array();
-  var rline='';
+  var rline = '';
   //empty secure
   mailHops.message.secure = [];
 
@@ -170,7 +170,7 @@ mailHops.getRoute = function(){
       mailHopsDisplay.lists( headListUnsubscribe );
   }
 
-  if(mailHops.options.show_lists){
+  if(mailHops.options.show_auth){
       mailHopsDisplay.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF );
   }
 

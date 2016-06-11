@@ -4,7 +4,6 @@ var mailHopsDisplay =
   resultTextDataPane2:		null,
   resultTextDataPane3:      null,
   resultContainerDataPane:	null,
-  resultDetailsLink:		null,
   resultContainerDetails: 	null,
   resultDetails:			null,
   resultMapLink:			null,
@@ -23,47 +22,35 @@ var mailHopsDisplay =
   	  this.options = options;
 
   	  this.resultContainerDataPane = document.getElementById ( "mailhopsDataPane");
-	  this.resultTextDataPane = document.getElementById ( "mailhopsDataPaneText");
-	  this.resultTextDataPane2 = document.getElementById ( "mailhopsDataPaneText2");
-	  this.resultTextDataPane3 = document.getElementById ( "mailhopsDataPaneText3");
+  	  this.resultTextDataPane = document.getElementById ( "mailhopsDataPaneText");
+  	  this.resultTextDataPane2 = document.getElementById ( "mailhopsDataPaneText2");
+  	  this.resultTextDataPane3 = document.getElementById ( "mailhopsDataPaneText3");
 
-	  this.resultDetailsLink = document.getElementById ( "mailhopsDataPaneDetailsLink");
-	  this.resultContainerDetails = document.getElementById ( "mailhopsDetailsContainer");
-	  this.resultDetails = document.getElementById ( "mailhopsDataPaneDetails");
-	  this.resultMeta = document.getElementById ( "mailhopsDataPaneMeta");
-	  this.resultMapLink = document.getElementById ( "mailhopsDataPaneMapLink");
+  	  this.resultContainerDetails = document.getElementById ( "mailhopsDetailsContainer");
+  	  this.resultDetails = document.getElementById ( "mailhopsDataPaneDetails");
+  	  this.resultMeta = document.getElementById ( "mailhopsDataPaneMeta");
+  	  this.resultMapLink = document.getElementById ( "mailhopsDataPaneMapLink");
 
-	  //auth
-	  this.mailhopsAuthContainer = document.getElementById ( "dataPaneMailHopsAuthContainer");
-	  this.mailhopsDataPaneSPF = document.getElementById ( "mailhopsDataPaneSPF");
-	  this.mailhopsDataPaneDKIM = document.getElementById ( "mailhopsDataPaneDKIM");
-	  this.mailhopsDataPaneMailer = document.getElementById ( "mailhopsDataPaneMailer");
-	  this.mailhopsDataPaneDNSBL = document.getElementById ( "mailhopsDataPaneDNSBL");
-	  //list
-	  this.mailhopsListContainer = document.getElementById ( "dataPaneMailHopsListContainer");
+  	  //auth
+  	  this.mailhopsAuthContainer = document.getElementById ( "dataPaneMailHopsAuthContainer");
+  	  this.mailhopsDataPaneSPF = document.getElementById ( "mailhopsDataPaneSPF");
+  	  this.mailhopsDataPaneDKIM = document.getElementById ( "mailhopsDataPaneDKIM");
+  	  this.mailhopsDataPaneMailer = document.getElementById ( "mailhopsDataPaneMailer");
+  	  this.mailhopsDataPaneDNSBL = document.getElementById ( "mailhopsDataPaneDNSBL");
+  	  //list
+  	  this.mailhopsListContainer = document.getElementById ( "dataPaneMailHopsListContainer");
 
-	  this.resultListDataPane = document.getElementById ( "mailhopsListDataPane");
+  	  this.resultListDataPane = document.getElementById ( "mailhopsListDataPane");
 
-	  if(this.options.show_meta)
- 	    document.getElementById('dataPaneMailHopsMetaContainer').style.display='';
- 	  else
- 	  	document.getElementById('dataPaneMailHopsMetaContainer').style.display='none';
+  	  if(this.options.show_meta)
+   	    document.getElementById('dataPaneMailHopsMetaContainer').style.display='';
+   	  else
+   	  	document.getElementById('dataPaneMailHopsMetaContainer').style.display='none';
 
-	  //event listner for route click to launch map
-	  this.resultMapLink.addEventListener("click", function () {
+  	  //event listner for route click to launch map
+  	  this.resultMapLink.addEventListener("click", function () {
 	  		if(this.hasAttribute("data-route"))
 		  		mailHopsUtils.launchMap( String(this.getAttribute("data-route")), options );
-	  	});
-
-	  var resultContainerDetails = this.resultContainerDetails;
-	  this.resultDetailsLink.addEventListener("click", function () {
-	  		if(resultContainerDetails.style.display=='none'){
-		  		resultContainerDetails.style.display = 'block';
-		  		this.setAttribute('class','text-link dataPaneMoreLink active');
-		  	} else {
-		  		resultContainerDetails.style.display = 'none';
-		  		this.setAttribute('class','text-link dataPaneMoreLink');
-		  	}
 	  	});
 
 	  this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
@@ -238,32 +225,36 @@ var mailHopsDisplay =
 
   clear: function(no_ips){
   	this.resultTextDataPane2.style.display = 'none';
-	this.resultContainerDetails.style.display = 'none';
-	this.resultDetailsLink.style.display = 'none';
-	this.resultMapLink.style.display = 'none';
-	this.mailhopsDataPaneDNSBL.style.display = 'none';
+  	this.resultContainerDetails.style.display = 'none';
+  	this.resultMapLink.style.display = 'none';
+  	this.mailhopsDataPaneDNSBL.style.display = 'none';
 
-	if(no_ips){
-		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/help.png)';
-		this.resultTextDataPane.value = ' No IPs';
-		this.resultTextDataPane.setAttribute('tooltiptext','There were no received headers found');
-	} else {
-		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
-		this.resultTextDataPane.value = ' Looking Up Route';
-		this.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route');
-	}
+  	if(no_ips){
+  		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/help.png)';
+  		this.resultTextDataPane.value = ' No IPs';
+  		this.resultTextDataPane.setAttribute('tooltiptext','There were no received headers found');
+  	} else {
+  		this.resultTextDataPane.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
+  		this.resultTextDataPane.value = ' Looking Up Route';
+  		this.resultTextDataPane.setAttribute('tooltiptext','Looking Up Route');
+  	}
 
-	this.resultTextDataPane2.value = '';
-	this.resultTextDataPane2.style.backgroundImage = '';
-	this.resultTextDataPane2.setAttribute('tooltiptext','');
+  	this.resultTextDataPane2.value = '';
+  	this.resultTextDataPane2.style.backgroundImage = '';
+  	this.resultTextDataPane2.setAttribute('tooltiptext','');
 
-    this.resultTextDataPane3.style.display = 'none';
-    this.resultTextDataPane3.value = '';
+      this.resultTextDataPane3.style.display = 'none';
+      this.resultTextDataPane3.value = '';
 
-	//remove child details
-	while(this.resultDetails.firstChild) {
-    	this.resultDetails.removeChild(this.resultDetails.firstChild);
-	}
+  	//remove child details
+  	while(this.resultDetails.firstChild) {
+      	this.resultDetails.removeChild(this.resultDetails.firstChild);
+  	}
+    if(this.options.show_meta){
+ 	    while(this.resultMeta.firstChild) {
+    		this.resultMeta.removeChild(this.resultMeta.firstChild);
+  		}
+    }
   },
 
   route: function(header_route, message, response, meta, lookup_url){
@@ -282,10 +273,7 @@ var mailHopsDisplay =
 
   	//append meta
 	if(this.options.show_meta){
- 	    while(this.resultMeta.firstChild) {
-    		this.resultMeta.removeChild(this.resultMeta.firstChild);
-  		}
-  		for(var index in meta){
+ 			for(var index in meta){
 			var mlabel = document.createElement('label');
 			mlabel.setAttribute('value',index+': '+meta[index]);
 			this.resultMeta.appendChild(mlabel);
@@ -466,17 +454,8 @@ var mailHopsDisplay =
   }
 
   //show the detail link
-  this.resultDetailsLink.style.display = 'block';
   this.resultMapLink.style.display = 'block';
-  //show details by default
-  if(this.options.show_details){
-  	this.resultContainerDetails.style.display = 'block';
-  	this.resultDetailsLink.setAttribute('class','text-link dataPaneMoreLink active');
-  }
-  else{
-  	this.resultContainerDetails.style.display = 'none';
-  	this.resultDetailsLink.setAttribute('class','text-link dataPaneMoreLink');
-  }
+  this.resultContainerDetails.style.display = 'block';
 
 	} //end route
 };

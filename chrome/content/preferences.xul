@@ -24,7 +24,7 @@
 	  </tabs>
 	  <tabpanels>
 	    <tabpanel>
-	    	<groupbox>
+	    	<groupbox flex="1">
 			<caption label="Default Language"/>
 			<radiogroup id="mailhop.lang">
 				<radio value="en" label="English" selected="true"/>
@@ -38,7 +38,7 @@
 			</radiogroup>
 			</groupbox>
 
-			<groupbox>
+			<groupbox flex="1">
 				<caption label="Default Units"/>
 				<radiogroup id="mailhop.unit">
 					<radio value="mi" label="Miles and ºF" selected="true"/>
@@ -46,7 +46,7 @@
 				</radiogroup>
 			</groupbox>
 
-			<groupbox>
+			<groupbox flex="1">
 				<caption label="Default Map"/>
 				<menulist id="mailhop.map_provider">
 					<menupopup>
@@ -155,20 +155,19 @@
 			</groupbox>
 	    </tabpanel>
 	    <tabpanel>
-	    	<groupbox>
+	    	<groupbox flex="1">
 				<caption label="Display Boxes"/>
-				<checkbox id="mailhop.show_details" label="Show Details" checked="true"/>
 				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
 				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>
 				<checkbox id="mailhop.show_meta" label="Show Meta" checked="true"/>
 			</groupbox>
-			<groupbox>
-				<caption label="Details menuitems"/>
+			<groupbox flex="1">
+				<caption label="Details menu items"/>
 				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="true"/></label>
 				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="true"/></label>
 			</groupbox>
-			<groupbox>
-				<caption label="Authentication menuitems"/>
+			<groupbox flex="1">
+				<caption label="Authentication menu items"/>
 				<checkbox id="mailhop.show_mailer" label="Show Mailer" checked="true"/>
 				<checkbox id="mailhop.show_spf" label="Show SPF" checked="true"/>
 				<checkbox id="mailhop.show_dkim" label="Show DKIM" checked="true"/>
@@ -179,10 +178,10 @@
 	    <tabpanel>
 	    	<groupbox>
 				<caption label="MailHops API Hosting"/>
-				<description>
+				<!-- <description>
 					MailHops API hosting is sponsored by
 					<image src="https://mailhops.com/images/sponsor.png" width="200"/>
-				</description>
+				</description> -->
 
 				<grid flex="1">
 				  <columns>
@@ -199,12 +198,15 @@
 								</menulist>
 								<textbox id="mailhop.api_url" value="api.mailhops.com" flex="1"/>
 							</row>
+							<row>
+								<hbox/>
+								<hbox flex="1">
+									<button onclick="TestConnection(this);">Test Connection</button>
+									<button onclick="ResetConnection();">Reset Connection</button>
+								</hbox>
+							</row>
 						</rows>
 				</grid>
-
-				<label class="text-link plain act" onclick="TestConnection(this);" value="Test Connection" />
-
-				<label class="text-link plain act" onclick="ResetConnection();" value="Reset Connection" />
 
 				<description>
 					MailHops API uses <label class="text-link plain" value="Forecast.IO" href="https://developer.forecast.io/"/> to get the weather of the sender, register for an API Key to enable this feature.
@@ -217,16 +219,17 @@
 	    </tabpanel>
 
 	    <tabpanel>
-	    	<groupbox>
-				<caption label="Your Location"/>
+	    	<groupbox flex="1">
 				<description>
-					Is cached on startup and clicking refresh below to reduce the number of lookups by one.
+					Your Location is cached on startup and clicking refresh below to reduce the number of lookups by one.
+				</description>
+				<description>
+					<button id="mailhop.refresh_location" onclick="ResetLocation(this);">Refresh your location</button>
 				</description>
 				<label id="mailhop.client_location" class="act" value="Not Set" />
 				<label id="mailhop.client_location_ip" class="plain act" value="" />
 				<label id="mailhop.client_location_host" class="plain act" value="" />
 				<label id="mailhop.client_location_whois" class="text-link plain act" value="whois" tooltiptext="Click for whois" />
-				<label id="mailhop.refresh_location" class="text-link plain act" onclick="ResetLocation(this);" value="Refresh your location" />
 			</groupbox>
 	    </tabpanel>
 

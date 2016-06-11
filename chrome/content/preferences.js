@@ -27,11 +27,6 @@ var mailHopPreferences = {
 	    document.getElementById("mailhop.unit").selectedIndex = 1;
 
 	//Display Box Options
-	if(pref.getCharPref("mail.mailHops.show_details",'true')=='true')
-		document.getElementById("mailhop.show_details").checked = true;
-	else
-		document.getElementById("mailhop.show_details").checked = false;
-
 	if(pref.getCharPref("mail.mailHops.show_meta",'true')=='true')
 		document.getElementById("mailhop.show_meta").checked = true;
 	else
@@ -102,7 +97,6 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
     pref.setCharPref("mail.mailHops.map_provider", document.getElementById("mailhop.map_provider").selectedItem.value);
     pref.setCharPref("mail.mailHops.unit", document.getElementById("mailhop.unit").selectedItem.value);
-    pref.setCharPref("mail.mailHops.show_details", String(document.getElementById("mailhop.show_details").checked));
     pref.setCharPref("mail.mailHops.show_meta", String(document.getElementById("mailhop.show_meta").checked));
     pref.setCharPref("mail.mailHops.show_host", String(document.getElementById("mailhop.show_host").checked));
     pref.setCharPref("mail.mailHops.show_secure", String(document.getElementById("mailhop.show_secure").checked));
@@ -124,11 +118,10 @@ var mailHopPreferences = {
 
     return true;
   }
+
 };
 
 function TestConnection(e){
-	e.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
-
 	var xmlhttp = new XMLHttpRequest();
 	var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 	var lookupURL = mailHopPreferences.api_url.value;
@@ -162,15 +155,13 @@ function TestConnection(e){
 
 function ResetLocation(e){
 
-	e.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
-
 	//clear the location
 	document.getElementById("mailhop.client_location").value='Getting your location...';
 	document.getElementById("mailhop.client_location_ip").value = '';
 	document.getElementById("mailhop.client_location_host").value = '';
 	document.getElementById("mailhop.client_location_whois").value = '';
 
-  var MH_APIURL = mailHopPreferences.api_ssl.value=="true"?'https://'+mailHopPreferences.api_url:'http://'+mailHopPreferences.api_url;
+  var MH_APIURL = mailHopPreferences.api_ssl.value=="true"?'https://'+mailHopPreferences.api_url.value:'http://'+mailHopPreferences.api_url.value;
 
 	mailHops.setClientLocation(function(response){
 
@@ -202,9 +193,7 @@ function ResetLocation(e){
 			if(response.route[0].countryCode)
 			   	document.getElementById("mailhop.client_location").style.backgroundImage='url(chrome://mailhops/content/images/flags/'+response.route[0].countryCode.toLowerCase()+'.png)';
 
-			e.style.backgroundImage='';
 		} else {
-			e.style.backgroundImage='';
 			document.getElementById("mailhop.client_location").value='Failed connecting...';
 		}
 	},MH_APIURL);
