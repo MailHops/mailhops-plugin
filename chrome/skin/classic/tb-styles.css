@@ -26,3 +26,7 @@ tab {
 	padding: 5px;
 	color: #333;
 }
+
+#mailhopsResult label {
+	margin-top: 8px;	
+}

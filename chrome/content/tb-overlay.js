@@ -201,6 +201,10 @@ var mailHopsDisplay =
               first = response.route[i];
               if(!!response.route[i].countryCode)
                 image='chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png';
+                if(response.route[i].city)
+                  this.resultText.setAttribute('tooltiptext','From '+response.route[i].city+', '+response.route[i].state);
+                else
+                  this.resultText.setAttribute('tooltiptext','From '+response.route[i].countryName);
             }
 
             var menuitem = document.createElement('menuitem');
