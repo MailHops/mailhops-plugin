@@ -310,6 +310,8 @@ var mailHopsDisplay =
 	   		}
 
 	   		var label = document.createElement('label');
+        label.setAttribute('data-ip',response.route[i].ip);
+
 	   		if(response.route[i].countryCode)
 		   		label.style.backgroundImage = 'url(chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png)';
 		   	else
@@ -318,15 +320,21 @@ var mailHopsDisplay =
 
 	   		if(response.route[i].city && response.route[i].state){
 		   		label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state);
-	   			label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
+	   			label.addEventListener("click", function (e) {
+            mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
+          }, false);
 	   		}
 		   	else if(response.route[i].city){
 		   		label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].countryCode);
-		   		label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
+		   		label.addEventListener("click", function () {
+            mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
+          }, false);
 		   	}
   			else if(response.route[i].countryName){
   				label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].countryName);
-  				label.setAttribute('onclick','mailHopsUtils.launchWhoIs("'+response.route[i].ip+'");');
+  				label.addEventListener("click", function () {
+            mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
+          }, false);
   			}
   			else
   				label.setAttribute('value','Hop #'+(i+1)+' Private');
@@ -397,9 +405,12 @@ var mailHopsDisplay =
 
 	      if(response.route[i].w3w){
 	          var w3w = document.createElement('label');
+            w3w.setAttribute('data-w3w',response.route[i].w3w.url);
 	          w3w.setAttribute('class','dataPaneAddressitem mailhopsW3w');
 	          w3w.setAttribute('value',response.route[i].w3w.words.join('.'));
-	          w3w.setAttribute('onclick','mailHopsUtils.launchExternalURL("'+response.route[i].w3w.url+'");');
+	          w3w.addEventListener("click", function () {
+              mailHopsUtils.launchExternalURL(this.getAttribute('data-w3w'));
+            });
 	          this.resultDetails.appendChild(w3w);
 	      }
  	  }

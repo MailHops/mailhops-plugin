@@ -127,7 +127,7 @@ launchExternalURL: function(url){
   messenger.launchExternalURL(url);
 },
 
-launchWhoIs: function(ip){
+launchWhoIs: function(ip){    
    this.launchExternalURL('https://www.mailhops.com/whois/' + ip);
 },
 

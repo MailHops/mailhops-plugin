@@ -101,13 +101,13 @@ button {
 		font-size: 14px;
 }
 
-textbox {
+#mailHopsPreferences textbox {
 	font-size: 14px;
 	padding: 5px;
 	color: #777;
 }
 
-tab {
+#mailHopsPreferences tab {
 	font-size: 14px;
 	padding: 5px;
 	color: #333;
@@ -123,12 +123,14 @@ tab {
 	color: rgba(255,0,0,1);
 }
 
-button {
+.mailHopsLinkContainer button, #mailHopsPreferences button{
 	height: 35px;
+	color: #333;
 }
 
-button.navButton  {
+.mailHopsLinkContainer button.navButton, button.navButton {
 	height: 25px;
 	width: 10px;
 	text-align: center;
+	color: #333;
 }

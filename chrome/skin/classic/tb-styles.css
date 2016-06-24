@@ -15,18 +15,18 @@
 		font-size: 14px;
 }
 
-textbox {
+#mailHopsPreferences textbox {
 	font-size: 14px;
 	padding: 5px;
 	color: #777;
 }
 
-tab {
+#mailHopsPreferences tab {
 	font-size: 14px;
 	padding: 5px;
 	color: #333;
 }
 
 #mailhopsResult label {
-	margin-top: 8px;	
+	margin-top: 8px;
 }
