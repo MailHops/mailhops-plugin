@@ -310,7 +310,6 @@ var mailHopsDisplay =
 	   		}
 
 	   		var label = document.createElement('label');
-        label.setAttribute('data-ip',response.route[i].ip);
 
 	   		if(response.route[i].countryCode)
 		   		label.style.backgroundImage = 'url(chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png)';
@@ -320,24 +319,27 @@ var mailHopsDisplay =
 
 	   		if(response.route[i].city && response.route[i].state){
 		   		label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state);
+          label.setAttribute('data-ip',response.route[i].ip);
 	   			label.addEventListener("click", function (e) {
             mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
           }, false);
 	   		}
 		   	else if(response.route[i].city){
 		   		label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].countryCode);
+          label.setAttribute('data-ip',response.route[i].ip);
 		   		label.addEventListener("click", function () {
             mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
           }, false);
 		   	}
   			else if(response.route[i].countryName){
   				label.setAttribute('value','Hop #'+(i+1)+' '+response.route[i].countryName);
+          label.setAttribute('data-ip',response.route[i].ip);
   				label.addEventListener("click", function () {
             mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
           }, false);
-  			}
-  			else
-  				label.setAttribute('value','Hop #'+(i+1)+' Private');
+  			} else {
+          label.setAttribute('value','Hop #'+(i+1)+' Private');          
+        }
 
 			//build tooltip
 			var tiptext = response.route[i].ip;
