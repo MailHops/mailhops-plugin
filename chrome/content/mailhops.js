@@ -8,7 +8,7 @@ var mailHops =
 {
   msgURI:	null
   , isLoaded: false
-  , options: {'version':'MailHops Plugin 1.0.12','lan':'en','unit':'mi','api_url':'https://api.mailhops.com','debug':false}
+  , options: {'version':'MailHops Plugin 2.0.0','lan':'en','unit':'mi','api_url':'https://api.mailhops.com','debug':false}
   , message: { secure:[] }
   , client_location: null
 };
@@ -67,6 +67,8 @@ mailHops.loadPref = function()
   mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
 
   mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','https://api.mailhops.com');
+
+  mailHops.options.api_key = mailHops.getCharPref('mail.mailHops.api_key','');
 
   mailHops.options.map_provider = mailHops.getCharPref('mail.mailHops.map_provider','OpenStreetMap.Mapnik');
 
@@ -310,17 +312,14 @@ mailHops.getCharPref = function ( strName , strDefault ){
   return ( value ) ;
 };
 
-mailHops.setClientLocation = function(cb,api_url){
+mailHops.setClientLocation = function(cb){
 
-	var xmlhttp = new XMLHttpRequest();
-	if (!pref){
-	    var pref = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefBranch ) ;
-	}
+  	var xmlhttp = new XMLHttpRequest();
+  	if (!pref){
+  	    var pref = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefBranch ) ;
+  	}
 
-	 if(api_url)
-    xmlhttp.open("GET", api_url+'/v1/lookup/?app='+mailHops.options.version+'&r=&c=1',true);
-  else
-    xmlhttp.open("GET", mailHops.options.api_url+'/v1/lookup/?app='+mailHops.options.version+'&r=&c=1',true);
+   xmlhttp.open("GET", mailHopsUtils.getAPIUrl(mailHops.options)+'/lookup/?'+mailHopsUtils.getAPIUrlParams(mailHops.options)+'&r=&c=1',true);
 
 	 xmlhttp.onreadystatechange=function() {
 	  if (xmlhttp.readyState==4) {
@@ -349,7 +348,7 @@ mailHops.lookupRoute = function(header_route){
  //setup loading
  mailHopsDisplay.clear();
 
- var lookupURL = mailHops.options.api_url+'/v1/lookup/?app='+mailHops.options.version+'&r='+String(header_route)+'&l='+mailHops.options.lan+'&u='+mailHops.options.unit;
+ var lookupURL = mailHopsUtils.getAPIUrl(mailHops.options)+'/lookup/?'+mailHopsUtils.getAPIUrlParams(mailHops.options)+'&r='+String(header_route)+'&l='+mailHops.options.lan+'&u='+mailHops.options.unit;
 
  if(mailHops.options.fkey != '')
     lookupURL += '&fkey='+mailHops.options.fkey;
@@ -386,7 +385,7 @@ mailHops.lookupRoute = function(header_route){
           data.meta.cached = d.toISOString();
 
           //save the result
-  	   		mailHops.saveResults(JSON.stringify(data));
+  	   		mailHops.saveResults(JSON.stringify(data),data.response.route);
 
           //display the result
   	   		mailHopsDisplay.route(header_route, mailHops.message, data.response, data.meta, lookupURL);
@@ -404,7 +403,7 @@ mailHops.lookupRoute = function(header_route){
  xmlhttp.send(null);
 };
 
-mailHops.saveResults = function(results){
+mailHops.saveResults = function(results,route){
 
 	if(!mailHops.msgURI)
 		return false;
@@ -415,8 +414,29 @@ mailHops.saveResults = function(results){
 	if(!msgHdr)
 		return false;
 
-	msgHdr.setStringProperty( "MH-Route", results );
+  msgHdr.setStringProperty( "MH-Route", results );
 
+  //Add tag
+  if(!!route){
+    try{
+      var tagService = Components.classes["@mozilla.org/messenger/tagservice;1"].getService(Components.interfaces.nsIMsgTagService);
+        if(!tagService)
+          return;
+      var countryCode = mailHopsUtils.getXOriginatingCountryCode(route);
+      mailHops.LOG(tagService.getKeyForTag(countryCode))
+      if(!tagService.getKeyForTag(countryCode))
+        tagService.addTag(countryCode,'',0);
+
+      var msg = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
+  	  msg.clear();
+  	  msg.appendElement(msgHdr, false);
+  	  msgHdr.folder.addKeywordsToMessages(msg, countryCode );
+      mailHops.LOG( "Added CountryCode tag: "+countryCode );
+      ReloadMessage();
+    } catch(e){
+      mailHops.LOG( "Error adding CountryCode tag: "+e );
+    }
+  }
 };
 
 mailHops.getResults = function(){
@@ -430,7 +450,7 @@ mailHops.getResults = function(){
 	if(!msgHdr)
 		return false;
 
-	return msgHdr.getStringProperty( "MH-Route" );
+  return msgHdr.getStringProperty( "MH-Route" );
 };
 
 mailHops.refreshCache = function(){

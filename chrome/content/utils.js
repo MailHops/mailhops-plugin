@@ -127,7 +127,7 @@ launchExternalURL: function(url){
   messenger.launchExternalURL(url);
 },
 
-launchWhoIs: function(ip){    
+launchWhoIs: function(ip){
    this.launchExternalURL('https://www.mailhops.com/whois/' + ip);
 },
 
@@ -138,7 +138,7 @@ launchSpamHausURL: function(ip){
 launchMap: function(route,options){
 
    if(route != ''){
-      var lookupURL=options.api_url+'/v1/map/?app='+options.version+'&l='+options.lan+'&u='+options.unit+'&r='+String(route);
+      var lookupURL=this.getAPIUrl(options)+'/map/?'+this.getAPIUrlParams(options)+'&l='+options.lan+'&u='+options.unit+'&r='+String(route);
 
     if(options.fkey != '')
       lookupURL += '&fkey='+options.fkey;
@@ -148,6 +148,18 @@ launchMap: function(route,options){
 
       window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});
    }
+},
+
+getAPIUrl: function(options){
+  if(!!options.api_key && options.api_key != '')
+    return options.api_url+'/v2';
+  return options.api_url+'/v1';
+},
+
+getAPIUrlParams: function(options){
+  if(!!options.api_key && options.api_key != '')
+    return 'app='+options.version+'&api_key='+options.api_key;
+  return 'app='+options.version;
 },
 
 getSecureTrans: function(ip, message){
@@ -201,6 +213,19 @@ getDistance: function(from, to, unit) {
 		}
 
 		return dist;
-	}
+	},
+
+  getXOriginatingCountryCode: function(route) {
+    var countryCode = '';
+    if(route && route.length){
+      route.forEach(function(e,i,arr){
+        if(!route[i].local && !!route[i].countryCode){
+          countryCode = route[i].countryCode;
+          return;
+        }
+      });
+    }
+    return countryCode;
+  }
 
 };

@@ -13,85 +13,88 @@ var mailHopPreferences = {
 
     this.api_ssl = document.getElementById("mailhop.api_ssl");
 
+    this.api_key = document.getElementById("mailhop.api_key");
+
     this.fkey = document.getElementById("mailhop.fkey");
 
-  document.getElementById("mailhop.api_ssl").value = "true";
+    document.getElementById("mailhop.api_ssl").value = "true";
 
-  document.getElementById("mailhop.lang").value = pref.getCharPref("mail.mailHops.lang",'en');
+    document.getElementById("mailhop.lang").value = pref.getCharPref("mail.mailHops.lang",'en');
 
-	document.getElementById("mailhop.map_provider").value = pref.getCharPref("mail.mailHops.map_provider",'OpenStreetMap.Mapnik');
+  	document.getElementById("mailhop.map_provider").value = pref.getCharPref("mail.mailHops.map_provider",'OpenStreetMap.Mapnik');
 
-	if(pref.getCharPref("mail.mailHops.unit",'mi')=='mi')
-	    document.getElementById("mailhop.unit").selectedIndex = 0;
-	else
-	    document.getElementById("mailhop.unit").selectedIndex = 1;
+  	if(pref.getCharPref("mail.mailHops.unit",'mi')=='mi')
+  	    document.getElementById("mailhop.unit").selectedIndex = 0;
+  	else
+  	    document.getElementById("mailhop.unit").selectedIndex = 1;
 
-	//Display Box Options
-	if(pref.getCharPref("mail.mailHops.show_meta",'true')=='true')
-		document.getElementById("mailhop.show_meta").checked = true;
-	else
-		document.getElementById("mailhop.show_meta").checked = false;
+  	//Display Box Options
+  	if(pref.getCharPref("mail.mailHops.show_meta",'true')=='true')
+  		document.getElementById("mailhop.show_meta").checked = true;
+  	else
+  		document.getElementById("mailhop.show_meta").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.show_lists",'true')=='true')
-		document.getElementById("mailhop.show_lists").checked = true;
-	else
-		document.getElementById("mailhop.show_lists").checked = false;
+  	if(pref.getCharPref("mail.mailHops.show_lists",'true')=='true')
+  		document.getElementById("mailhop.show_lists").checked = true;
+  	else
+  		document.getElementById("mailhop.show_lists").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.show_auth",'true')=='true')
-		document.getElementById("mailhop.show_auth").checked = true;
-	else
-		document.getElementById("mailhop.show_auth").checked = false;
+  	if(pref.getCharPref("mail.mailHops.show_auth",'true')=='true')
+  		document.getElementById("mailhop.show_auth").checked = true;
+  	else
+  		document.getElementById("mailhop.show_auth").checked = false;
 
-	//Details Options
-	if(pref.getCharPref("mail.mailHops.show_host",'true')=='true')
-		document.getElementById("mailhop.show_host").checked = true;
-	else
-		document.getElementById("mailhop.show_host").checked = false;
+  	//Details Options
+  	if(pref.getCharPref("mail.mailHops.show_host",'true')=='true')
+  		document.getElementById("mailhop.show_host").checked = true;
+  	else
+  		document.getElementById("mailhop.show_host").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.show_secure",'true')=='true')
-		document.getElementById("mailhop.show_secure").checked = true;
-	else
-		document.getElementById("mailhop.show_secure").checked = false;
+  	if(pref.getCharPref("mail.mailHops.show_secure",'true')=='true')
+  		document.getElementById("mailhop.show_secure").checked = true;
+  	else
+  		document.getElementById("mailhop.show_secure").checked = false;
 
-	//Auth Options
-	if(pref.getCharPref("mail.mailHops.show_spf",'true')=='true')
-		document.getElementById("mailhop.show_spf").checked = true;
-	else
-		document.getElementById("mailhop.show_spf").checked = false;
+  	//Auth Options
+  	if(pref.getCharPref("mail.mailHops.show_spf",'true')=='true')
+  		document.getElementById("mailhop.show_spf").checked = true;
+  	else
+  		document.getElementById("mailhop.show_spf").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.show_dkim",'true')=='true')
-		document.getElementById("mailhop.show_dkim").checked = true;
-	else
-		document.getElementById("mailhop.show_dkim").checked = false;
+  	if(pref.getCharPref("mail.mailHops.show_dkim",'true')=='true')
+  		document.getElementById("mailhop.show_dkim").checked = true;
+  	else
+  		document.getElementById("mailhop.show_dkim").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.show_mailer",'true')=='true')
-		document.getElementById("mailhop.show_mailer").checked = true;
-	else
-		document.getElementById("mailhop.show_mailer").checked = false;
+  	if(pref.getCharPref("mail.mailHops.show_mailer",'true')=='true')
+  		document.getElementById("mailhop.show_mailer").checked = true;
+  	else
+  		document.getElementById("mailhop.show_mailer").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.show_dnsbl",'true')=='true')
-		document.getElementById("mailhop.show_dnsbl").checked = true;
-	else
-		document.getElementById("mailhop.show_dnsbl").checked = false;
+  	if(pref.getCharPref("mail.mailHops.show_dnsbl",'true')=='true')
+  		document.getElementById("mailhop.show_dnsbl").checked = true;
+  	else
+  		document.getElementById("mailhop.show_dnsbl").checked = false;
 
-	if(pref.getCharPref("mail.mailHops.debug",'true')=='true')
-		document.getElementById("mailhop.debug").checked = true;
-	else
-		document.getElementById("mailhop.debug").checked = false;
+  	if(pref.getCharPref("mail.mailHops.debug",'true')=='true')
+  		document.getElementById("mailhop.debug").checked = true;
+  	else
+  		document.getElementById("mailhop.debug").checked = false;
 
-  this.api_url.value = pref.getCharPref("mail.mailHops.api_url",'https://api.mailhops.com');
+    this.api_key.value = pref.getCharPref("mail.mailHops.api_key",'');
 
-  if(this.api_url.value.indexOf('https')!==-1)
-    this.api_ssl.value = "true";
-  else
-    this.api_ssl.value = "false";
+    this.api_url.value = pref.getCharPref("mail.mailHops.api_url",'https://api.mailhops.com');
 
-  this.api_url.value = this.api_url.value.replace('http://','').replace('https://','');
+    if(this.api_url.value.indexOf('https')!==-1)
+      this.api_ssl.value = "true";
+    else
+      this.api_ssl.value = "false";
 
-	this.fkey.value = pref.getCharPref("mail.mailHops.fkey",'');
+    this.api_url.value = this.api_url.value.replace('http://','').replace('https://','');
 
-	ResetLocation(document.getElementById("mailhop.refresh_location"));
+  	this.fkey.value = pref.getCharPref("mail.mailHops.fkey",'');
 
+  	ResetLocation(document.getElementById("mailhop.refresh_location"));
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
@@ -107,6 +110,9 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.show_lists", String(document.getElementById("mailhop.show_lists").checked));
     pref.setCharPref("mail.mailHops.show_auth", String(document.getElementById("mailhop.show_auth").checked));
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
+
+    //API vars
+    pref.setCharPref("mail.mailHops.api_key", this.api_key.value);
 
     this.api_url.value = this.api_url.value.replace('http://','').replace('https://','');
     if(this.api_ssl.value=="true")
@@ -124,29 +130,33 @@ var mailHopPreferences = {
 function TestConnection(e){
 	var xmlhttp = new XMLHttpRequest();
 	var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-	var lookupURL = mailHopPreferences.api_url.value;
-  if(mailHopPreferences.api_ssl.value=="true")
-    lookupURL='https://'+lookupURL;
-  else
-    lookupURL='http://'+lookupURL;
+	var apiBase = mailHopPreferences.api_url.value, lookupURL = '/v1/lookup/?app='+mailHops.options.version+'&healthcheck';
 
-	xmlhttp.open("GET", lookupURL+'/v1/lookup/?app='+mailHops.options.version+'&healthcheck' ,true);
+  if(mailHopPreferences.api_ssl.value=="true")
+    apiBase='https://'+apiBase;
+  else
+    apiBase='http://'+apiBase;
+
+  if(mailHopPreferences.api_key.value != '')
+    lookupURL = '/v2/lookup/?app='+mailHops.options.version+'&healthcheck&api_key='+mailHopPreferences.api_key.value;
+
+	xmlhttp.open("GET", apiBase+lookupURL,true);
 	 xmlhttp.onreadystatechange=function() {
 	  if (xmlhttp.readyState==4) {
 	  try{
 		   var data = JSON.parse(xmlhttp.responseText);
-		   if(data && data.meta.code==200){
+		   if(!!data && data.meta.code==200){
 			   	e.style.backgroundImage='';
-		   		alert('Connection Succeeded to '+lookupURL+'!');
+		   		alert('Connection Succeeded to\n '+apiBase+'!');
 		   } else {
 		    	//display the error
 		    	e.style.backgroundImage='';
-		   		alert('Connection Failed to '+lookupURL+'!');
+		   		alert('Connection Failed to\n '+apiBase+'!');
 		   }
 	   }
 	   catch (ex){
 		   e.style.backgroundImage='';
-	   	   alert('Connection Failed to '+lookupURL+'!');
+	   	   alert('Connection Failed to\n '+apiBase+'!');
 	   }
 	  }
 	 };
@@ -201,5 +211,6 @@ function ResetLocation(e){
 
 function ResetConnection(){
   mailHopPreferences.api_ssl.value=="true";
+  mailHopPreferences.api_ssl.selectedIndex = 0;
 	mailHopPreferences.api_url.value='api.mailhops.com';
 }

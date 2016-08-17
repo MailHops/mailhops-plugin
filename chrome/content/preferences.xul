@@ -14,16 +14,37 @@
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
 	<script type="application/x-javascript" src="chrome://mailhops/content/preferences.js"/>
 
+	<!-- <image src="chrome://mailhops/content/images/mailhops-logo.png" width="200"/> -->
+
 	<vbox width="400px">
+
 	<tabbox id="mhTabs" selectedIndex="0">
 	  <tabs>
-	    <tab label="Defaults"/>
+			<tab label="Pro"/>
+			<tab label="Defaults"/>
 	    <tab label="Display"/>
 	    <tab label="API &amp; Hosting"/>
 	    <tab label="Current Location"/>
 	  </tabs>
 	  <tabpanels>
-	    <tabpanel>
+			<tabpanel>
+				<groupbox flex="1">
+					<caption label="MailHops Pro"/>
+					<description>
+						MailHops <label class="text-link plain" value="Pro" href="https://mailhops.com/pro"/> Upgrades your email client to an email routing machine.
+						<ul>
+							<li>Mail Stats</li>
+							<li></li>
+							<li></li>
+						</ul>
+					</description>
+
+					<textbox id="mailhop.api_key" value=""/>
+
+				</groupbox>
+			</tabpanel>
+
+			<tabpanel>
 	    	<groupbox flex="1">
 			<caption label="Default Language"/>
 			<radiogroup id="mailhop.lang">
