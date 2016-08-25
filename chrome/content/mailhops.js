@@ -6,11 +6,21 @@
 
 var mailHops =
 {
-  msgURI:	null
-  , isLoaded: false
-  , options: {'version':'MailHops Plugin 2.0.0','lan':'en','unit':'mi','api_url':'https://api.mailhops.com','debug':false}
-  , message: { secure:[] }
-  , client_location: null
+  msgURI:	null,
+  isLoaded: false,
+  options: {
+      'version':'MailHops Plugin 2.0.0',
+      'lan':'en',
+      'unit':'mi',
+      'api_url':'https://api.mailhops.com',
+      'debug':false,
+      'country_tag':false,
+      'country_filter':[]
+  },
+  message: {
+    secure:[]
+  },
+  client_location: null
 };
 
 mailHops.LOG = function(msg) {
@@ -71,6 +81,10 @@ mailHops.loadPref = function()
   mailHops.options.api_key = mailHops.getCharPref('mail.mailHops.api_key','');
 
   mailHops.options.map_provider = mailHops.getCharPref('mail.mailHops.map_provider','OpenStreetMap.Mapnik');
+
+  mailHops.options.country_tag = mailHops.getCharPref('mail.mailHops.country_tag','false')=='true'?true:false;
+
+  mailHops.options.country_filter = mailHops.getCharPref('mail.mailHops.country_filter',[]);
 
   if(mailHops.options.client_location == ''){
 		mailHops.setClientLocation(function(response){
@@ -322,22 +336,25 @@ mailHops.setClientLocation = function(cb){
    xmlhttp.open("GET", mailHopsUtils.getAPIUrl(mailHops.options)+'/lookup/?'+mailHopsUtils.getAPIUrlParams(mailHops.options)+'&r=&c=1',true);
 
 	 xmlhttp.onreadystatechange=function() {
-	  if (xmlhttp.readyState==4) {
-	  try {
+	  if (xmlhttp.readyState==4 && !!xmlhttp.responseText) {
+  	  try {
          var data = JSON.parse(xmlhttp.responseText);
-		   if(data && data.meta.code==200){
-		   		//display the result
-		   		pref.setCharPref("mail.mailHops.client_location", JSON.stringify(data.response)) ;
-          cb(data.response);
-		   } else {
-			   pref.setCharPref("mail.mailHops.client_location", '') ;
-         cb('');
-		   }
-	   } catch(e){
-		  pref.setCharPref("mail.mailHops.client_location", '') ;
-      cb('');
-	   }
-	  }
+  		   if(data && data.meta.code==200){
+  		   		//display the result
+  		   		pref.setCharPref("mail.mailHops.client_location", JSON.stringify(data.response)) ;
+            cb(data.response);
+  		   } else {
+  			   pref.setCharPref("mail.mailHops.client_location", '') ;
+           cb('');
+  		   }
+  	   } catch(e){
+  		  pref.setCharPref("mail.mailHops.client_location", '') ;
+        cb('');
+  	   }
+     } else {
+       pref.setCharPref("mail.mailHops.client_location", '') ;
+       cb('');
+     }
 	 };
 	 xmlhttp.send(null);
 };
@@ -419,20 +436,30 @@ mailHops.saveResults = function(results,route){
   //Add tag
   if(!!route){
     try{
-      var tagService = Components.classes["@mozilla.org/messenger/tagservice;1"].getService(Components.interfaces.nsIMsgTagService);
-        if(!tagService)
-          return;
       var countryCode = mailHopsUtils.getXOriginatingCountryCode(route);
-      mailHops.LOG(tagService.getKeyForTag(countryCode))
-      if(!tagService.getKeyForTag(countryCode))
-        tagService.addTag(countryCode,'',0);
-
       var msg = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
-  	  msg.clear();
-  	  msg.appendElement(msgHdr, false);
-  	  msgHdr.folder.addKeywordsToMessages(msg, countryCode );
-      mailHops.LOG( "Added CountryCode tag: "+countryCode );
-      ReloadMessage();
+      msg.clear();
+      msg.appendElement(msgHdr, false);
+
+      if(!!mailHops.options.country_tag)
+      {
+        var tagService = Components.classes["@mozilla.org/messenger/tagservice;1"].getService(Components.interfaces.nsIMsgTagService);
+          if(!tagService)
+            return;
+        mailHops.LOG(tagService.getKeyForTag(countryCode))
+        if(!tagService.getKeyForTag(countryCode))
+          tagService.addTag(countryCode,'',0);
+
+        msgHdr.folder.addKeywordsToMessages(msg, countryCode );
+        mailHops.LOG( "Added CountryCode tag: "+countryCode );
+      }
+
+      if(!!mailHops.options.country_filter && mailHops.options.country_filter.length){
+        if(mailHops.options.country_filter.indexOf(countryCode.toLowerCase()) !== -1){
+          msgHdr.folder.setJunkScoreForMessages(msg, "100");
+        }
+      }
+
     } catch(e){
       mailHops.LOG( "Error adding CountryCode tag: "+e );
     }
