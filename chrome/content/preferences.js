@@ -3,23 +3,21 @@ if (!pref) {
 }
 
 var mailHopPreferences = {
-  api_url: '', //mailhops api url
-  api_ssl: '', //ssl?
+  api_host: 'api.mailhops.com', //mailhops api url
+  api_http: 'https://', //ssl?
   api_key: '', //api key
   fkey: '', //forecast.io api key
   country_filter: [],
 
   loadPreferences: function(){
 
-    this.api_url = document.getElementById("mailhop.api_url").value;
+    this.api_host = document.getElementById("mailhop.api_host").value;
 
-    this.api_ssl = document.getElementById("mailhop.api_ssl").value;
+    this.api_http = document.getElementById("mailhop.api_http");
 
     this.api_key = document.getElementById("mailhop.api_key").value;
 
     this.fkey = document.getElementById("mailhop.fkey").value;
-
-    document.getElementById("mailhop.api_ssl").value = "true";
 
     document.getElementById("mailhop.lang").value = pref.getCharPref("mail.mailHops.lang",'en');
 
@@ -86,16 +84,15 @@ var mailHopPreferences = {
     // API info
     this.api_key = pref.getCharPref("mail.mailHops.api_key",'');
 
-    this.api_url = pref.getCharPref("mail.mailHops.api_url",'https://api.mailhops.com');
-
-    if(this.api_url.indexOf('https')===0)
-      this.api_ssl = "true";
+    this.api_http.value = pref.getCharPref("mail.mailHops.api_http",'https://');
+    if(this.api_http.value=='https://')
+      this.api_http.selectedIndex = 0;
     else
-      this.api_ssl = "false";
+      this.api_http.selectedIndex = 1;
 
-    this.api_url = this.api_url.replace('http://','').replace('https://','');
+    this.api_host = pref.getCharPref("mail.mailHops.api_host",'api.mailhops.com');
 
-  	this.fkey = pref.getCharPref("mail.mailHops.fkey",'');
+    this.fkey = pref.getCharPref("mail.mailHops.fkey",'');
 
     // Country Filter and tagging
     this.country_filter = JSON.parse(pref.getCharPref("mail.mailHops.country_filter",null) || []);
@@ -111,8 +108,6 @@ var mailHopPreferences = {
   		document.getElementById("mailhop.country_tag").checked = true;
 
     saveAPIKey();
-
-  	ResetLocation(document.getElementById("mailhop.refresh_location"));
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
@@ -131,12 +126,8 @@ var mailHopPreferences = {
 
     //API vars
     pref.setCharPref("mail.mailHops.api_key", this.api_key);
-
-    this.api_url = this.api_url.replace('http://','').replace('https://','');
-    if(this.api_ssl=="true")
-      pref.setCharPref("mail.mailHops.api_url", 'https://'+this.api_url);
-    else
-      pref.setCharPref("mail.mailHops.api_url", 'http://'+this.api_url);
+    pref.setCharPref("mail.mailHops.api_http", this.api_http.value);
+    pref.setCharPref("mail.mailHops.api_host", this.api_host);
 
     pref.setCharPref("mail.mailHops.fkey", String(this.fkey));
 
@@ -164,17 +155,12 @@ function saveAPIKey() {
   if(!!mailHopPreferences.api_key && mailHopPreferences.api_key != ''){
     var xmlhttp = new XMLHttpRequest();
     var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-    var apiBase = mailHopPreferences.api_url,
-        accountURL = '/v2/accounts/?app='+mailHops.options.version+'&api_key='+mailHopPreferences.api_key;
-
-    if(mailHopPreferences.api_ssl=="true")
-      apiBase='https://'+apiBase;
-    else
-      apiBase='http://'+apiBase;
+    var apiBase = mailHopPreferences.api_http.value+mailHopPreferences.api_host,
+        accountURL = '/v2/accounts/?api_key='+mailHopPreferences.api_key;
 
     xmlhttp.open("GET", apiBase+accountURL,true);
      xmlhttp.onreadystatechange=function() {
-      if (xmlhttp.readyState==4 && !!xmlhttp.responseText) {
+      if (xmlhttp.readyState==4) {
         try{
            var data = JSON.parse(xmlhttp.responseText);
            if(!!data && data.meta.code==200){
@@ -188,8 +174,6 @@ function saveAPIKey() {
          catch (ex){
            document.getElementById("key_details").innerHTML = 'Connection Failed to\n '+apiBase+'!';
          }
-       } else {
-         document.getElementById("key_details").innerHTML = 'Connection Failed to\n '+apiBase+'!';
        }
      };
    xmlhttp.send(null);
@@ -198,91 +182,37 @@ function saveAPIKey() {
  }
 }
 
-function TestConnection(e){
+function TestConnection(){
 	var xmlhttp = new XMLHttpRequest();
 	var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-	var apiBase = mailHopPreferences.api_url || 'https://api.mailhops.com',
-      lookupURL = '/v1/lookup/?app='+mailHops.options.version+'&healthcheck';
-
-  if(mailHopPreferences.api_ssl=="true")
-    apiBase='https://'+apiBase;
-  else
-    apiBase='http://'+apiBase;
+	var apiBase = mailHopPreferences.api_http.value+mailHopPreferences.api_host,
+      lookupURL = '/v1/lookup/?healthcheck';
 
   if(mailHopPreferences.api_key != '')
-    lookupURL = '/v2/lookup/?app='+mailHops.options.version+'&healthcheck&api_key='+mailHopPreferences.api_key;
+    lookupURL = '/v2/lookup/?healthcheck&api_key='+mailHopPreferences.api_key;
 
 	xmlhttp.open("GET", apiBase+lookupURL,true);
 	 xmlhttp.onreadystatechange=function() {
 	  if (xmlhttp.readyState==4) {
-	  try{
-		   var data = JSON.parse(xmlhttp.responseText);
-		   if(!!data && data.meta.code==200){
-			   	e.style.backgroundImage='';
-		   		alert('Connection Succeeded to\n '+apiBase+'!');
-		   } else {
-		    	//display the error
-		    	e.style.backgroundImage='';
-		   		alert('Connection Failed to\n '+apiBase+'!');
-		   }
-	   }
-	   catch (ex){
-		   e.style.backgroundImage='';
-	   	   alert('Connection Failed to\n '+apiBase+'!');
-	   }
-	  }
+  	  try{
+  		   var data = JSON.parse(xmlhttp.responseText);
+  		   if(!!data && data.meta.code==200){
+  			   	alert('Connection Succeeded to\n '+apiBase+'!');
+  		   } else {
+  		    	//display the error
+  		    	alert('Connection Failed to\n '+apiBase+'!');
+  		   }
+  	   }
+  	   catch (ex){
+  		    alert('Connection Failed to\n '+apiBase+'! '+JSON.stringify(ex));
+  	   }
+     }
 	 };
  xmlhttp.send(null);
 }
 
-function ResetLocation(e){
-
-	//clear the location
-	document.getElementById("mailhop.client_location").value='Getting your location...';
-	document.getElementById("mailhop.client_location_ip").value = '';
-	document.getElementById("mailhop.client_location_host").value = '';
-	document.getElementById("mailhop.client_location_whois").value = '';
-
-  var MH_APIURL = mailHopPreferences.api_ssl=="true"?'https://'+mailHopPreferences.api_url:'http://'+mailHopPreferences.api_url;
-
-	mailHops.setClientLocation(function(response){
-
-		if(response){
-			var location = '';
-			if(response.route[0].city)
-				location+=response.route[0].city;
-			if(response.route[0].state)
-				location+=', '+response.route[0].state;
-			if(response.route[0].countryName)
-				location+=' ( '+response.route[0].countryName+' )';
-			else if(response.route[0].countryCode)
-				location+=' ( '+response.route[0].countryCode+' )';
-
-			//set location
-			document.getElementById("mailhop.client_location").value=location;
-
-			//set ip
-			document.getElementById("mailhop.client_location_ip").value='IP: '+response.route[0].ip;
-
-			//set host
-			if(response.route[0].host)
-				document.getElementById("mailhop.client_location_host").value='Host: '+response.route[0].host;
-
-			document.getElementById("mailhop.client_location_whois").value = 'whois';
-			document.getElementById("mailhop.client_location_whois").setAttribute('href', 'https://www.mailhops.com/whois/'+response.route[0].ip);
-
-			//set country flag
-			if(response.route[0].countryCode)
-			   	document.getElementById("mailhop.client_location").style.backgroundImage='url(chrome://mailhops/content/images/flags/'+response.route[0].countryCode.toLowerCase()+'.png)';
-
-		} else {
-			document.getElementById("mailhop.client_location").value='Failed connecting...';
-		}
-	},MH_APIURL);
-}
-
 function ResetConnection(){
-  mailHopPreferences.api_ssl=="true";
-  mailHopPreferences.api_ssl.selectedIndex = 0;
-	mailHopPreferences.api_url='api.mailhops.com';
+  mailHopPreferences.api_http.value=="https://";
+  mailHopPreferences.api_http.selectedIndex = 0;
+	mailHopPreferences.api_host='api.mailhops.com';
 }

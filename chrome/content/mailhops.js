@@ -12,15 +12,15 @@ var mailHops =
       'version':'MailHops Plugin 2.0.0',
       'lan':'en',
       'unit':'mi',
-      'api_url':'https://api.mailhops.com',
+      'api_http':'https://',
+      'api_host':'api.mailhops.com',
       'debug':false,
       'country_tag':false,
       'country_filter':[]
   },
   message: {
     secure:[]
-  },
-  client_location: null
+  }
 };
 
 mailHops.LOG = function(msg) {
@@ -51,6 +51,7 @@ mailHops.init = function() {
 
 mailHops.loadPref = function()
 {
+  mailHops.LOG('load MailHops prefs');
   //get preferences
   mailHops.options.lan = mailHops.getCharPref('mail.mailHops.lang','en');
   mailHops.options.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
@@ -74,9 +75,9 @@ mailHops.loadPref = function()
 
   mailHops.options.debug = mailHops.getCharPref('mail.mailHops.debug','false')=='true'?true:false;
 
-  mailHops.options.client_location = mailHops.getCharPref('mail.mailHops.client_location','');
+  mailHops.options.api_host = mailHops.getCharPref('mail.mailHops.api_host','api.mailhops.com');
 
-  mailHops.options.api_url = mailHops.getCharPref('mail.mailHops.api_url','https://api.mailhops.com');
+  mailHops.options.api_http = mailHops.getCharPref('mail.mailHops.api_http','https://');
 
   mailHops.options.api_key = mailHops.getCharPref('mail.mailHops.api_key','');
 
@@ -85,12 +86,6 @@ mailHops.loadPref = function()
   mailHops.options.country_tag = mailHops.getCharPref('mail.mailHops.country_tag','false')=='true'?true:false;
 
   mailHops.options.country_filter = mailHops.getCharPref('mail.mailHops.country_filter',[]);
-
-  if(mailHops.options.client_location == ''){
-		mailHops.setClientLocation(function(response){
-      mailHops.options.client_location=response;
-    });
-  }
 
   //init display
   mailHopsDisplay.init( mailHops.options );
@@ -123,12 +118,12 @@ mailHops.StreamListener =
       //failed to read input stream
       mailHops.LOG('StreamListener Error: '+JSON.stringify(e));
     }
-  } ,
+  },
   onStartRequest: function ( request , context )
   {
     this.content = "" ;
     this.found = false ;
-  } ,
+  },
   onStopRequest: function ( aRequest , aContext , aStatusCode )
   {
     mailHops.headers = Components.classes["@mozilla.org/messenger/mimeheaders;1"].createInstance ( Components.interfaces.nsIMimeHeaders ) ;
@@ -326,39 +321,6 @@ mailHops.getCharPref = function ( strName , strDefault ){
   return ( value ) ;
 };
 
-mailHops.setClientLocation = function(cb){
-
-  	var xmlhttp = new XMLHttpRequest();
-  	if (!pref){
-  	    var pref = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefBranch ) ;
-  	}
-
-   xmlhttp.open("GET", mailHopsUtils.getAPIUrl(mailHops.options)+'/lookup/?'+mailHopsUtils.getAPIUrlParams(mailHops.options)+'&r=&c=1',true);
-
-	 xmlhttp.onreadystatechange=function() {
-	  if (xmlhttp.readyState==4 && !!xmlhttp.responseText) {
-  	  try {
-         var data = JSON.parse(xmlhttp.responseText);
-  		   if(data && data.meta.code==200){
-  		   		//display the result
-  		   		pref.setCharPref("mail.mailHops.client_location", JSON.stringify(data.response)) ;
-            cb(data.response);
-  		   } else {
-  			   pref.setCharPref("mail.mailHops.client_location", '') ;
-           cb('');
-  		   }
-  	   } catch(e){
-  		  pref.setCharPref("mail.mailHops.client_location", '') ;
-        cb('');
-  	   }
-     } else {
-       pref.setCharPref("mail.mailHops.client_location", '') ;
-       cb('');
-     }
-	 };
-	 xmlhttp.send(null);
-};
-
 //mailhops lookup
 mailHops.lookupRoute = function(header_route){
 
@@ -369,11 +331,6 @@ mailHops.lookupRoute = function(header_route){
 
  if(mailHops.options.fkey != '')
     lookupURL += '&fkey='+mailHops.options.fkey;
-
- if(mailHops.options.client_location != '')
-    lookupURL+='&c=0';
-
- mailHops.LOG(lookupURL);
 
  //check for cache
  var cached_results = mailHops.getResults();
@@ -388,6 +345,8 @@ mailHops.lookupRoute = function(header_route){
      mailHops.LOG('Failed to parse cached result: '+JSON.stringify(e));
    }
  }
+
+mailHops.LOG("Calling MailHops API: "+lookupURL);
 
  //call mailhops api for lookup
  var xmlhttp = new XMLHttpRequest();
@@ -407,12 +366,12 @@ mailHops.lookupRoute = function(header_route){
           //display the result
   	   		mailHopsDisplay.route(header_route, mailHops.message, data.response, data.meta, lookupURL);
   	   } else {
-          mailHops.LOG(JSON.stringify(data));
+          mailHops.LOG("lookupRoute: "+JSON.stringify(data));
   	    	//display the error
   	   		mailHopsDisplay.error(data);
   	   }
      } catch(e){
-         mailHops.LOG(JSON.stringify(e));
+         mailHops.LOG("lookupRoute: Error "+JSON.stringify(e));
      	   mailHopsDisplay.error();
      }
   }

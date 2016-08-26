@@ -154,8 +154,8 @@ launchMap: function(route,options){
 
 getAPIUrl: function(options){
   if(!!options.api_key && options.api_key != '')
-    return options.api_url+'/v2';
-  return options.api_url+'/v1';
+    return options.api_http+options.api_host+'/v2';
+  return options.api_http+options.api_host+'/v1';
 },
 
 getAPIUrlParams: function(options){

@@ -11,7 +11,6 @@
 	title="MailHops Preferences">
 
 	<script type="application/x-javascript" src="chrome://mailhops/content/utils.js"/>
-	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
 	<script type="application/x-javascript" src="chrome://mailhops/content/preferences.js"/>
 
 	<!-- <image src="chrome://mailhops/content/images/mailhops-logo.png" width="200"/> -->
@@ -21,11 +20,10 @@
 	<tabbox id="mhTabs" selectedIndex="0">
 	  <tabs>
 			<tab label="Pro"/>
-			<tab label="Filter"/>
+			<tab label="Security"/>
 			<tab label="Defaults"/>
 	    <tab label="Display"/>
 	    <tab label="API &amp; Hosting"/>
-	    <tab label="Current Location"/>
 	  </tabs>
 	  <tabpanels>
 			<tabpanel>
@@ -56,7 +54,7 @@
 
 			<tabpanel>
 				<groupbox flex="1" style="height:400px;overflow: scroll;">
-					<caption label="Filter"/>
+					<caption label="Security"/>
 							<checkbox id="mailhop.country_tag" label="Tag messages with country origin" checked="false"/>
 							<description>Mark messages as Junk from Countries checked below.
 								<label class="text-link plain" value="All " onclick="mailHopPreferences.countryListSelectAll(true);"/>
@@ -497,18 +495,18 @@
 				  </columns>
 				  <rows>
 				    <row>
-								<menulist id="mailhop.api_ssl">
+								<menulist id="mailhop.api_http">
 									<menupopup>
-										<menuitem value="true" label="https://" />
-										<menuitem value="false" label="http://" />
+										<menuitem value="https://" label="https://" />
+										<menuitem value="http://" label="http://" />
 									</menupopup>
 								</menulist>
-								<textbox id="mailhop.api_url" value="api.mailhops.com" flex="1"/>
+								<textbox id="mailhop.api_host" value="api.mailhops.com" flex="1"/>
 							</row>
 							<row>
 								<hbox/>
 								<hbox flex="1">
-									<button onclick="TestConnection(this);">Test Connection</button>
+									<button onclick="TestConnection();">Test Connection</button>
 									<button onclick="ResetConnection();">Reset Connection</button>
 								</hbox>
 							</row>
@@ -523,21 +521,6 @@
 
 				<checkbox id="mailhop.debug" label="Debug" checked="false"/>
 	  		</groupbox>
-	    </tabpanel>
-
-	    <tabpanel>
-	    	<groupbox flex="1">
-				<description>
-					Your Location is cached on startup and clicking refresh below to reduce the number of lookups by one.
-				</description>
-				<description>
-					<button id="mailhop.refresh_location" onclick="ResetLocation(this);">Refresh your location</button>
-				</description>
-				<label id="mailhop.client_location" class="act" value="Not Set" />
-				<label id="mailhop.client_location_ip" class="plain act" value="" />
-				<label id="mailhop.client_location_host" class="plain act" value="" />
-				<label id="mailhop.client_location_whois" class="text-link plain act" value="whois" tooltiptext="Click for whois" />
-			</groupbox>
 	    </tabpanel>
 
 	  </tabpanels>
