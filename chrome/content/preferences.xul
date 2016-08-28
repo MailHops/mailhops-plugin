@@ -19,7 +19,7 @@
 
 	<tabbox id="mhTabs" selectedIndex="0">
 	  <tabs>
-			<tab label="Pro"/>
+			<tab label="Member"/>
 			<tab label="Security"/>
 			<tab label="Defaults"/>
 	    <tab label="Display"/>
@@ -28,9 +28,9 @@
 	  <tabpanels>
 			<tabpanel>
 				<groupbox flex="1">
-					<caption label="MailHops Pro"/>
+					<caption label="MailHops Membership"/>
 					<description>
-						API Key <label class="text-link plain" value="Get Pro" href="https://mailhops.com/#getpro"/>
+						API Key <label class="text-link plain" value="Get a membership" href="https://mailhops.com"/>
 					</description>
 
 					<grid flex="1">
@@ -40,8 +40,8 @@
 					  </columns>
 					  <rows>
 					    <row>
-								<textbox id="mailhop.api_key" value="Enter API Key"/>
-								<button onclick="saveAPIKey(this);">Save Key</button>
+								<textbox id="mailhop.api_key" placeholder="Enter API Key"/>
+								<button onclick="mailHopPreferences.saveAPIKey();">Save Key</button>
 							</row>
 							<row>
 								<description id="key_details"></description>
@@ -506,8 +506,8 @@
 							<row>
 								<hbox/>
 								<hbox flex="1">
-									<button onclick="TestConnection();">Test Connection</button>
-									<button onclick="ResetConnection();">Reset Connection</button>
+									<button onclick="mailHopPreferences.TestConnection();">Test Connection</button>
+									<button onclick="mailHopPreferences.ResetConnection();">Reset Connection</button>
 								</hbox>
 							</row>
 						</rows>

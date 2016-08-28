@@ -405,7 +405,7 @@ mailHops.saveResults = function(results,route){
         var tagService = Components.classes["@mozilla.org/messenger/tagservice;1"].getService(Components.interfaces.nsIMsgTagService);
           if(!tagService)
             return;
-        mailHops.LOG(tagService.getKeyForTag(countryCode))
+
         if(!tagService.getKeyForTag(countryCode))
           tagService.addTag(countryCode,'',0);
 
