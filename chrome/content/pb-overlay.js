@@ -78,7 +78,7 @@ var mailHopsDisplay =
 	if(header_unsubscribe){
 		var listArr=header_unsubscribe.split(',');
 		var href='';
-		if(listArr.length!=0){
+		if(listArr.length){
 			for(var h=0;h<listArr.length;h++){
 				href = listArr[h].replace('<','').replace('>','');
 				var label = document.createElement('label');
@@ -338,7 +338,7 @@ var mailHopsDisplay =
             mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
           }, false);
   			} else {
-          label.setAttribute('value','Hop #'+(i+1)+' Private');          
+          label.setAttribute('value','Hop #'+(i+1)+' Private');
         }
 
 			//build tooltip

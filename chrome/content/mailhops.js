@@ -171,7 +171,6 @@ mailHops.getRoute = function(){
   //lists box
   var headListUnsubscribe = mailHops.options.show_lists ? mailHops.headers.extractHeader ( "List-Unsubscribe" , false ) : null;
 
-  var received_ips;
   var all_ips = new Array();
   var rline = '';
   //empty secure
@@ -186,34 +185,31 @@ mailHops.getRoute = function(){
   }
 
   //loop through the received headers and parse for IP addresses
-  if ( headReceived ){
-  	var headReceivedArr = headReceived.split('\n');
-  	if(headReceivedArr.length != 0){
-    	for ( var h=0; h<headReceivedArr.length; h++ ) {
-    		//build the received line by concat until semi-colon ; date/time
-    		rline += headReceivedArr[h];
-    		if(headReceivedArr[h].indexOf(';')==-1)
-    			continue;
-    		received_ips = rline.match(regexAllIp);
-
-    		//maybe multiple IPs in one Received: line
-	      	if(received_ips != null && received_ips.length !=0){
-	      		for( var r=0; r<received_ips.length; r++ ){
-	      			if(regexIp.test(received_ips[r]) && mailHops.testIP(received_ips[r],rline)){
-	      				all_ips.unshift( received_ips[r] );
-						    //don't want duplicate IPs from the same Received header
-                if(r < received_ips.length && received_ips[r] == received_ips[r+1])
-                   break;
-		    		}
-		   		}
-	      	}
-	      //reset the line
-	      rline='';
-      }
+  if (!!headReceived){
+    var received_ips = new Array();
+	  var headReceivedArr = headReceived.split('\n');
+		for( var h=0; h < headReceivedArr.length; h++ ) {
+  		//build the received line by concat until semi-colon ; date/time
+  		rline += headReceivedArr[h];
+  		if(headReceivedArr[h].indexOf(';')==-1)
+  			continue;
+  		received_ips = rline.match(regexAllIp);
+      //get unique IPs for each Received header
+      received_ips = received_ips.filter(function(item, pos) {
+                      return received_ips.indexOf(item) == pos;
+                    });
+      for( var r=0; r < received_ips.length; r++ ){
+        if(regexIp.test(received_ips[r]) && mailHops.testIP(received_ips[r],rline)){
+  				all_ips.unshift( received_ips[r] );
+  		  }
+ 		  }
+      //reset the line
+      rline='';
     }
   }
+
   //get the originating IP address
-	if(headXOrigIP){
+	if(!!headXOrigIP){
     //remove brackets
     headXOrigIP = headXOrigIP.replace('[','').replace(']','');
     //IPV6 check
@@ -221,12 +217,12 @@ mailHops.getRoute = function(){
       all_ips.unshift( headXOrigIP );
     } else {
       var ip = headXOrigIP.match(regexAllIp);
-  		if(ip != null && ip.length != 0 && all_ips.indexOf(ip[0])==-1)
+  		if(!!ip && ip.length && all_ips.indexOf(ip[0])==-1)
   			all_ips.unshift( ip[0] );
     }
 	}
-  if ( all_ips.length != 0 ){
-   mailHops.lookupRoute ( all_ips ) ;
+  if ( all_ips.length ){
+    mailHops.lookupRoute ( all_ips ) ;
   } else {
 	  mailHopsDisplay.clear( true );
   }
@@ -247,7 +243,9 @@ mailHops.testIP = function(ip,header){
         || lastchar == ';'
         || parseInt(ip.substring(0,ip.indexOf('.'))) >= 240 //IANA-RESERVED
     ){
-			validIP = false;
+      //only if there is one instance of this IP
+      if(header.indexOf(ip) == header.lastIndexOf(ip))
+			   validIP = false;
     } else {
       //check if this IP was part of a secure transmission
       if(header.indexOf('using SSL') != -1){

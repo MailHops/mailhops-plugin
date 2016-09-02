@@ -153,9 +153,7 @@ launchMap: function(route,options){
 },
 
 getAPIUrl: function(options){
-  if(!!options.api_key && options.api_key != '')
-    return options.api_http+options.api_host+'/v2';
-  return options.api_http+options.api_host+'/v1';
+  return options.api_http+options.api_host+'/v2';
 },
 
 getAPIUrlParams: function(options){
