@@ -136,15 +136,12 @@ var mailHopsDisplay =
     }
   },
 
-  error: function(data){
+  error: function(status,data){
     this.container.removeAttribute("route");
-    if(data && data.meta.code==410)
-      this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/info.png)';
-    else
-      this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/error.png)';
+    this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/error.png)';
 
     if(data && data.error){
-      this.resultText.setAttribute('value', mailHopsUtils.error(data.meta.code));
+      this.resultText.setAttribute('value', status+': '+data.error.message);
       this.resultText.setAttribute('tooltiptext',data.error.message);
     } else {
       this.resultText.setAttribute('value', ' Service Unavailable.');
@@ -181,7 +178,7 @@ var mailHopsDisplay =
       this.resultDetails.removeChild(this.resultDetails.firstChild);
   }
 
-  if(response && response.route && response.route.length > 0){
+  if(response && response.route && response.route.length){
 
       if(this.options.client_location){
         var client_location = JSON.parse(this.options.client_location);

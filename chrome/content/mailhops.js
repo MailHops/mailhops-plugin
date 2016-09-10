@@ -188,12 +188,15 @@ mailHops.getRoute = function(){
   if (!!headReceived){
     var received_ips = new Array();
 	  var headReceivedArr = headReceived.split('\n');
-		for( var h=0; h < headReceivedArr.length; h++ ) {
-  		//build the received line by concat until semi-colon ; date/time
+    for( var h=0; h < headReceivedArr.length; h++ ) {
+      //build the received line by concat until semi-colon ; date/time
   		rline += headReceivedArr[h];
   		if(headReceivedArr[h].indexOf(';')==-1)
   			continue;
-  		received_ips = rline.match(regexAllIp);
+      received_ips = rline.match(regexAllIp);
+      //continue if no IPs found
+      if(!received_ips)
+        continue;
       //get unique IPs for each Received header
       received_ips = received_ips.filter(function(item, pos) {
                       return received_ips.indexOf(item) == pos;
@@ -221,6 +224,7 @@ mailHops.getRoute = function(){
   			all_ips.unshift( ip[0] );
     }
 	}
+
   if ( all_ips.length ){
     mailHops.lookupRoute ( all_ips ) ;
   } else {
@@ -344,33 +348,32 @@ mailHops.lookupRoute = function(header_route){
    }
  }
 
-mailHops.LOG("Calling MailHops API: "+lookupURL);
+mailHops.LOG(lookupURL);
 
  //call mailhops api for lookup
  var xmlhttp = new XMLHttpRequest();
 
  xmlhttp.open("GET", lookupURL ,true);
  xmlhttp.onreadystatechange=function() {
-  if (xmlhttp.readyState==4) {
+  if (xmlhttp.readyState===4){
     try {
+      mailHops.LOG(xmlhttp.status);
        var data = JSON.parse(xmlhttp.responseText);
-       if(data && data.meta.code==200){
+       if(xmlhttp.status===200){
           var d = new Date();
           data.meta.cached = d.toISOString();
-
           //save the result
   	   		mailHops.saveResults(JSON.stringify(data),data.response.route);
-
           //display the result
   	   		mailHopsDisplay.route(header_route, mailHops.message, data.response, data.meta, lookupURL);
-  	   } else {
-          mailHops.LOG("lookupRoute: "+JSON.stringify(data));
+  	   } else if(data.error){
+          mailHops.LOG(JSON.stringify(data));
   	    	//display the error
-  	   		mailHopsDisplay.error(data);
+  	   		mailHopsDisplay.error(xmlhttp.status,data);
   	   }
      } catch(e){
-         mailHops.LOG("lookupRoute: Error "+JSON.stringify(e));
-     	   mailHopsDisplay.error();
+       mailHops.LOG(e);
+       mailHopsDisplay.error();
      }
   }
  };
@@ -398,8 +401,7 @@ mailHops.saveResults = function(results,route){
       msg.clear();
       msg.appendElement(msgHdr, false);
 
-      if(!!mailHops.options.country_tag)
-      {
+      if(!!mailHops.options.country_tag){
         var tagService = Components.classes["@mozilla.org/messenger/tagservice;1"].getService(Components.interfaces.nsIMsgTagService);
           if(!tagService)
             return;

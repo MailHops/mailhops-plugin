@@ -30,7 +30,7 @@
 				<groupbox flex="1">
 					<caption label="MailHops Membership"/>
 					<description>
-						API Key <label class="text-link plain" value="Get a membership" href="https://mailhops.com"/>
+						API Key <label id="mailhops-membership-link" class="text-link plain" value="Join MailHops" data-account-url="https://mailhops.com"/>
 					</description>
 
 					<grid flex="1">
@@ -514,7 +514,7 @@
 				</grid>
 
 				<description>
-					MailHops API uses <label class="text-link plain" value="Forecast.IO" href="https://developer.forecast.io/"/> to get the weather of the sender, register for an API Key to enable this feature.
+					MailHops API uses <label id="forecastio" class="text-link plain" value="Forecast.IO"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
 
 				<textbox id="mailhop.fkey" value=""/>

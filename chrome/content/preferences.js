@@ -101,11 +101,22 @@ var mailHopPreferences = {
         document.getElementById("country_"+this.country_filter[c]).checked=true;
       }
     }
-
+    if(!!this.api_key.value){
+      document.getElementById("mailhops-membership-link").value='My Account';
+      document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+this.api_key.value);
+    }
     if(pref.getCharPref("mail.mailHops.country_tag",'false')=='false')
   		document.getElementById("mailhop.country_tag").checked = false;
   	else
   		document.getElementById("mailhop.country_tag").checked = true;
+
+    document.getElementById("mailhops-membership-link").addEventListener("click", function () {
+      mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
+    });
+    document.getElementById("forecastio").addEventListener("click", function () {
+      mailHopsUtils.launchExternalURL('https://developer.forecast.io/');
+    });
+    this.saveAPIKey();
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
@@ -123,6 +134,8 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
 
     //API vars
+    if(document.getElementById("key_details").getAttribute("valid") == "false")
+      this.api_key.value='';
     pref.setCharPref("mail.mailHops.api_key", this.api_key.value);
     pref.setCharPref("mail.mailHops.api_http", this.api_http.value);
     pref.setCharPref("mail.mailHops.api_host", this.api_host.value);
@@ -149,33 +162,40 @@ var mailHopPreferences = {
 
   saveAPIKey: function() {
 
-    if(!!this.api_key && this.api_key != ''){
+    if(!!this.api_key && this.api_key.value != ''){
       var xmlhttp = new XMLHttpRequest();
       var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
       var apiBase = this.api_http.value+this.api_host.value,
-          accountURL = '/v2/accounts/?api_key='+this.api_key.value;
+          accountURL = '/v2/accounts/?api_key='+this.api_key.value,
+          api_key = this.api_key.value;
 
       xmlhttp.open("GET", apiBase+accountURL,true);
        xmlhttp.onreadystatechange=function() {
-        if (xmlhttp.readyState==4) {
+        if (xmlhttp.readyState===4) {
           try{
              var data = JSON.parse(xmlhttp.responseText);
-             if(!!data && data.meta.code==200){
+             if(xmlhttp.status===200){
+                document.getElementById("mailhops-membership-link").value='My Account';
+                document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+api_key);
                 document.getElementById("key_details").innerHTML = JSON.stringify(data.account).replace(/\,/g,'\n');
-             } else if(!!data.meta.message){
-                document.getElementById("key_details").innerHTML = data.meta.message;
-             } else {
-                document.getElementById("key_details").innerHTML = 'Invalid API Key';
+                document.getElementById("key_details").setAttribute("valid","true");
+             } else if(!!data.error){
+                document.getElementById("mailhops-membership-link").value='Join MailHops';
+                document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com');
+                document.getElementById("key_details").innerHTML = xmlhttp.status+': '+data.error.message;
+                document.getElementById("key_details").setAttribute("valid","false");
              }
            }
            catch (ex){
              document.getElementById("key_details").innerHTML = 'Connection Failed to\n '+apiBase+'!';
+             document.getElementById("key_details").setAttribute("valid","false");
            }
          }
        };
      xmlhttp.send(null);
    } else {
      document.getElementById("key_details").innerHTML = 'Enter a valid API key above.';
+     document.getElementById("key_details").setAttribute("valid","false");
    }
  },
 
@@ -187,10 +207,10 @@ var mailHopPreferences = {
 
    xmlhttp.open("GET", apiBase+lookupURL,true);
  	 xmlhttp.onreadystatechange=function() {
- 	  if (xmlhttp.readyState==4) {
+ 	  if (xmlhttp.readyState===4) {
    	  try{
    		   var data = JSON.parse(xmlhttp.responseText);
-   		   if(!!data && data.meta.code==200){
+   		   if(xmlhttp.status===200){
    			   	alert('Connection Succeeded to\n '+apiBase+'!');
    		   } else {
    		    	//display the error
@@ -208,6 +228,6 @@ var mailHopPreferences = {
   ResetConnection: function(){
    this.api_http.value=="https://";
    this.api_http.selectedIndex = 0;
- 	this.api_host.value='api.mailhops.com';
+ 	 this.api_host.value='api.mailhops.com';
  }
 };

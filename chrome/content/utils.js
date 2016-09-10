@@ -99,19 +99,6 @@ dnsbl: function(result,abbr){
 	}
 },
 
-error: function(error_code){
-   switch(error_code){
-         case 400:
-            return 'Missing route parameter';
-         case 410:
-            return 'Down for Maintenance';
-         case 500:
-            return 'Server Error';
-         default:
-            return 'Service Unavailable';
-      }
-},
-
 addCommas: function(nStr){
    nStr += '';
    var x = nStr.split('.');

@@ -134,3 +134,20 @@ button {
 	text-align: center;
 	color: #333;
 }
+
+@-webkit-keyframes pulsate{0%{-moz-transform:scale(.3);opacity:.2}100%{-moz-transform:scale(1.1);opacity:1}}@-webkit-keyframes pulsate{0%{-webkit-transform:scale(.3);opacity:.2}100%{-webkit-transform:scale(1.1);opacity:1}}@keyframes pulsate{0%{-webkit-transform:scale(.3);transform:scale(.3);opacity:.2}100%{-webkit-transform:scale(1.1);transform:scale(1.1);opacity:1}}.SmartStatus-container{max-width:165px;display:flex}.SmartStatus-iconContainer{padding:2px;flex:0 1 auto}.SmartStatus--success{color:#5CB85C;margin-bottom:20px;padding:0}.SmartStatus--failed{color:#D9534F;margin-top:20px;padding:0}.SmartStatus--running{color:#848992;margin-top:10px;padding:0;-webkit-animation:pulsate 1.5s linear infinite alternate;-moz-animation:pulsate 1.5s linear infinite alternate;animation:pulsate 1.5s linear infinite alternate}.SmartStatus-tooltip{text-align:left;max-width:250px;padding:10px;line-height:22px}.SmartStatus-tooltip--successful,.SmartStatus-tooltip--success{color:#5CB85C;padding-left:5px;padding-right:0;text-shadow:-1px -1px 0 #FFFFFF,1px -1px 0 #FFFFFF,-1px 1px 0 #FFFFFF,1px 1px 0 #FFFFFF}.SmartStatus-tooltip--failed{color:#D9534F;padding-left:5px;padding-right:0;text-shadow:-1px -1px 0 #FFFFFF,1px -1px 0 #FFFFFF,-1px 1px 0 #FFFFFF,1px 1px 0 #FFFFFF}.SmartStatus-tooltip--running{color:#161B1F;padding-left:5px;padding-right:0;text-shadow:-1px -1px 0 #FFFFFF,1px -1px 0 #FFFFFF,-1px 1px 0 #FFFFFF,1px 1px 0 #FFFFFF;-webkit-animation:pulsate 1.5s linear infinite alternate;-moz-animation:pulsate 1.5s linear infinite alternate;animation:pulsate 1.5s linear infinite alternate}
+.running {
+	font-size: 13px;
+	animation: pulsate 1.5s linear infinite alternate;
+	color: #5CB85C;
+}
+.running:before {
+  content: "\f111"
+}
+.error {
+	font-size: 13px;
+	color: rgba(255,0,0,.6);	
+}
+.error:before {
+  content: "\f111"
+}
