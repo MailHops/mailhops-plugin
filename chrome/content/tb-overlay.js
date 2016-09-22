@@ -16,17 +16,17 @@ var mailHopsDisplay =
 
     this.options = options;
 
-    this.container = document.getElementById ( "mailhopsBox" ) ;
-    this.resultBox = document.getElementById ( "mailhopsResult" ) ;
-    this.resultText = document.getElementById ( "mailhopsResultText" ) ;
-    this.mailhopsResultWeather = document.getElementById ( "mailhopsResultWeather" ) ;
-    this.resultDetails = document.getElementById ( "mailhopsDataPaneDetails");
-    this.mapLink = document.getElementById ( "mailhopsMapLink");
+    this.container = document.getElementById("mailhopsBox");
+    this.resultBox = document.getElementById("mailhopsResult");
+    this.resultText = document.getElementById("mailhopsResultText");
+    this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
+    this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
+    this.mapLink = document.getElementById("mailhopsMapLink");
     //auth
-    this.mailhopsDataPaneSPF = document.getElementById ( "mailhopsDataPaneSPF");
-    this.mailhopsDataPaneDKIM = document.getElementById ( "mailhopsDataPaneDKIM");
-    this.mailhopsDataPaneMailer = document.getElementById ( "mailhopsDataPaneMailer");
-    this.mailhopsDataPaneDNSBL = document.getElementById ( "mailhopsDataPaneDNSBL");
+    this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
+    this.mailhopsDataPaneDKIM = document.getElementById("mailhopsDataPaneDKIM");
+    this.mailhopsDataPaneMailer = document.getElementById("mailhopsDataPaneMailer");
+    this.mailhopsDataPaneDNSBL = document.getElementById("mailhopsDataPaneDNSBL");
 
     //event listner for route click to launch map
     this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
@@ -272,41 +272,51 @@ var mailHopsDisplay =
     }
 
     //set weather of sender
-  if(weather){
-    this.mailhopsResultWeather.style.display = 'block';
-    this.mailhopsResultWeather.setAttribute('tooltiptext',new Date(weather.time*1000));
-    this.mailhopsResultWeather.value = weather.summary+' '+Math.round(weather.temp)+'\u00B0';
-    this.mailhopsResultWeather.style.backgroundImage = 'url('+mailHopsUtils.getWeatherIcon(weather.icon)+')';
-  }
-
-  if(image.indexOf('local')!=-1) {
-    displayText = ' Local message.';
-  } else {
-
-    if(!!first){
-      if(!!first.city && !!first.state)
-          displayText = first.city+', '+first.state;
-      else if(!!first.city)
-          displayText = first.city+', '+first.countryCode;
-      else if(!!first.countryName)
-          displayText = first.countryName;
+    if(weather){
+      this.mailhopsResultWeather.style.display = 'block';
+      this.mailhopsResultWeather.setAttribute('tooltiptext',new Date(weather.time*1000));
+      this.mailhopsResultWeather.value = weather.summary+' '+Math.round(weather.temp)+'\u00B0';
+      this.mailhopsResultWeather.style.backgroundImage = 'url('+mailHopsUtils.getWeatherIcon(weather.icon)+')';
     }
 
-    if(response.distance){
-      if(this.options.unit=='km' && response.distance.kilometers > 0)
-        distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
-      else if(response.distance.miles > 0)
-        distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
-    } else if(displayText=='')
+    if(image.indexOf('local')!=-1) {
       displayText = ' Local message.';
-  }
+    } else {
 
-  if(header_route)
+      if(!!first){
+        if(!!first.city && !!first.state)
+            displayText = first.city+', '+first.state;
+        else if(!!first.city)
+            displayText = first.city+', '+first.countryCode;
+        else if(!!first.countryName)
+            displayText = first.countryName;
+      }
+
+      if(response.distance){
+        if(this.options.unit=='km' && response.distance.kilometers > 0)
+          distanceText = mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled';
+        else if(response.distance.miles > 0)
+          distanceText = mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled';
+      } else if(displayText=='')
+        displayText = ' Local message.';
+    }
+
+    if(message.time>0){
+      message.time = message.time/1000;
+      if(message.time<60)
+        distanceText += ' in '+message.time+' sec.';
+      else if(message.time<3600) //something is wrong if it takes this long
+        distanceText += ' in '+Math.round(message.time/60)+' min.';
+      else //something is wrong if it takes this long
+        distanceText += ' in '+Math.round(message.time/60/60)+' hrs.';
+    }
+    
+    if(header_route)
       this.mapLink.setAttribute("data-route", header_route);
     else
-    this.mapLink.removeAttribute("data-route");
+      this.mapLink.removeAttribute("data-route");
 
-  this.resultText.setAttribute('value', displayText+' '+distanceText);
+    this.resultText.setAttribute('value', displayText+' ( '+distanceText+' )');
     this.resultText.style.backgroundImage = 'url('+image+')';
   }//end route
 };

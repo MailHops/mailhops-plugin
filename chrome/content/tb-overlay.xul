@@ -16,7 +16,7 @@
 			    <label id="mailhopsLabel" value="MailHops Route " class="headerName"></label>
        		<hbox id="mailhopsResult" flex="1">
        			<label id="mailhopsResultText"></label>
-       			<label id="mailhopsResultWeather"></label>
+            <label id="mailhopsResultWeather"></label>
 
        			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="hops" tooltiptext="Click to view route.">
          				<menupopup id="mailhopsDataPaneDetails">

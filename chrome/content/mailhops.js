@@ -20,6 +20,7 @@ var mailHops =
   },
   message: {
     secure:[]
+    ,time: 0
   }
 };
 
@@ -160,8 +161,9 @@ mailHops.getRoute = function(){
   // http://regexlib.com/REDetails.aspx?regexp_id=2919
   var regexIPV6 = /(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))/;
 
-  var headReceived = mailHops.headers.extractHeader ( "Received" , true ) ;
-  var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false ) ;
+  var headReceived = mailHops.headers.extractHeader ( "Received" , true );
+  var headXReceived = mailHops.headers.extractHeader ( "X-Received" , false );
+  var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false );
   //auth box
   var headXMailer = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "X-Mailer" , false ) : null;
   var headUserAgent = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "User-Agent" , false ) : null;
@@ -172,9 +174,10 @@ mailHops.getRoute = function(){
   var headListUnsubscribe = mailHops.options.show_lists ? mailHops.headers.extractHeader ( "List-Unsubscribe" , false ) : null;
 
   var all_ips = new Array();
-  var rline = '';
-  //empty secure
+  var rline = '',firstDate,lastDate;
+  //empty secure and time
   mailHops.message.secure = [];
+  mailHops.message.time = 0;
 
   if(mailHops.options.show_lists){
       mailHopsDisplay.lists( headListUnsubscribe );
@@ -193,6 +196,15 @@ mailHops.getRoute = function(){
   		rline += headReceivedArr[h];
   		if(headReceivedArr[h].indexOf(';')==-1)
   			continue;
+
+      // first and last dates are  used to calculate time Traveled
+      if(rline.indexOf(';')!==-1){
+        if(!lastDate)
+          lastDate = rline.substring(rline.indexOf(';')+1).trim();
+        firstDate = rline.substring(rline.indexOf(';')+1).trim();
+      }
+
+      // parse IPs out of Received line
       received_ips = rline.match(regexAllIp);
       //continue if no IPs found
       if(!received_ips)
@@ -209,6 +221,20 @@ mailHops.getRoute = function(){
       //reset the line
       rline='';
     }
+  }
+
+  // parse dates
+  if(firstDate.indexOf('(')!==-1)
+    firstDate = firstDate.substring(0,firstDate.indexOf('(')).trim();
+  if(lastDate.indexOf('(')!==-1)
+    lastDate = lastDate.substring(0,lastDate.indexOf('(')).trim();
+
+  try {
+    firstDate = new Date(firstDate);
+    lastDate = new Date(lastDate);
+    mailHops.message.time = lastDate-firstDate;
+  } catch(e){
+    mailHops.LOG('parse time traveled dates Error: '+JSON.stringify(e));
   }
 
   //get the originating IP address
@@ -333,7 +359,9 @@ mailHops.lookupRoute = function(header_route){
 
  if(mailHops.options.fkey != '')
     lookupURL += '&fkey='+mailHops.options.fkey;
-
+ if(mailHops.message.time > 0)
+    lookupURL += '&t='+mailHops.message.time;
+    
  //check for cache
  var cached_results = mailHops.getResults();
 

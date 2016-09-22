@@ -430,12 +430,22 @@ var mailHopsDisplay =
 
     if(response.distance){
     	if(this.options.unit=='km' && response.distance.kilometers > 0)
-			   distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
+			   distanceText = mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled';
 		  else if(response.distance.miles > 0)
-			   distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
+			   distanceText = mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled';
 	  }
   	else if(displayText=='')
   		displayText = ' Local message.';
+  }
+
+  if(message.time>0){
+    message.time = message.time/1000;
+    if(message.time<60)
+      distanceText += ' in '+message.time+' sec.';
+    else if(message.time<3600) //something is wrong if it takes this long
+      distanceText += ' in '+Math.round(message.time/60)+' min.';
+    else //something is wrong if it takes this long
+      distanceText += ' in '+Math.round(message.time/60/60)+' hrs.';
   }
 
   if(header_route)
@@ -445,12 +455,10 @@ var mailHopsDisplay =
 
   this.resultTextDataPane.style.backgroundImage = 'url('+image+')';
   this.resultTextDataPane.value = displayText;
-  this.resultTextDataPane.setAttribute('tooltiptext',displayText+' '+distanceText);
-
+  
   if(distanceText){
-	this.resultTextDataPane2.style.display = 'block';
-	this.resultTextDataPane2.value = distanceText;
-  	this.resultTextDataPane2.setAttribute('tooltiptext',displayText+' '+distanceText);
+	   this.resultTextDataPane2.style.display = 'block';
+	   this.resultTextDataPane2.value = ' ( '+distanceText+' )';
   } else {
   	this.resultTextDataPane2.style.display = 'none';
   }
