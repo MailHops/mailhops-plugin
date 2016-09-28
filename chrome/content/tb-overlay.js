@@ -301,16 +301,16 @@ var mailHopsDisplay =
         displayText = ' Local message.';
     }
 
-    if(message.time>0){
+    if(message.time != null){
       message.time = message.time/1000;
-      if(message.time<60)
+      if(message.time < 60)
         distanceText += ' in '+message.time+' sec.';
       else if(message.time<3600) //something is wrong if it takes this long
         distanceText += ' in '+Math.round(message.time/60)+' min.';
       else //something is wrong if it takes this long
         distanceText += ' in '+Math.round(message.time/60/60)+' hrs.';
     }
-    
+
     if(header_route)
       this.mapLink.setAttribute("data-route", header_route);
     else

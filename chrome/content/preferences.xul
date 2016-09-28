@@ -32,23 +32,35 @@
 					<description>
 						API Key <label id="mailhops-membership-link" class="text-link plain" value="Join MailHops" data-account-url="https://mailhops.com"/>
 					</description>
-
-					<grid flex="1">
-					  <columns>
-							<column flex="1"/>
-							<column/>
-					  </columns>
-					  <rows>
-					    <row>
-								<textbox id="mailhop.api_key" placeholder="Enter API Key"/>
-								<button onclick="mailHopPreferences.saveAPIKey();">Save Key</button>
-							</row>
-							<row>
-								<description id="key_details"></description>
-							</row>
-						</rows>
-					</grid>
-
+					<hbox align="center">
+						<textbox id="mailhop.api_key" placeholder="Enter your MailHops API Member Key" width="500"/>
+						<button onclick="mailHopPreferences.saveAPIKey();">Save Key</button>
+					</hbox>
+					<hbox align="center">
+						<description>
+							<label id="plan-error" class="text-error plain" value=""></label>
+						</description>
+					</hbox>
+					<hbox align="center">
+						<description>
+							<label id="plan" class="plain" value=""></label>
+						</description>
+					</hbox>
+					<hbox align="center">
+						<description>
+							<label id="rate-limit" class="plain" value=""></label>
+						</description>
+					</hbox>
+					<hbox align="center">
+						<description>
+							<label id="rate-remaining" class="plain" value=""></label>
+						</description>
+					</hbox>
+					<hbox align="center">
+						<description>
+							<label id="rate-reset" class="plain" value=""></label>
+						</description>
+					</hbox>
 				</groupbox>
 			</tabpanel>
 
@@ -56,6 +68,8 @@
 				<groupbox flex="1" style="height:400px;overflow: scroll;">
 					<caption label="Security"/>
 							<checkbox id="mailhop.country_tag" label="Tag messages with country origin" checked="false"/>
+							<checkbox id="mailhop.travel_time_junk" label="Tag messages that take longer than 10 seconds as Junk" checked="false"/>
+
 							<description>Mark messages as Junk from Countries checked below.
 								<label class="text-link plain" value="All " onclick="mailHopPreferences.countryListSelectAll(true);"/>
 								<label class="text-link plain" value=" None" onclick="mailHopPreferences.countryListSelectAll(false);"/>
@@ -482,13 +496,13 @@
 
 	    <tabpanel>
 	    	<groupbox>
-				<caption label="MailHops API Hosting"/>
+				<caption label="MailHops API &amp; Hosting"/>
 				<!-- <description>
 					MailHops API hosting is sponsored by
 					<image src="https://mailhops.com/images/sponsor.png" width="200"/>
 				</description> -->
 
-				<grid flex="1">
+				<grid>
 				  <columns>
 						<column/>
 						<column flex="1"/>
@@ -501,7 +515,7 @@
 										<menuitem value="http://" label="http://" />
 									</menupopup>
 								</menulist>
-								<textbox id="mailhop.api_host" value="api.mailhops.com" flex="1"/>
+								<textbox id="mailhop.api_host" value="api.mailhops.com" flex="1" placeholder="Enter MailHops API host"/>
 							</row>
 							<row>
 								<hbox/>
@@ -513,11 +527,13 @@
 						</rows>
 				</grid>
 
+				<spacer/>
+
 				<description>
 					MailHops API uses <label id="forecastio" class="text-link plain" value="Forecast.IO"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
 
-				<textbox id="mailhop.fkey" value=""/>
+				<textbox id="mailhop.fkey" value="" placeholder="Enter ForecastIO API Key"/>
 
 				<checkbox id="mailhop.debug" label="Debug" checked="false"/>
 	  		</groupbox>

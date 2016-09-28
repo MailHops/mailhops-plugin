@@ -269,19 +269,39 @@ var mailHopsDisplay =
 	  }
 
   	//append meta
-	if(this.options.show_meta){
- 			for(var index in meta){
-			var mlabel = document.createElement('label');
-			mlabel.setAttribute('value',index+': '+meta[index]);
-			this.resultMeta.appendChild(mlabel);
-		}
-		var mlabel = document.createElement('label');
-			mlabel.setAttribute('value','api url');
-			mlabel.setAttribute('class','text-link');
-			mlabel.setAttribute('href',lookup_url);
-			this.resultMeta.appendChild(mlabel);
-
-	}
+    try {
+    	if(this.options.show_meta){
+    		for(var i in meta){
+            var mlabel = document.createElement('label');
+            if(typeof meta[i] == 'object'){
+              mlabel.setAttribute('value',i+': ');
+              this.resultMeta.appendChild(mlabel);
+              for(var ii in meta[i]){
+                var mlabel = document.createElement('label');
+                if(ii=='reset'){
+                  if(parseInt(meta[i][ii])/60 < 60)
+                    mlabel.setAttribute('value','   '+ii+': '+Math.round(parseInt(meta[i][ii])/60).toString()+' min.');
+                  else
+                    mlabel.setAttribute('value','   '+ii+': '+Math.round(parseInt(meta[i][ii])/60/60).toString()+' hr.');
+                } else {
+                  mlabel.setAttribute('value','   '+ii+': '+meta[i][ii]);
+                }
+                this.resultMeta.appendChild(mlabel);
+              }
+            } else {
+              mlabel.setAttribute('value',i+': '+meta[i]);
+              this.resultMeta.appendChild(mlabel);
+            }
+    	  }
+        var mlabel = document.createElement('label');
+    		mlabel.setAttribute('value','api url');
+    		mlabel.setAttribute('class','text-link');
+    		mlabel.setAttribute('href',lookup_url);
+    		this.resultMeta.appendChild(mlabel);
+      }
+    } catch(e){
+      // parseInt error?
+    }
 
   if(response && response.route && response.route.length){
 
@@ -438,9 +458,9 @@ var mailHopsDisplay =
   		displayText = ' Local message.';
   }
 
-  if(message.time>0){
+  if(message.time != null){
     message.time = message.time/1000;
-    if(message.time<60)
+    if(message.time < 60)
       distanceText += ' in '+message.time+' sec.';
     else if(message.time<3600) //something is wrong if it takes this long
       distanceText += ' in '+Math.round(message.time/60)+' min.';
@@ -455,7 +475,7 @@ var mailHopsDisplay =
 
   this.resultTextDataPane.style.backgroundImage = 'url('+image+')';
   this.resultTextDataPane.value = displayText;
-  
+
   if(distanceText){
 	   this.resultTextDataPane2.style.display = 'block';
 	   this.resultTextDataPane2.value = ' ( '+distanceText+' )';

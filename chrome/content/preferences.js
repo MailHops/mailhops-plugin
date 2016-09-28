@@ -110,6 +110,11 @@ var mailHopPreferences = {
   	else
   		document.getElementById("mailhop.country_tag").checked = true;
 
+    if(pref.getCharPref("mail.mailHops.travel_time_junk",'false')=='false')
+      document.getElementById("mailhop.travel_time_junk").checked = false;
+    else
+      document.getElementById("mailhop.travel_time_junk").checked = true;
+
     document.getElementById("mailhops-membership-link").addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
     });
@@ -134,7 +139,7 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
 
     //API vars
-    if(document.getElementById("key_details").getAttribute("valid") == "false")
+    if(document.getElementById("plan").getAttribute("valid") == "false")
       this.api_key.value='';
     pref.setCharPref("mail.mailHops.api_key", this.api_key.value);
     pref.setCharPref("mail.mailHops.api_http", this.api_http.value);
@@ -150,6 +155,7 @@ var mailHopPreferences = {
     }
     pref.setCharPref("mail.mailHops.country_filter", String(JSON.stringify(this.country_filter)));
     pref.setCharPref("mail.mailHops.country_tag", String(document.getElementById("mailhop.country_tag").checked));
+    pref.setCharPref("mail.mailHops.travel_time_junk", String(document.getElementById("mailhop.travel_time_junk").checked));
 
     return true;
   },
@@ -159,7 +165,17 @@ var mailHopPreferences = {
       document.getElementById("country_"+mailHopsUtils.countries[c]).checked=all;
     }
   },
-
+  planError: function(error){
+    document.getElementById("plan-error").style.display = 'block';
+    document.getElementById("plan-error").value=error;
+    document.getElementById("plan").value='';
+    document.getElementById("plan").setAttribute("valid","false");
+    document.getElementById("rate-limit").value='';
+    document.getElementById("rate-remaining").value='';
+    document.getElementById("rate-reset").value='';
+    document.getElementById("mailhops-membership-link").value='Join MailHops';
+    document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com');
+  },
   saveAPIKey: function() {
 
     if(!!this.api_key && this.api_key.value != ''){
@@ -167,35 +183,38 @@ var mailHopPreferences = {
       var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
       var apiBase = this.api_http.value+this.api_host.value,
           accountURL = '/v2/accounts/?api_key='+this.api_key.value,
-          api_key = this.api_key.value;
+          api_key = this.api_key.value,
+          self = this;
 
       xmlhttp.open("GET", apiBase+accountURL,true);
        xmlhttp.onreadystatechange=function() {
         if (xmlhttp.readyState===4) {
-          try{
+          try {
              var data = JSON.parse(xmlhttp.responseText);
              if(xmlhttp.status===200){
+                document.getElementById("plan-error").style.display = 'none';
+                // set plan info
+                document.getElementById("plan").value = "Plan: "+data.account.subscriptions.data[0].plan.id;
+                document.getElementById("plan").setAttribute("valid","true");
+                document.getElementById("rate-limit").value = "Limit: "+data.account.rate.limit;
+                document.getElementById("rate-remaining").value = "Remaining: "+data.account.rate.remaining;
+                if(data.account.rate.reset/60 < 60)
+                  document.getElementById("rate-reset").value = "Resets in: "+Math.round(data.account.rate.reset/60)+" min.";
+                else
+                  document.getElementById("rate-reset").value = "Resets in: "+Math.round(data.account.rate.reset/60/60)+" hr.";
                 document.getElementById("mailhops-membership-link").value='My Account';
                 document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+api_key);
-                document.getElementById("key_details").innerHTML = JSON.stringify(data.account).replace(/\,/g,'\n');
-                document.getElementById("key_details").setAttribute("valid","true");
              } else if(!!data.error){
-                document.getElementById("mailhops-membership-link").value='Join MailHops';
-                document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com');
-                document.getElementById("key_details").innerHTML = xmlhttp.status+': '+data.error.message;
-                document.getElementById("key_details").setAttribute("valid","false");
+                self.planError(xmlhttp.status+': '+data.error.message);
              }
-           }
-           catch (ex){
-             document.getElementById("key_details").innerHTML = 'Connection Failed to\n '+apiBase+'!';
-             document.getElementById("key_details").setAttribute("valid","false");
+           } catch (e){
+             self.planError('Connection Failed to\n '+apiBase+'!');
            }
          }
        };
      xmlhttp.send(null);
    } else {
-     document.getElementById("key_details").innerHTML = 'Enter a valid API key above.';
-     document.getElementById("key_details").setAttribute("valid","false");
+     this.planError('Enter a valid API key above.');
    }
  },
 

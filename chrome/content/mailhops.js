@@ -16,11 +16,12 @@ var mailHops =
       'api_host':'api.mailhops.com',
       'debug':false,
       'country_tag':false,
+      'travel_time_junk':false,
       'country_filter':[]
   },
   message: {
     secure:[]
-    ,time: 0
+    ,time: null
   }
 };
 
@@ -85,6 +86,8 @@ mailHops.loadPref = function()
   mailHops.options.map_provider = mailHops.getCharPref('mail.mailHops.map_provider','OpenStreetMap.Mapnik');
 
   mailHops.options.country_tag = mailHops.getCharPref('mail.mailHops.country_tag','false')=='true'?true:false;
+
+  mailHops.options.travel_time_junk = mailHops.getCharPref('mail.mailHops.travel_time_junk','false')=='true'?true:false;
 
   mailHops.options.country_filter = mailHops.getCharPref('mail.mailHops.country_filter',[]);
 
@@ -162,9 +165,10 @@ mailHops.getRoute = function(){
   var regexIPV6 = /(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))/;
 
   var headReceived = mailHops.headers.extractHeader ( "Received" , true );
+  var headDate = mailHops.headers.extractHeader ( "Date" , true );
   var headXReceived = mailHops.headers.extractHeader ( "X-Received" , false );
   var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false );
-  //auth box
+  // auth box
   var headXMailer = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "X-Mailer" , false ) : null;
   var headUserAgent = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "User-Agent" , false ) : null;
   var headXMimeOLE = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "X-MimeOLE" , false ) : null;
@@ -174,10 +178,10 @@ mailHops.getRoute = function(){
   var headListUnsubscribe = mailHops.options.show_lists ? mailHops.headers.extractHeader ( "List-Unsubscribe" , false ) : null;
 
   var all_ips = new Array();
-  var rline = '',firstDate,lastDate;
+  var rline = '',firstDate=headDate,lastDate;
   //empty secure and time
   mailHops.message.secure = [];
-  mailHops.message.time = 0;
+  mailHops.message.time = null;
 
   if(mailHops.options.show_lists){
       mailHopsDisplay.lists( headListUnsubscribe );
@@ -197,11 +201,12 @@ mailHops.getRoute = function(){
   		if(headReceivedArr[h].indexOf(';')==-1)
   			continue;
 
-      // first and last dates are  used to calculate time Traveled
+      // first and last dates are used to calculate time traveled
       if(rline.indexOf(';')!==-1){
         if(!lastDate)
           lastDate = rline.substring(rline.indexOf(';')+1).trim();
-        firstDate = rline.substring(rline.indexOf(';')+1).trim();
+        else
+          firstDate = rline.substring(rline.indexOf(';')+1).trim();
       }
 
       // parse IPs out of Received line
@@ -224,17 +229,21 @@ mailHops.getRoute = function(){
   }
 
   // parse dates
-  if(firstDate.indexOf('(')!==-1)
+  if(firstDate && firstDate.indexOf('(')!==-1)
     firstDate = firstDate.substring(0,firstDate.indexOf('(')).trim();
-  if(lastDate.indexOf('(')!==-1)
+  if(lastDate && lastDate.indexOf('(')!==-1)
     lastDate = lastDate.substring(0,lastDate.indexOf('(')).trim();
-
-  try {
-    firstDate = new Date(firstDate);
-    lastDate = new Date(lastDate);
-    mailHops.message.time = lastDate-firstDate;
-  } catch(e){
-    mailHops.LOG('parse time traveled dates Error: '+JSON.stringify(e));
+  if(firstDate && lastDate){
+    try {
+      firstDate = new Date(firstDate);
+      lastDate = new Date(lastDate);
+      mailHops.message.time = lastDate-firstDate;
+    } catch(e){
+      mailHops.LOG('travel dates parse Error: '+JSON.stringify(e));
+      mailHops.message.time = null;
+    }
+  } else {
+    mailHops.message.time = null;
   }
 
   //get the originating IP address
@@ -359,9 +368,9 @@ mailHops.lookupRoute = function(header_route){
 
  if(mailHops.options.fkey != '')
     lookupURL += '&fkey='+mailHops.options.fkey;
- if(mailHops.message.time > 0)
+ if(mailHops.message.time != null)
     lookupURL += '&t='+mailHops.message.time;
-    
+
  //check for cache
  var cached_results = mailHops.getResults();
 
@@ -424,7 +433,7 @@ mailHops.saveResults = function(results,route){
   //Add tag
   if(!!route){
     try{
-      var countryCode = mailHopsUtils.getXOriginatingCountryCode(route);
+      var countryCode = mailHopsUtils.getOriginatingCountryCode(route);
       var msg = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
       msg.clear();
       msg.appendElement(msgHdr, false);
@@ -445,6 +454,10 @@ mailHops.saveResults = function(results,route){
         if(mailHops.options.country_filter.indexOf(countryCode.toLowerCase()) !== -1){
           msgHdr.folder.setJunkScoreForMessages(msg, "100");
         }
+      }
+      // tag as junk if travel time is longer than 10 seconds
+      if(!!mailHops.options.travel_time_junk && mailHops.message.time != null && mailHops.message.time > 10000){
+        msgHdr.folder.setJunkScoreForMessages(msg, "100");
       }
 
     } catch(e){

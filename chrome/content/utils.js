@@ -202,17 +202,15 @@ getDistance: function(from, to, unit) {
 		return dist;
 	},
 
-  getXOriginatingCountryCode: function(route) {
-    var countryCode = '';
+  getOriginatingCountryCode: function(route) {
     if(route && route.length){
-      route.forEach(function(e,i,arr){
-        if(!route[i].local && !!route[i].countryCode){
-          countryCode = route[i].countryCode;
-          return;
+      for(var r=0; r<route.length; r++){
+        if(typeof route[r].local == 'undefined' && typeof route[r].client == 'undefined' && !!route[r].countryCode){
+          return route[r].countryCode;
         }
-      });
+      };
     }
-    return countryCode;
+    return '';
   }
 
 };
