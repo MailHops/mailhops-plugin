@@ -20,7 +20,7 @@
 	<tabbox id="mhTabs" selectedIndex="0">
 	  <tabs>
 			<tab label="Member"/>
-			<tab label="Security"/>
+			<tab label="Filters"/>
 			<tab label="Defaults"/>
 	    <tab label="Display"/>
 	    <tab label="API &amp; Hosting"/>
@@ -66,13 +66,13 @@
 
 			<tabpanel>
 				<groupbox flex="1" style="height:400px;overflow: scroll;">
-					<caption label="Security"/>
-							<checkbox id="mailhop.country_tag" label="Tag messages with country origin" checked="false"/>
-							<checkbox id="mailhop.travel_time_junk" label="Tag messages that take longer than 10 seconds as Junk" checked="false"/>
+					<caption label="Filters"/>
+							<checkbox id="mailhop.country_tag" label="Tag messages with country origin" checked="false" disabled="true" class="filters"/>
+							<checkbox id="mailhop.travel_time_junk" label="Tag messages that take longer than 10 seconds as Junk" checked="false" disabled="true" class="filters"/>
 
-							<description>Mark messages as Junk from Countries checked below.
-								<label class="text-link plain" value="All " onclick="mailHopPreferences.countryListSelectAll(true);"/>
-								<label class="text-link plain" value=" None" onclick="mailHopPreferences.countryListSelectAll(false);"/>
+							<description class="filters">Mark messages as Junk from Countries checked below.
+								<label id="select-all-filters" class="text-link plain filters" value="All " onclick="mailHopPreferences.countryListSelectAll(true);" disabled="true"/>
+								<label id="select-none-filters" class="text-link plain filters" value=" None" onclick="mailHopPreferences.countryListSelectAll(false);" disabled="true"/>
 							</description>
 
 							<grid flex="1">
@@ -84,257 +84,257 @@
 							  <rows>
 							    <row>
 										<vbox>
-							<checkbox id="country_ad" value="ad" label="ad"/>
-							<checkbox id="country_ae" value="ae" label="ae"/>
-							<checkbox id="country_af" value="af" label="af"/>
-							<checkbox id="country_ag" value="ag" label="ag"/>
-							<checkbox id="country_ai" value="ai" label="ai"/>
-							<checkbox id="country_al" value="al" label="al"/>
-							<checkbox id="country_am" value="am" label="am"/>
-							<checkbox id="country_an" value="an" label="an"/>
-							<checkbox id="country_ao" value="ao" label="ao"/>
-							<checkbox id="country_ar" value="ar" label="ar"/>
-							<checkbox id="country_as" value="as" label="as"/>
-							<checkbox id="country_at" value="at" label="at"/>
-							<checkbox id="country_au" value="au" label="au"/>
-							<checkbox id="country_aw" value="aw" label="aw"/>
-							<checkbox id="country_ax" value="ax" label="ax"/>
-							<checkbox id="country_az" value="az" label="az"/>
-							<checkbox id="country_ba" value="ba" label="ba"/>
-							<checkbox id="country_bb" value="bb" label="bb"/>
-							<checkbox id="country_bd" value="bd" label="bd"/>
-							<checkbox id="country_be" value="be" label="be"/>
-							<checkbox id="country_bf" value="bf" label="bf"/>
-							<checkbox id="country_bg" value="bg" label="bg"/>
-							<checkbox id="country_bh" value="bh" label="bh"/>
-							<checkbox id="country_bi" value="bi" label="bi"/>
-							<checkbox id="country_bj" value="bj" label="bj"/>
-							<checkbox id="country_bm" value="bm" label="bm"/>
-							<checkbox id="country_bn" value="bn" label="bn"/>
-							<checkbox id="country_bo" value="bo" label="bo"/>
-							<checkbox id="country_br" value="br" label="br"/>
-							<checkbox id="country_bs" value="bs" label="bs"/>
-							<checkbox id="country_bt" value="bt" label="bt"/>
-							<checkbox id="country_bv" value="bv" label="bv"/>
-							<checkbox id="country_bw" value="bw" label="bw"/>
-							<checkbox id="country_by" value="by" label="by"/>
-							<checkbox id="country_bz" value="bz" label="bz"/>
-							<checkbox id="country_ca" value="ca" label="ca"/>
-							<checkbox id="country_catalonia" value="catalonia" label="catalonia"/>
-							<checkbox id="country_cc" value="cc" label="cc"/>
-							<checkbox id="country_cd" value="cd" label="cd"/>
-							<checkbox id="country_cf" value="cf" label="cf"/>
-							<checkbox id="country_cg" value="cg" label="cg"/>
-							<checkbox id="country_ch" value="ch" label="ch"/>
-							<checkbox id="country_ci" value="ci" label="ci"/>
-							<checkbox id="country_ck" value="ck" label="ck"/>
-							<checkbox id="country_cl" value="cl" label="cl"/>
-							<checkbox id="country_cm" value="cm" label="cm"/>
-							<checkbox id="country_cn" value="cn" label="cn"/>
-							<checkbox id="country_co" value="co" label="co"/>
-							<checkbox id="country_cr" value="cr" label="cr"/>
-							<checkbox id="country_cs" value="cs" label="cs"/>
-							<checkbox id="country_cu" value="cu" label="cu"/>
-							<checkbox id="country_cv" value="cv" label="cv"/>
-							<checkbox id="country_cx" value="cx" label="cx"/>
-							<checkbox id="country_cy" value="cy" label="cy"/>
-							<checkbox id="country_cz" value="cz" label="cz"/>
-							<checkbox id="country_de" value="de" label="de"/>
-							<checkbox id="country_dj" value="dj" label="dj"/>
-							<checkbox id="country_dk" value="dk" label="dk"/>
-							<checkbox id="country_dm" value="dm" label="dm"/>
-							<checkbox id="country_do" value="do" label="do"/>
-							<checkbox id="country_dz" value="dz" label="dz"/>
-							<checkbox id="country_ec" value="ec" label="ec"/>
-							<checkbox id="country_ee" value="ee" label="ee"/>
-							<checkbox id="country_eg" value="eg" label="eg"/>
-							<checkbox id="country_eh" value="eh" label="eh"/>
-							<checkbox id="country_england" value="england" label="england"/>
-							<checkbox id="country_er" value="er" label="er"/>
-							<checkbox id="country_es" value="es" label="es"/>
-							<checkbox id="country_et" value="et" label="et"/>
-							<checkbox id="country_europeanunion" value="europeanunion" label="europeanunion"/>
-							<checkbox id="country_fam" value="fam" label="fam"/>
-							<checkbox id="country_fi" value="fi" label="fi"/>
-							<checkbox id="country_fj" value="fj" label="fj"/>
-							<checkbox id="country_fk" value="fk" label="fk"/>
-							<checkbox id="country_fm" value="fm" label="fm"/>
-							<checkbox id="country_fo" value="fo" label="fo"/>
-							<checkbox id="country_fr" value="fr" label="fr"/>
-							<checkbox id="country_ga" value="ga" label="ga"/>
-							<checkbox id="country_gb" value="gb" label="gb"/>
-							<checkbox id="country_gd" value="gd" label="gd"/>
-							<checkbox id="country_ge" value="ge" label="ge"/>
-							<checkbox id="country_gf" value="gf" label="gf"/>
-							<checkbox id="country_gh" value="gh" label="gh"/>
+							<checkbox disabled="true" class="country" id="country_ad" value="ad" label="ad"/>
+							<checkbox disabled="true" class="country" id="country_ae" value="ae" label="ae"/>
+							<checkbox disabled="true" class="country" id="country_af" value="af" label="af"/>
+							<checkbox disabled="true" class="country" id="country_ag" value="ag" label="ag"/>
+							<checkbox disabled="true" class="country" id="country_ai" value="ai" label="ai"/>
+							<checkbox disabled="true" class="country" id="country_al" value="al" label="al"/>
+							<checkbox disabled="true" class="country" id="country_am" value="am" label="am"/>
+							<checkbox disabled="true" class="country" id="country_an" value="an" label="an"/>
+							<checkbox disabled="true" class="country" id="country_ao" value="ao" label="ao"/>
+							<checkbox disabled="true" class="country" id="country_ar" value="ar" label="ar"/>
+							<checkbox disabled="true" class="country" id="country_as" value="as" label="as"/>
+							<checkbox disabled="true" class="country" id="country_at" value="at" label="at"/>
+							<checkbox disabled="true" class="country" id="country_au" value="au" label="au"/>
+							<checkbox disabled="true" class="country" id="country_aw" value="aw" label="aw"/>
+							<checkbox disabled="true" class="country" id="country_ax" value="ax" label="ax"/>
+							<checkbox disabled="true" class="country" id="country_az" value="az" label="az"/>
+							<checkbox disabled="true" class="country" id="country_ba" value="ba" label="ba"/>
+							<checkbox disabled="true" class="country" id="country_bb" value="bb" label="bb"/>
+							<checkbox disabled="true" class="country" id="country_bd" value="bd" label="bd"/>
+							<checkbox disabled="true" class="country" id="country_be" value="be" label="be"/>
+							<checkbox disabled="true" class="country" id="country_bf" value="bf" label="bf"/>
+							<checkbox disabled="true" class="country" id="country_bg" value="bg" label="bg"/>
+							<checkbox disabled="true" class="country" id="country_bh" value="bh" label="bh"/>
+							<checkbox disabled="true" class="country" id="country_bi" value="bi" label="bi"/>
+							<checkbox disabled="true" class="country" id="country_bj" value="bj" label="bj"/>
+							<checkbox disabled="true" class="country" id="country_bm" value="bm" label="bm"/>
+							<checkbox disabled="true" class="country" id="country_bn" value="bn" label="bn"/>
+							<checkbox disabled="true" class="country" id="country_bo" value="bo" label="bo"/>
+							<checkbox disabled="true" class="country" id="country_br" value="br" label="br"/>
+							<checkbox disabled="true" class="country" id="country_bs" value="bs" label="bs"/>
+							<checkbox disabled="true" class="country" id="country_bt" value="bt" label="bt"/>
+							<checkbox disabled="true" class="country" id="country_bv" value="bv" label="bv"/>
+							<checkbox disabled="true" class="country" id="country_bw" value="bw" label="bw"/>
+							<checkbox disabled="true" class="country" id="country_by" value="by" label="by"/>
+							<checkbox disabled="true" class="country" id="country_bz" value="bz" label="bz"/>
+							<checkbox disabled="true" class="country" id="country_ca" value="ca" label="ca"/>
+							<checkbox disabled="true" class="country" id="country_catalonia" value="catalonia" label="catalonia"/>
+							<checkbox disabled="true" class="country" id="country_cc" value="cc" label="cc"/>
+							<checkbox disabled="true" class="country" id="country_cd" value="cd" label="cd"/>
+							<checkbox disabled="true" class="country" id="country_cf" value="cf" label="cf"/>
+							<checkbox disabled="true" class="country" id="country_cg" value="cg" label="cg"/>
+							<checkbox disabled="true" class="country" id="country_ch" value="ch" label="ch"/>
+							<checkbox disabled="true" class="country" id="country_ci" value="ci" label="ci"/>
+							<checkbox disabled="true" class="country" id="country_ck" value="ck" label="ck"/>
+							<checkbox disabled="true" class="country" id="country_cl" value="cl" label="cl"/>
+							<checkbox disabled="true" class="country" id="country_cm" value="cm" label="cm"/>
+							<checkbox disabled="true" class="country" id="country_cn" value="cn" label="cn"/>
+							<checkbox disabled="true" class="country" id="country_co" value="co" label="co"/>
+							<checkbox disabled="true" class="country" id="country_cr" value="cr" label="cr"/>
+							<checkbox disabled="true" class="country" id="country_cs" value="cs" label="cs"/>
+							<checkbox disabled="true" class="country" id="country_cu" value="cu" label="cu"/>
+							<checkbox disabled="true" class="country" id="country_cv" value="cv" label="cv"/>
+							<checkbox disabled="true" class="country" id="country_cx" value="cx" label="cx"/>
+							<checkbox disabled="true" class="country" id="country_cy" value="cy" label="cy"/>
+							<checkbox disabled="true" class="country" id="country_cz" value="cz" label="cz"/>
+							<checkbox disabled="true" class="country" id="country_de" value="de" label="de"/>
+							<checkbox disabled="true" class="country" id="country_dj" value="dj" label="dj"/>
+							<checkbox disabled="true" class="country" id="country_dk" value="dk" label="dk"/>
+							<checkbox disabled="true" class="country" id="country_dm" value="dm" label="dm"/>
+							<checkbox disabled="true" class="country" id="country_do" value="do" label="do"/>
+							<checkbox disabled="true" class="country" id="country_dz" value="dz" label="dz"/>
+							<checkbox disabled="true" class="country" id="country_ec" value="ec" label="ec"/>
+							<checkbox disabled="true" class="country" id="country_ee" value="ee" label="ee"/>
+							<checkbox disabled="true" class="country" id="country_eg" value="eg" label="eg"/>
+							<checkbox disabled="true" class="country" id="country_eh" value="eh" label="eh"/>
+							<checkbox disabled="true" class="country" id="country_england" value="england" label="england"/>
+							<checkbox disabled="true" class="country" id="country_er" value="er" label="er"/>
+							<checkbox disabled="true" class="country" id="country_es" value="es" label="es"/>
+							<checkbox disabled="true" class="country" id="country_et" value="et" label="et"/>
+							<checkbox disabled="true" class="country" id="country_europeanunion" value="europeanunion" label="europeanunion"/>
+							<checkbox disabled="true" class="country" id="country_fam" value="fam" label="fam"/>
+							<checkbox disabled="true" class="country" id="country_fi" value="fi" label="fi"/>
+							<checkbox disabled="true" class="country" id="country_fj" value="fj" label="fj"/>
+							<checkbox disabled="true" class="country" id="country_fk" value="fk" label="fk"/>
+							<checkbox disabled="true" class="country" id="country_fm" value="fm" label="fm"/>
+							<checkbox disabled="true" class="country" id="country_fo" value="fo" label="fo"/>
+							<checkbox disabled="true" class="country" id="country_fr" value="fr" label="fr"/>
+							<checkbox disabled="true" class="country" id="country_ga" value="ga" label="ga"/>
+							<checkbox disabled="true" class="country" id="country_gb" value="gb" label="gb"/>
+							<checkbox disabled="true" class="country" id="country_gd" value="gd" label="gd"/>
+							<checkbox disabled="true" class="country" id="country_ge" value="ge" label="ge"/>
+							<checkbox disabled="true" class="country" id="country_gf" value="gf" label="gf"/>
+							<checkbox disabled="true" class="country" id="country_gh" value="gh" label="gh"/>
 						</vbox>
 							<vbox>
-							<checkbox id="country_gi" value="gi" label="gi"/>
-							<checkbox id="country_gl" value="gl" label="gl"/>
-							<checkbox id="country_gm" value="gm" label="gm"/>
-							<checkbox id="country_gn" value="gn" label="gn"/>
-							<checkbox id="country_gp" value="gp" label="gp"/>
-							<checkbox id="country_gq" value="gq" label="gq"/>
-							<checkbox id="country_gr" value="gr" label="gr"/>
-							<checkbox id="country_gs" value="gs" label="gs"/>
-							<checkbox id="country_gt" value="gt" label="gt"/>
-							<checkbox id="country_gu" value="gu" label="gu"/>
-							<checkbox id="country_gw" value="gw" label="gw"/>
-							<checkbox id="country_gy" value="gy" label="gy"/>
-							<checkbox id="country_hk" value="hk" label="hk"/>
-							<checkbox id="country_hm" value="hm" label="hm"/>
-							<checkbox id="country_hn" value="hn" label="hn"/>
-							<checkbox id="country_hr" value="hr" label="hr"/>
-							<checkbox id="country_ht" value="ht" label="ht"/>
-							<checkbox id="country_hu" value="hu" label="hu"/>
-							<checkbox id="country_id" value="id" label="id"/>
-							<checkbox id="country_ie" value="ie" label="ie"/>
-							<checkbox id="country_il" value="il" label="il"/>
-							<checkbox id="country_in" value="in" label="in"/>
-							<checkbox id="country_io" value="io" label="io"/>
-							<checkbox id="country_iq" value="iq" label="iq"/>
-							<checkbox id="country_ir" value="ir" label="ir"/>
-							<checkbox id="country_is" value="is" label="is"/>
-							<checkbox id="country_it" value="it" label="it"/>
-							<checkbox id="country_jm" value="jm" label="jm"/>
-							<checkbox id="country_jo" value="jo" label="jo"/>
-							<checkbox id="country_jp" value="jp" label="jp"/>
-							<checkbox id="country_ke" value="ke" label="ke"/>
-							<checkbox id="country_kg" value="kg" label="kg"/>
-							<checkbox id="country_kh" value="kh" label="kh"/>
-							<checkbox id="country_ki" value="ki" label="ki"/>
-							<checkbox id="country_km" value="km" label="km"/>
-							<checkbox id="country_kn" value="kn" label="kn"/>
-							<checkbox id="country_kp" value="kp" label="kp"/>
-							<checkbox id="country_kr" value="kr" label="kr"/>
-							<checkbox id="country_kw" value="kw" label="kw"/>
-							<checkbox id="country_ky" value="ky" label="ky"/>
-							<checkbox id="country_kz" value="kz" label="kz"/>
-							<checkbox id="country_la" value="la" label="la"/>
-							<checkbox id="country_lb" value="lb" label="lb"/>
-							<checkbox id="country_lc" value="lc" label="lc"/>
-							<checkbox id="country_li" value="li" label="li"/>
-							<checkbox id="country_lk" value="lk" label="lk"/>
-							<checkbox id="country_lr" value="lr" label="lr"/>
-							<checkbox id="country_ls" value="ls" label="ls"/>
-							<checkbox id="country_lt" value="lt" label="lt"/>
-							<checkbox id="country_lu" value="lu" label="lu"/>
-							<checkbox id="country_lv" value="lv" label="lv"/>
-							<checkbox id="country_ly" value="ly" label="ly"/>
-							<checkbox id="country_ma" value="ma" label="ma"/>
-							<checkbox id="country_mc" value="mc" label="mc"/>
-							<checkbox id="country_md" value="md" label="md"/>
-							<checkbox id="country_me" value="me" label="me"/>
-							<checkbox id="country_mg" value="mg" label="mg"/>
-							<checkbox id="country_mh" value="mh" label="mh"/>
-							<checkbox id="country_mk" value="mk" label="mk"/>
-							<checkbox id="country_ml" value="ml" label="ml"/>
-							<checkbox id="country_mm" value="mm" label="mm"/>
-							<checkbox id="country_mn" value="mn" label="mn"/>
-							<checkbox id="country_mo" value="mo" label="mo"/>
-							<checkbox id="country_mp" value="mp" label="mp"/>
-							<checkbox id="country_mq" value="mq" label="mq"/>
-							<checkbox id="country_mr" value="mr" label="mr"/>
-							<checkbox id="country_ms" value="ms" label="ms"/>
-							<checkbox id="country_mt" value="mt" label="mt"/>
-							<checkbox id="country_mu" value="mu" label="mu"/>
-							<checkbox id="country_mv" value="mv" label="mv"/>
-							<checkbox id="country_mw" value="mw" label="mw"/>
-							<checkbox id="country_mx" value="mx" label="mx"/>
-							<checkbox id="country_my" value="my" label="my"/>
-							<checkbox id="country_mz" value="mz" label="mz"/>
-							<checkbox id="country_na" value="na" label="na"/>
-							<checkbox id="country_nc" value="nc" label="nc"/>
-							<checkbox id="country_ne" value="ne" label="ne"/>
-							<checkbox id="country_nf" value="nf" label="nf"/>
-							<checkbox id="country_ng" value="ng" label="ng"/>
-							<checkbox id="country_ni" value="ni" label="ni"/>
-							<checkbox id="country_nl" value="nl" label="nl"/>
-							<checkbox id="country_no" value="no" label="no"/>
+							<checkbox disabled="true" class="country" id="country_gi" value="gi" label="gi"/>
+							<checkbox disabled="true" class="country" id="country_gl" value="gl" label="gl"/>
+							<checkbox disabled="true" class="country" id="country_gm" value="gm" label="gm"/>
+							<checkbox disabled="true" class="country" id="country_gn" value="gn" label="gn"/>
+							<checkbox disabled="true" class="country" id="country_gp" value="gp" label="gp"/>
+							<checkbox disabled="true" class="country" id="country_gq" value="gq" label="gq"/>
+							<checkbox disabled="true" class="country" id="country_gr" value="gr" label="gr"/>
+							<checkbox disabled="true" class="country" id="country_gs" value="gs" label="gs"/>
+							<checkbox disabled="true" class="country" id="country_gt" value="gt" label="gt"/>
+							<checkbox disabled="true" class="country" id="country_gu" value="gu" label="gu"/>
+							<checkbox disabled="true" class="country" id="country_gw" value="gw" label="gw"/>
+							<checkbox disabled="true" class="country" id="country_gy" value="gy" label="gy"/>
+							<checkbox disabled="true" class="country" id="country_hk" value="hk" label="hk"/>
+							<checkbox disabled="true" class="country" id="country_hm" value="hm" label="hm"/>
+							<checkbox disabled="true" class="country" id="country_hn" value="hn" label="hn"/>
+							<checkbox disabled="true" class="country" id="country_hr" value="hr" label="hr"/>
+							<checkbox disabled="true" class="country" id="country_ht" value="ht" label="ht"/>
+							<checkbox disabled="true" class="country" id="country_hu" value="hu" label="hu"/>
+							<checkbox disabled="true" class="country" id="country_id" value="id" label="id"/>
+							<checkbox disabled="true" class="country" id="country_ie" value="ie" label="ie"/>
+							<checkbox disabled="true" class="country" id="country_il" value="il" label="il"/>
+							<checkbox disabled="true" class="country" id="country_in" value="in" label="in"/>
+							<checkbox disabled="true" class="country" id="country_io" value="io" label="io"/>
+							<checkbox disabled="true" class="country" id="country_iq" value="iq" label="iq"/>
+							<checkbox disabled="true" class="country" id="country_ir" value="ir" label="ir"/>
+							<checkbox disabled="true" class="country" id="country_is" value="is" label="is"/>
+							<checkbox disabled="true" class="country" id="country_it" value="it" label="it"/>
+							<checkbox disabled="true" class="country" id="country_jm" value="jm" label="jm"/>
+							<checkbox disabled="true" class="country" id="country_jo" value="jo" label="jo"/>
+							<checkbox disabled="true" class="country" id="country_jp" value="jp" label="jp"/>
+							<checkbox disabled="true" class="country" id="country_ke" value="ke" label="ke"/>
+							<checkbox disabled="true" class="country" id="country_kg" value="kg" label="kg"/>
+							<checkbox disabled="true" class="country" id="country_kh" value="kh" label="kh"/>
+							<checkbox disabled="true" class="country" id="country_ki" value="ki" label="ki"/>
+							<checkbox disabled="true" class="country" id="country_km" value="km" label="km"/>
+							<checkbox disabled="true" class="country" id="country_kn" value="kn" label="kn"/>
+							<checkbox disabled="true" class="country" id="country_kp" value="kp" label="kp"/>
+							<checkbox disabled="true" class="country" id="country_kr" value="kr" label="kr"/>
+							<checkbox disabled="true" class="country" id="country_kw" value="kw" label="kw"/>
+							<checkbox disabled="true" class="country" id="country_ky" value="ky" label="ky"/>
+							<checkbox disabled="true" class="country" id="country_kz" value="kz" label="kz"/>
+							<checkbox disabled="true" class="country" id="country_la" value="la" label="la"/>
+							<checkbox disabled="true" class="country" id="country_lb" value="lb" label="lb"/>
+							<checkbox disabled="true" class="country" id="country_lc" value="lc" label="lc"/>
+							<checkbox disabled="true" class="country" id="country_li" value="li" label="li"/>
+							<checkbox disabled="true" class="country" id="country_lk" value="lk" label="lk"/>
+							<checkbox disabled="true" class="country" id="country_lr" value="lr" label="lr"/>
+							<checkbox disabled="true" class="country" id="country_ls" value="ls" label="ls"/>
+							<checkbox disabled="true" class="country" id="country_lt" value="lt" label="lt"/>
+							<checkbox disabled="true" class="country" id="country_lu" value="lu" label="lu"/>
+							<checkbox disabled="true" class="country" id="country_lv" value="lv" label="lv"/>
+							<checkbox disabled="true" class="country" id="country_ly" value="ly" label="ly"/>
+							<checkbox disabled="true" class="country" id="country_ma" value="ma" label="ma"/>
+							<checkbox disabled="true" class="country" id="country_mc" value="mc" label="mc"/>
+							<checkbox disabled="true" class="country" id="country_md" value="md" label="md"/>
+							<checkbox disabled="true" class="country" id="country_me" value="me" label="me"/>
+							<checkbox disabled="true" class="country" id="country_mg" value="mg" label="mg"/>
+							<checkbox disabled="true" class="country" id="country_mh" value="mh" label="mh"/>
+							<checkbox disabled="true" class="country" id="country_mk" value="mk" label="mk"/>
+							<checkbox disabled="true" class="country" id="country_ml" value="ml" label="ml"/>
+							<checkbox disabled="true" class="country" id="country_mm" value="mm" label="mm"/>
+							<checkbox disabled="true" class="country" id="country_mn" value="mn" label="mn"/>
+							<checkbox disabled="true" class="country" id="country_mo" value="mo" label="mo"/>
+							<checkbox disabled="true" class="country" id="country_mp" value="mp" label="mp"/>
+							<checkbox disabled="true" class="country" id="country_mq" value="mq" label="mq"/>
+							<checkbox disabled="true" class="country" id="country_mr" value="mr" label="mr"/>
+							<checkbox disabled="true" class="country" id="country_ms" value="ms" label="ms"/>
+							<checkbox disabled="true" class="country" id="country_mt" value="mt" label="mt"/>
+							<checkbox disabled="true" class="country" id="country_mu" value="mu" label="mu"/>
+							<checkbox disabled="true" class="country" id="country_mv" value="mv" label="mv"/>
+							<checkbox disabled="true" class="country" id="country_mw" value="mw" label="mw"/>
+							<checkbox disabled="true" class="country" id="country_mx" value="mx" label="mx"/>
+							<checkbox disabled="true" class="country" id="country_my" value="my" label="my"/>
+							<checkbox disabled="true" class="country" id="country_mz" value="mz" label="mz"/>
+							<checkbox disabled="true" class="country" id="country_na" value="na" label="na"/>
+							<checkbox disabled="true" class="country" id="country_nc" value="nc" label="nc"/>
+							<checkbox disabled="true" class="country" id="country_ne" value="ne" label="ne"/>
+							<checkbox disabled="true" class="country" id="country_nf" value="nf" label="nf"/>
+							<checkbox disabled="true" class="country" id="country_ng" value="ng" label="ng"/>
+							<checkbox disabled="true" class="country" id="country_ni" value="ni" label="ni"/>
+							<checkbox disabled="true" class="country" id="country_nl" value="nl" label="nl"/>
+							<checkbox disabled="true" class="country" id="country_no" value="no" label="no"/>
 						</vbox>
 						<vbox>
-							<checkbox id="country_np" value="np" label="np"/>
-							<checkbox id="country_nr" value="nr" label="nr"/>
-							<checkbox id="country_nu" value="nu" label="nu"/>
-							<checkbox id="country_nz" value="nz" label="nz"/>
-							<checkbox id="country_om" value="om" label="om"/>
-							<checkbox id="country_pa" value="pa" label="pa"/>
-							<checkbox id="country_pe" value="pe" label="pe"/>
-							<checkbox id="country_pf" value="pf" label="pf"/>
-							<checkbox id="country_pg" value="pg" label="pg"/>
-							<checkbox id="country_ph" value="ph" label="ph"/>
-							<checkbox id="country_pk" value="pk" label="pk"/>
-							<checkbox id="country_pl" value="pl" label="pl"/>
-							<checkbox id="country_pm" value="pm" label="pm"/>
-							<checkbox id="country_pn" value="pn" label="pn"/>
-							<checkbox id="country_pr" value="pr" label="pr"/>
-							<checkbox id="country_ps" value="ps" label="ps"/>
-							<checkbox id="country_pt" value="pt" label="pt"/>
-							<checkbox id="country_pw" value="pw" label="pw"/>
-							<checkbox id="country_py" value="py" label="py"/>
-							<checkbox id="country_qa" value="qa" label="qa"/>
-							<checkbox id="country_re" value="re" label="re"/>
-							<checkbox id="country_ro" value="ro" label="ro"/>
-							<checkbox id="country_rs" value="rs" label="rs"/>
-							<checkbox id="country_ru" value="ru" label="ru"/>
-							<checkbox id="country_rw" value="rw" label="rw"/>
-							<checkbox id="country_sa" value="sa" label="sa"/>
-							<checkbox id="country_sb" value="sb" label="sb"/>
-							<checkbox id="country_sc" value="sc" label="sc"/>
-							<checkbox id="country_scotland" value="scotland" label="scotland"/>
-							<checkbox id="country_sd" value="sd" label="sd"/>
-							<checkbox id="country_se" value="se" label="se"/>
-							<checkbox id="country_sg" value="sg" label="sg"/>
-							<checkbox id="country_sh" value="sh" label="sh"/>
-							<checkbox id="country_si" value="si" label="si"/>
-							<checkbox id="country_sj" value="sj" label="sj"/>
-							<checkbox id="country_sk" value="sk" label="sk"/>
-							<checkbox id="country_sl" value="sl" label="sl"/>
-							<checkbox id="country_sm" value="sm" label="sm"/>
-							<checkbox id="country_sn" value="sn" label="sn"/>
-							<checkbox id="country_so" value="so" label="so"/>
-							<checkbox id="country_sr" value="sr" label="sr"/>
-							<checkbox id="country_st" value="st" label="st"/>
-							<checkbox id="country_sv" value="sv" label="sv"/>
-							<checkbox id="country_sy" value="sy" label="sy"/>
-							<checkbox id="country_sz" value="sz" label="sz"/>
-							<checkbox id="country_tc" value="tc" label="tc"/>
-							<checkbox id="country_td" value="td" label="td"/>
-							<checkbox id="country_tf" value="tf" label="tf"/>
-							<checkbox id="country_tg" value="tg" label="tg"/>
-							<checkbox id="country_th" value="th" label="th"/>
-							<checkbox id="country_tj" value="tj" label="tj"/>
-							<checkbox id="country_tk" value="tk" label="tk"/>
-							<checkbox id="country_tl" value="tl" label="tl"/>
-							<checkbox id="country_tm" value="tm" label="tm"/>
-							<checkbox id="country_tn" value="tn" label="tn"/>
-							<checkbox id="country_to" value="to" label="to"/>
-							<checkbox id="country_tr" value="tr" label="tr"/>
-							<checkbox id="country_tt" value="tt" label="tt"/>
-							<checkbox id="country_tv" value="tv" label="tv"/>
-							<checkbox id="country_tw" value="tw" label="tw"/>
-							<checkbox id="country_tz" value="tz" label="tz"/>
-							<checkbox id="country_ua" value="ua" label="ua"/>
-							<checkbox id="country_ug" value="ug" label="ug"/>
-							<checkbox id="country_um" value="um" label="um"/>
-							<checkbox id="country_us" value="us" label="us"/>
-							<checkbox id="country_uy" value="uy" label="uy"/>
-							<checkbox id="country_uz" value="uz" label="uz"/>
-							<checkbox id="country_va" value="va" label="va"/>
-							<checkbox id="country_vc" value="vc" label="vc"/>
-							<checkbox id="country_ve" value="ve" label="ve"/>
-							<checkbox id="country_vg" value="vg" label="vg"/>
-							<checkbox id="country_vi" value="vi" label="vi"/>
-							<checkbox id="country_vn" value="vn" label="vn"/>
-							<checkbox id="country_vu" value="vu" label="vu"/>
-							<checkbox id="country_wales" value="wales" label="wales"/>
-							<checkbox id="country_wf" value="wf" label="wf"/>
-							<checkbox id="country_ws" value="ws" label="ws"/>
-							<checkbox id="country_ye" value="ye" label="ye"/>
-							<checkbox id="country_yt" value="yt" label="yt"/>
-							<checkbox id="country_za" value="za" label="za"/>
-							<checkbox id="country_zm" value="zm" label="zm"/>
-							<checkbox id="country_zw" value="zw" label="zw"/>
+							<checkbox disabled="true" class="country" id="country_np" value="np" label="np"/>
+							<checkbox disabled="true" class="country" id="country_nr" value="nr" label="nr"/>
+							<checkbox disabled="true" class="country" id="country_nu" value="nu" label="nu"/>
+							<checkbox disabled="true" class="country" id="country_nz" value="nz" label="nz"/>
+							<checkbox disabled="true" class="country" id="country_om" value="om" label="om"/>
+							<checkbox disabled="true" class="country" id="country_pa" value="pa" label="pa"/>
+							<checkbox disabled="true" class="country" id="country_pe" value="pe" label="pe"/>
+							<checkbox disabled="true" class="country" id="country_pf" value="pf" label="pf"/>
+							<checkbox disabled="true" class="country" id="country_pg" value="pg" label="pg"/>
+							<checkbox disabled="true" class="country" id="country_ph" value="ph" label="ph"/>
+							<checkbox disabled="true" class="country" id="country_pk" value="pk" label="pk"/>
+							<checkbox disabled="true" class="country" id="country_pl" value="pl" label="pl"/>
+							<checkbox disabled="true" class="country" id="country_pm" value="pm" label="pm"/>
+							<checkbox disabled="true" class="country" id="country_pn" value="pn" label="pn"/>
+							<checkbox disabled="true" class="country" id="country_pr" value="pr" label="pr"/>
+							<checkbox disabled="true" class="country" id="country_ps" value="ps" label="ps"/>
+							<checkbox disabled="true" class="country" id="country_pt" value="pt" label="pt"/>
+							<checkbox disabled="true" class="country" id="country_pw" value="pw" label="pw"/>
+							<checkbox disabled="true" class="country" id="country_py" value="py" label="py"/>
+							<checkbox disabled="true" class="country" id="country_qa" value="qa" label="qa"/>
+							<checkbox disabled="true" class="country" id="country_re" value="re" label="re"/>
+							<checkbox disabled="true" class="country" id="country_ro" value="ro" label="ro"/>
+							<checkbox disabled="true" class="country" id="country_rs" value="rs" label="rs"/>
+							<checkbox disabled="true" class="country" id="country_ru" value="ru" label="ru"/>
+							<checkbox disabled="true" class="country" id="country_rw" value="rw" label="rw"/>
+							<checkbox disabled="true" class="country" id="country_sa" value="sa" label="sa"/>
+							<checkbox disabled="true" class="country" id="country_sb" value="sb" label="sb"/>
+							<checkbox disabled="true" class="country" id="country_sc" value="sc" label="sc"/>
+							<checkbox disabled="true" class="country" id="country_scotland" value="scotland" label="scotland"/>
+							<checkbox disabled="true" class="country" id="country_sd" value="sd" label="sd"/>
+							<checkbox disabled="true" class="country" id="country_se" value="se" label="se"/>
+							<checkbox disabled="true" class="country" id="country_sg" value="sg" label="sg"/>
+							<checkbox disabled="true" class="country" id="country_sh" value="sh" label="sh"/>
+							<checkbox disabled="true" class="country" id="country_si" value="si" label="si"/>
+							<checkbox disabled="true" class="country" id="country_sj" value="sj" label="sj"/>
+							<checkbox disabled="true" class="country" id="country_sk" value="sk" label="sk"/>
+							<checkbox disabled="true" class="country" id="country_sl" value="sl" label="sl"/>
+							<checkbox disabled="true" class="country" id="country_sm" value="sm" label="sm"/>
+							<checkbox disabled="true" class="country" id="country_sn" value="sn" label="sn"/>
+							<checkbox disabled="true" class="country" id="country_so" value="so" label="so"/>
+							<checkbox disabled="true" class="country" id="country_sr" value="sr" label="sr"/>
+							<checkbox disabled="true" class="country" id="country_st" value="st" label="st"/>
+							<checkbox disabled="true" class="country" id="country_sv" value="sv" label="sv"/>
+							<checkbox disabled="true" class="country" id="country_sy" value="sy" label="sy"/>
+							<checkbox disabled="true" class="country" id="country_sz" value="sz" label="sz"/>
+							<checkbox disabled="true" class="country" id="country_tc" value="tc" label="tc"/>
+							<checkbox disabled="true" class="country" id="country_td" value="td" label="td"/>
+							<checkbox disabled="true" class="country" id="country_tf" value="tf" label="tf"/>
+							<checkbox disabled="true" class="country" id="country_tg" value="tg" label="tg"/>
+							<checkbox disabled="true" class="country" id="country_th" value="th" label="th"/>
+							<checkbox disabled="true" class="country" id="country_tj" value="tj" label="tj"/>
+							<checkbox disabled="true" class="country" id="country_tk" value="tk" label="tk"/>
+							<checkbox disabled="true" class="country" id="country_tl" value="tl" label="tl"/>
+							<checkbox disabled="true" class="country" id="country_tm" value="tm" label="tm"/>
+							<checkbox disabled="true" class="country" id="country_tn" value="tn" label="tn"/>
+							<checkbox disabled="true" class="country" id="country_to" value="to" label="to"/>
+							<checkbox disabled="true" class="country" id="country_tr" value="tr" label="tr"/>
+							<checkbox disabled="true" class="country" id="country_tt" value="tt" label="tt"/>
+							<checkbox disabled="true" class="country" id="country_tv" value="tv" label="tv"/>
+							<checkbox disabled="true" class="country" id="country_tw" value="tw" label="tw"/>
+							<checkbox disabled="true" class="country" id="country_tz" value="tz" label="tz"/>
+							<checkbox disabled="true" class="country" id="country_ua" value="ua" label="ua"/>
+							<checkbox disabled="true" class="country" id="country_ug" value="ug" label="ug"/>
+							<checkbox disabled="true" class="country" id="country_um" value="um" label="um"/>
+							<checkbox disabled="true" class="country" id="country_us" value="us" label="us"/>
+							<checkbox disabled="true" class="country" id="country_uy" value="uy" label="uy"/>
+							<checkbox disabled="true" class="country" id="country_uz" value="uz" label="uz"/>
+							<checkbox disabled="true" class="country" id="country_va" value="va" label="va"/>
+							<checkbox disabled="true" class="country" id="country_vc" value="vc" label="vc"/>
+							<checkbox disabled="true" class="country" id="country_ve" value="ve" label="ve"/>
+							<checkbox disabled="true" class="country" id="country_vg" value="vg" label="vg"/>
+							<checkbox disabled="true" class="country" id="country_vi" value="vi" label="vi"/>
+							<checkbox disabled="true" class="country" id="country_vn" value="vn" label="vn"/>
+							<checkbox disabled="true" class="country" id="country_vu" value="vu" label="vu"/>
+							<checkbox disabled="true" class="country" id="country_wales" value="wales" label="wales"/>
+							<checkbox disabled="true" class="country" id="country_wf" value="wf" label="wf"/>
+							<checkbox disabled="true" class="country" id="country_ws" value="ws" label="ws"/>
+							<checkbox disabled="true" class="country" id="country_ye" value="ye" label="ye"/>
+							<checkbox disabled="true" class="country" id="country_yt" value="yt" label="yt"/>
+							<checkbox disabled="true" class="country" id="country_za" value="za" label="za"/>
+							<checkbox disabled="true" class="country" id="country_zm" value="zm" label="zm"/>
+							<checkbox disabled="true" class="country" id="country_zw" value="zw" label="zw"/>
 						</vbox>
 					</row>
 				</rows>

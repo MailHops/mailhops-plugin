@@ -6,6 +6,7 @@ var mailHopPreferences = {
   api_host: 'api.mailhops.com', //mailhops api url
   api_http: 'https://', //ssl?
   api_key: '', //api key
+  valid_api_key: false,
   fkey: '', //forecast.io api key
   country_filter: [],
 
@@ -139,7 +140,7 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
 
     //API vars
-    if(document.getElementById("plan").getAttribute("valid") == "false")
+    if(!this.valid_api_key)
       this.api_key.value='';
     pref.setCharPref("mail.mailHops.api_key", this.api_key.value);
     pref.setCharPref("mail.mailHops.api_http", this.api_http.value);
@@ -161,20 +162,26 @@ var mailHopPreferences = {
   },
 
   countryListSelectAll: function(all){
-    for(c in mailHopsUtils.countries){
-      document.getElementById("country_"+mailHopsUtils.countries[c]).checked=all;
+    if(this.valid_api_key){
+      for(c in mailHopsUtils.countries){
+        document.getElementById("country_"+mailHopsUtils.countries[c]).checked=all;
+      }
     }
   },
   planError: function(error){
+    this.valid_api_key=false;
     document.getElementById("plan-error").style.display = 'block';
     document.getElementById("plan-error").value=error;
     document.getElementById("plan").value='';
-    document.getElementById("plan").setAttribute("valid","false");
     document.getElementById("rate-limit").value='';
     document.getElementById("rate-remaining").value='';
     document.getElementById("rate-reset").value='';
     document.getElementById("mailhops-membership-link").value='Join MailHops';
     document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com');
+    var items = document.getElementsByClassName('filters');
+    for(x in items){ items[x].disabled = true; }
+    var items = document.getElementsByClassName('country');
+    for(x in items){ items[x].disabled = true; if(items[x].label) items[x].label = items[x].label.toUpperCase();}
   },
   saveAPIKey: function() {
 
@@ -192,10 +199,10 @@ var mailHopPreferences = {
           try {
              var data = JSON.parse(xmlhttp.responseText);
              if(xmlhttp.status===200){
+                self.valid_api_key=true;
                 document.getElementById("plan-error").style.display = 'none';
                 // set plan info
                 document.getElementById("plan").value = "Plan: "+data.account.subscriptions.data[0].plan.id;
-                document.getElementById("plan").setAttribute("valid","true");
                 document.getElementById("rate-limit").value = "Limit: "+data.account.rate.limit;
                 document.getElementById("rate-remaining").value = "Remaining: "+data.account.rate.remaining;
                 if(data.account.rate.reset/60 < 60)
@@ -204,11 +211,16 @@ var mailHopPreferences = {
                   document.getElementById("rate-reset").value = "Resets in: "+Math.round(data.account.rate.reset/60/60)+" hr.";
                 document.getElementById("mailhops-membership-link").value='My Account';
                 document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+api_key);
+
+                var items = document.getElementsByClassName('filters');
+                for(x in items){ items[x].disabled = false;}
+                var items = document.getElementsByClassName('country');
+                for(x in items){ items[x].disabled = false; if(items[x].label) items[x].label = items[x].label.toUpperCase();}
              } else if(!!data.error){
                 self.planError(xmlhttp.status+': '+data.error.message);
              }
            } catch (e){
-             self.planError('Connection Failed to\n '+apiBase+'!');
+             self.planError('Connection Failed to\n '+e+'!');
            }
          }
        };

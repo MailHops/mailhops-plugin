@@ -13,7 +13,7 @@
 
 	<rows id="expandedHeader2Rows">
 		<row id="mailhopsBox" collapsed="false">
-			    <label id="mailhopsLabel" value="MailHops Route " class="headerName"></label>
+			    <label id="mailhopsLabel" value="&mailhops_header_route_label; " class="headerName"></label>
        		<hbox id="mailhopsResult" flex="1">
        			<label id="mailhopsResultText"></label>
             <label id="mailhopsResultWeather"></label>

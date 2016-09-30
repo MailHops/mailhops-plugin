@@ -453,11 +453,13 @@ mailHops.saveResults = function(results,route){
       if(!!mailHops.options.country_filter && mailHops.options.country_filter.length){
         if(mailHops.options.country_filter.indexOf(countryCode.toLowerCase()) !== -1){
           msgHdr.folder.setJunkScoreForMessages(msg, "100");
+          mailHops.LOG( "Junk: Country Filter match" );
         }
       }
       // tag as junk if travel time is longer than 10 seconds
       if(!!mailHops.options.travel_time_junk && mailHops.message.time != null && mailHops.message.time > 10000){
         msgHdr.folder.setJunkScoreForMessages(msg, "100");
+        mailHops.LOG( "Junk: Travel time match" );
       }
 
     } catch(e){
