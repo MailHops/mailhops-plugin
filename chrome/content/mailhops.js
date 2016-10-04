@@ -198,15 +198,14 @@ mailHops.getRoute = function(){
     for( var h=0; h < headReceivedArr.length; h++ ) {
       //build the received line by concat until semi-colon ; date/time
   		rline += headReceivedArr[h];
-  		if(headReceivedArr[h].indexOf(';')==-1)
+  		if(headReceivedArr[h].indexOf(';') === -1)
   			continue;
-
       // first and last dates are used to calculate time traveled
-      if(rline.indexOf(';')!==-1){
+      if(rline.indexOf(';') !== -1){
+        if(!firstDate)
+          firstDate = rline.substring(rline.indexOf(';')+1).trim();
         if(!lastDate)
           lastDate = rline.substring(rline.indexOf(';')+1).trim();
-        else
-          firstDate = rline.substring(rline.indexOf(';')+1).trim();
       }
 
       // parse IPs out of Received line
@@ -237,7 +236,7 @@ mailHops.getRoute = function(){
     try {
       firstDate = new Date(firstDate);
       lastDate = new Date(lastDate);
-      mailHops.message.time = lastDate-firstDate;
+      mailHops.message.time = lastDate - firstDate;
     } catch(e){
       mailHops.LOG('travel dates parse Error: '+JSON.stringify(e));
       mailHops.message.time = null;
@@ -394,7 +393,6 @@ mailHops.LOG(lookupURL);
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState===4){
     try {
-      mailHops.LOG(xmlhttp.status);
        var data = JSON.parse(xmlhttp.responseText);
        if(xmlhttp.status===200){
           var d = new Date();
@@ -431,8 +429,8 @@ mailHops.saveResults = function(results,route){
   msgHdr.setStringProperty( "MH-Route", results );
 
   //Add tag
-  if(!!route){
-    try{
+  if(!!route && !!mailHops.options.api_key){
+    try {
       var countryCode = mailHopsUtils.getOriginatingCountryCode(route);
       var msg = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
       msg.clear();

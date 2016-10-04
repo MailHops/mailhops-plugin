@@ -308,7 +308,7 @@ var mailHopsDisplay =
       else if(message.time<3600) //something is wrong if it takes this long
         distanceText += ' in '+Math.round(message.time/60)+' min.';
       else //something is wrong if it takes this long
-        distanceText += ' in '+Math.round(message.time/60/60)+' hrs.';
+        distanceText += ' in '+Math.round(message.time/60/60)+' hr.';
     }
 
     if(header_route)
