@@ -48,6 +48,11 @@
 					</hbox>
 					<hbox align="center">
 						<description>
+							<label id="status" class="plain" value=""></label>
+						</description>
+					</hbox>
+					<hbox align="center">
+						<description>
 							<label id="rate-limit" class="plain" value=""></label>
 						</description>
 					</hbox>
@@ -530,10 +535,10 @@
 				<spacer/>
 
 				<description>
-					MailHops API uses <label id="forecastio" class="text-link plain" value="Forecast.IO"/> to get the weather of the sender, register for an API Key to enable this feature.
+					MailHops API uses <label id="forecastio" class="text-link plain" value="DarkSky"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
 
-				<textbox id="mailhop.fkey" value="" placeholder="Enter ForecastIO API Key"/>
+				<textbox id="mailhop.fkey" value="" placeholder="Enter your DarkSky API Key"/>
 
 				<checkbox id="mailhop.debug" label="Debug" checked="false"/>
 	  		</groupbox>

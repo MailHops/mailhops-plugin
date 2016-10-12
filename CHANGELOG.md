@@ -1,11 +1,10 @@
 # Change Log
 
-## 2.0.0 - 2016-9-10
+## 2.0.0 - 2016-10-10
 
 ### Added
-- MailHops API v2
-- MailHops API key for v2
-- Security section in preferences
+- MailHops API v2 membership
+- Filters section in preferences
 - Tag and mark as junk by CountryCode
 - Time Traveled, total time it took for the email to reach you
 

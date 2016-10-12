@@ -102,9 +102,9 @@ var mailHopPreferences = {
         document.getElementById("country_"+this.country_filter[c]).checked=true;
       }
     }
-    if(!!this.api_key.value){
+    if(!!this.api_key.value.trim()){
       document.getElementById("mailhops-membership-link").value='My Account';
-      document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+this.api_key.value);
+      document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+this.api_key.value.trim());
     }
     if(pref.getCharPref("mail.mailHops.country_tag",'false')=='false')
   		document.getElementById("mailhop.country_tag").checked = false;
@@ -120,7 +120,7 @@ var mailHopPreferences = {
       mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
     });
     document.getElementById("forecastio").addEventListener("click", function () {
-      mailHopsUtils.launchExternalURL('https://developer.forecast.io/');
+      mailHopsUtils.launchExternalURL('https://darksky.net');
     });
     this.saveAPIKey();
   },
@@ -142,7 +142,7 @@ var mailHopPreferences = {
     //API vars
     if(!this.valid_api_key)
       this.api_key.value='';
-    pref.setCharPref("mail.mailHops.api_key", this.api_key.value);
+    pref.setCharPref("mail.mailHops.api_key", this.api_key.value.trim());
     pref.setCharPref("mail.mailHops.api_http", this.api_http.value);
     pref.setCharPref("mail.mailHops.api_host", this.api_host.value);
 
@@ -173,6 +173,7 @@ var mailHopPreferences = {
     document.getElementById("plan-error").style.display = 'block';
     document.getElementById("plan-error").value=error;
     document.getElementById("plan").value='';
+    document.getElementById("status").value='';
     document.getElementById("rate-limit").value='';
     document.getElementById("rate-remaining").value='';
     document.getElementById("rate-reset").value='';
@@ -189,8 +190,8 @@ var mailHopPreferences = {
       var xmlhttp = new XMLHttpRequest();
       var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
       var apiBase = this.api_http.value+this.api_host.value,
-          accountURL = '/v2/accounts/?api_key='+this.api_key.value,
-          api_key = this.api_key.value,
+          accountURL = '/v2/accounts/?api_key='+this.api_key.value.trim(),
+          api_key = this.api_key.value.trim(),
           self = this;
 
       xmlhttp.open("GET", apiBase+accountURL,true);
@@ -203,6 +204,7 @@ var mailHopPreferences = {
                 document.getElementById("plan-error").style.display = 'none';
                 // set plan info
                 document.getElementById("plan").value = "Plan: "+data.account.subscriptions.data[0].plan.id;
+                document.getElementById("status").value = "Status: "+data.account.subscriptions.data[0].status;
                 document.getElementById("rate-limit").value = "Limit: "+data.account.rate.limit;
                 document.getElementById("rate-remaining").value = "Remaining: "+data.account.rate.remaining;
                 if(data.account.rate.reset/60 < 60)
