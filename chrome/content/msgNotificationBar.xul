@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE overlay SYSTEM "chrome://mailhops/locale/strings.dtd" >
 
-<?xml-stylesheet href="chrome://mailhops/skin/mh-notification-styles.css" type="text/css"?>
+<?xml-stylesheet href="chrome://mailhops/skin/msgNotificationBar.css" type="text/css"?>
 
 <overlay id="mailhopsNotificationOverlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"

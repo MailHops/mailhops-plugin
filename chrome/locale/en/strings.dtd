@@ -1,8 +1,6 @@
 <!ENTITY mailhops_header_route_label           "MailHops Route">
 <!ENTITY mailhops_header_auth_label            "MailHops Mailer/Auth">
 <!ENTITY mailhops_header_meta_label            "MailHops Meta">
-<!ENTITY mailhops_header_fun_label             "MailHops Fun">
-
 <!ENTITY mailhops_route_nav_map_label          "map">
 <!ENTITY mailhops_route_nav_details_label      "details">
 <!ENTITY mailhops_route_nav_refresh_label      "refresh">

@@ -10,12 +10,14 @@ var mailHopsDisplay =
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
   mailhopsUnsubscribe:    null,
+  mailhopsNoficationBox:  null,
   options:                null,
 
   init: function(options){
 
     this.options = options;
 
+    this.mailhopsNoficationBox = document.getElementById("mailhopsNoficationBox");
     this.container = document.getElementById("mailhopsBox");
     this.resultBox = document.getElementById("mailhopsResult");
     this.resultText = document.getElementById("mailhopsResultText");
@@ -184,10 +186,13 @@ var mailHopsDisplay =
         this.resultDetails.removeChild(this.resultDetails.firstChild);
     }
 
-    if(no_ips)
+    if(no_ips){
+      this.resultText.style.backgroundImage = "url('chrome://mailhops/content/images/local.png')";
       this.resultText.value = ' Looks like a local message';
-    else
+    } else {
+      this.resultText.style.backgroundImage = "url('chrome://mailhops/content/images/refresh.png')";
       this.resultText.value = ' Looking Up Route...';
+    }
   },
 
   route: function ( header_route, message, response, meta, lookup_url ){
@@ -296,7 +301,7 @@ var mailHopsDisplay =
     //set weather of sender
     if(weatherRoute){
       this.mailhopsResultWeather.style.display = 'block';
-      this.mailhopsResultWeather.setAttribute('tooltiptext','Weather');
+      this.mailhopsResultWeather.setAttribute('tooltiptext','Weather in '+weatherRoute.city+' '+weatherRoute.state);
       this.mailhopsResultWeather.value = weatherRoute.weather.summary+' '+Math.round(weatherRoute.weather.temp)+'\u00B0';
       this.mailhopsResultWeather.style.backgroundImage = 'url('+mailHopsUtils.getWeatherIcon(weatherRoute.weather.icon)+')';
       if(weatherRoute.coords)

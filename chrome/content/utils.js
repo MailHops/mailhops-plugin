@@ -209,19 +209,5 @@ getDistance: function(from, to, unit) {
       };
     }
     return '';
-  },
-
-  postToWebhook: function(mapUrl,options){
-    var slackUrl = 'https://hooks.slack.com/services/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';
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", slackUrl, false);
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState === 4 && xhr.status == 200) {
-        return JSON.parse(xmlhttp.responseText);
-      }
-    }
-    var payload = {"text":"MailHops <"+mapUrl+"|Map> "};
-    xhr.send(JSON.stringify(payload));
   }
 };
