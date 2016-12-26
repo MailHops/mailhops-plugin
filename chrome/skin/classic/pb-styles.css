@@ -151,3 +151,7 @@ button {
 .error:before {
   content: "\f111"
 }
+
+.mailhopsDataPaneSlackLink{
+	cursor: pointer;
+}

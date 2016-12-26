@@ -67,6 +67,16 @@
 			<vbox id="mailhopsDataPaneMeta" flex="1"></vbox>
 		</vbox>
 
+    <vbox id="dataPaneMailHopsFunContainer" class="dataPaneBox">
+			<hbox flex="1" pack="start" align="center">
+				<label class="dataPaneHeader" crop="right" value="&mailhops_header_fun_label;"></label>
+				<separator class="dataPaneBoxSeparator" flex="1"></separator>
+			</hbox>
+      <hbox class="mailHopsLinkContainer">
+				<vbox><image id="mailhopsDataPaneSlackLink" src="chrome://mailhops/content/images/btn-add-to-slack-122x35.png" width="122" height="35" /></vbox>
+			</hbox>
+		</vbox>
+
 	</vbox>
 
 </overlay>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE overlay SYSTEM "chrome://mailhops/locale/strings.dtd" >
+
+<?xml-stylesheet href="chrome://mailhops/skin/mh-notification-styles.css" type="text/css"?>
+
+<overlay id="mailhopsNotificationOverlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml">
+
+	<script type="application/x-javascript" src="chrome://mailhops/content/utils.js"/>
+	<script type="application/x-javascript" src="chrome://mailhops/content/msgNotificationBar.js"/>
+	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops.js"/>
+
+	<rows id="msgNotificationBar">
+		<row id="mailhopsNoficationBox" collapsed="false">
+			    <image id="mailhopsLogo" src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32" tooltiptext="&mailhops_route_nav_options_label;"/>
+
+       		<hbox id="mailhopsResult" flex="1">
+
+       			<label id="mailhopsResultText" class="text-link"></label>
+
+            <label id="mailhopsResultWeather" class="text-link"></label>
+
+       			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="hops" tooltiptext="Click to view route.">
+         				<menupopup id="mailhopsDataPaneDetails">
+  					    </menupopup>
+    				</button>
+
+    				<button id="mailhopsDataPaneRefreshLink" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_refresh_label;"></button>
+
+    				<label id="mailhopsDataPaneMailer" class="auth-item" value="" tooltiptext="Mailer"></label>
+
+    				<label id="mailhopsDataPaneSPF" class="auth-item" value="" tooltiptext="SPF"></label>
+
+    				<label id="mailhopsDataPaneDKIM" class="auth-item" value="" tooltiptext="DKIM"></label>
+
+    				<label id="mailhopsDataPaneDNSBL" class="text-link auth-item" value="" tooltiptext="DNSBL"></label>
+
+            <label id="mailhopsUnsubscribe" class="text-link unsubscribe" value="Unsubscribe" tooltiptext="Unsubscribe"></label>
+
+       		</hbox>
+		</row>
+	</rows>
+
+</overlay>

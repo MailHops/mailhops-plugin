@@ -1,0 +1,57 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#mailhopsNoficationBox #mailhopsResultText { padding-left:20px; background-repeat: no-repeat; }
+
+#mailhopsNoficationBox menuitem .menu-iconic-icon { width: 16px; height: 11px; }
+
+#mailhopsNoficationBox .auth-item { display: none; background-repeat: no-repeat; padding-left: 18px; }
+
+#mhTabs .act { padding-left: 20px; background-repeat: no-repeat; outline : none;}
+
+#mailhopsResultWeather { display: none; background-repeat: no-repeat; padding-left: 18px; }
+
+#mailHopsPreferences {
+		font-family: 'Raleway',Arial,sans-serif;
+		font-size: 14px;
+}
+
+#mailHopsPreferences textbox {
+	font-size: 14px;
+	padding: 5px;
+	color: #777;
+}
+
+#mailHopsPreferences tab {
+	font-size: 14px;
+	padding: 5px;
+	color: #333;
+}
+
+#mailhopsResult label {
+	margin-top: 8px;
+}
+
+#mailhopsNoficationBox {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: normal;
+  background: #5E7A9B;
+  border-bottom: 1px solid #355069;
+}
+
+#mailhopsNoficationBox #mailhopsDataPanePrefsLink {
+  border-radius: 20px;
+  background-color: #CCC;
+  letter-spacing: .1em;
+  right: 0;
+}
+
+#mailhopsNoficationBox #mailhopsLogo, #mailhopsNoficationBox #mailhopsResultWeather, #mailhopsNoficationBox #mailhopsResultText{
+  cursor: pointer;
+  color: #fff;
+}
+
+#mailhopsNoficationBox .unsubscribe {
+  color: #CCC;
+}

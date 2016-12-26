@@ -7,6 +7,7 @@ var mailHopsDisplay =
   resultContainerDetails: 	null,
   resultDetails:			null,
   resultMapLink:			null,
+  resultSlackLink:    null,
   mailhopsDataPaneSPF:		null,
   mailhopsDataPaneDKIM:		null,
   mailhopsDataPaneMailer:	null,
@@ -30,6 +31,7 @@ var mailHopsDisplay =
   	  this.resultDetails = document.getElementById ( "mailhopsDataPaneDetails");
   	  this.resultMeta = document.getElementById ( "mailhopsDataPaneMeta");
   	  this.resultMapLink = document.getElementById ( "mailhopsDataPaneMapLink");
+      this.resultSlackLink = document.getElementById ( "mailhopsDataPaneSlackLink");
 
   	  //auth
   	  this.mailhopsAuthContainer = document.getElementById ( "dataPaneMailHopsAuthContainer");
@@ -53,151 +55,151 @@ var mailHopsDisplay =
 		  		mailHopsUtils.launchMap( String(this.getAttribute("data-route")), options );
 	  	});
 
-	  this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
-			if(this.hasAttribute('data-ip'))
-		  		mailHopsUtils.launchSpamHausURL(this.getAttribute('data-ip'));
+  	  this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
+  			if(this.hasAttribute('data-ip'))
+  		  		mailHopsUtils.launchSpamHausURL(this.getAttribute('data-ip'));
+	  	});
+
+      this.resultSlackLink.addEventListener("click", function () {
+        mailHopsUtils.postToWebhook( String(this.getAttribute("data-api_url")), options );
 	  	});
 
 	  //display auth
 	  if(!this.options.show_auth)
 		  this.displayResultAuth(headXMailer,headUserAgent,headXMimeOLE,headAuth,headReceivedSPF);
 	  else
-	      this.mailhopsAuthContainer.style.display='none';
-
-	  //display unsubscribe link
-	  if(!this.options.show_lists)
-	  	this.mailhopsListContainer.style.display='none';
+	    this.mailhopsAuthContainer.style.display='none';
 
   }, //end init
 
   lists: function( header_unsubscribe ){
   	while(this.resultListDataPane.firstChild) {
     	this.resultListDataPane.removeChild(this.resultListDataPane.firstChild);
-	}
-	this.mailhopsListContainer.style.display='';
-	if(header_unsubscribe){
-		var listArr=header_unsubscribe.split(',');
-		var href='';
-		if(listArr.length){
-			for(var h=0;h<listArr.length;h++){
-				href = listArr[h].replace('<','').replace('>','');
-				var label = document.createElement('label');
+  	}
+  	this.mailhopsListContainer.style.display='';
+  	if(header_unsubscribe){
+  		var listArr=header_unsubscribe.split(',');
+  		var href='';
+  		if(listArr.length){
+  			for(var h=0;h<listArr.length;h++){
+  				href = listArr[h].replace('<','').replace('>','');
+  				var label = document.createElement('label');
 
-				label.setAttribute('class','text-link dataPaneURLitem');
+  				label.setAttribute('class','text-link dataPaneURLitem');
 
-				if(href.indexOf('mailto:')!=-1){
-					label.setAttribute('value','Unsubscribe via Email');
-					if(href.toLowerCase().indexOf('subject=')==-1){
-						if(href.indexOf('?')==-1)
-							href+='?subject=Unsubscribe';
-						else
-							href+='&subject=Unsubscribe';
-					}
-				}
-				else{
-					label.setAttribute('value','Unsubscribe via Web');
-				}
-				label.setAttribute('tooltiptext',href);
-				label.setAttribute('href',href);
-				this.resultListDataPane.appendChild(label);
-			}
-		}
-	}
+  				if(href.indexOf('mailto:')!=-1){
+  					label.setAttribute('value','Unsubscribe via Email');
+  					if(href.toLowerCase().indexOf('subject=')==-1){
+  						if(href.indexOf('?')==-1)
+  							href+='?subject=Unsubscribe';
+  						else
+  							href+='&subject=Unsubscribe';
+  					}
+  				}
+  				else{
+  					label.setAttribute('value','Unsubscribe via Web');
+  				}
+  				label.setAttribute('tooltiptext',href);
+  				label.setAttribute('href',href);
+  				this.resultListDataPane.appendChild(label);
+  			}
+  		}
+  	}
   },
 
   auth: function( header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf ){
   	this.mailhopsAuthContainer.style.display='';
-	//SPF
-	if(header_spf){
-		header_spf=header_spf.replace(/^\s+/,"");
-		var headerSPFArr=header_spf.split(' ');
-		this.mailhopsDataPaneSPF.setAttribute('value','SPF: '+headerSPFArr[0]);
-		this.mailhopsDataPaneSPF.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+headerSPFArr[0]+'.png)';
-		this.mailhopsDataPaneSPF.setAttribute('tooltiptext',header_spf+'\n'+mailHopsUtils.spf(headerSPFArr[0]));
-		this.mailhopsDataPaneSPF.style.display='block';
-	} else {
-		this.mailhopsDataPaneSPF.style.display='none';
-	}
-	//Authentication-Results
-	//http://tools.ietf.org/html/rfc5451
-	if(header_auth){
-		var headerAuthArr=header_auth.split(';');
-		var dkim_result;
-		var spf_result;
-		for(var h=0;h<headerAuthArr.length;h++){
-			if(headerAuthArr[h].indexOf('dkim=')!=-1){
-				dkim_result = headerAuthArr[h];
-				if(header_spf)
-					break;
-			}
-			if(!header_spf && headerAuthArr[h].indexOf('spf=')!=-1){
-				spf_result = headerAuthArr[h];
-				if(dkim_result)
-					break;
-			}
-		}
+  	//SPF
+  	if(header_spf){
+  		header_spf=header_spf.replace(/^\s+/,"");
+  		var headerSPFArr=header_spf.split(' ');
+  		this.mailhopsDataPaneSPF.setAttribute('value','SPF: '+headerSPFArr[0]);
+  		this.mailhopsDataPaneSPF.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+headerSPFArr[0]+'.png)';
+  		this.mailhopsDataPaneSPF.setAttribute('tooltiptext',header_spf+'\n'+mailHopsUtils.spf(headerSPFArr[0]));
+  		this.mailhopsDataPaneSPF.style.display='block';
+  	} else {
+  		this.mailhopsDataPaneSPF.style.display='none';
+  	}
+  	//Authentication-Results
+  	//http://tools.ietf.org/html/rfc5451
+  	if(header_auth){
+  		var headerAuthArr=header_auth.split(';');
+  		var dkim_result;
+  		var spf_result;
+  		for(var h=0;h<headerAuthArr.length;h++){
+  			if(headerAuthArr[h].indexOf('dkim=')!=-1){
+  				dkim_result = headerAuthArr[h];
+  				if(header_spf)
+  					break;
+  			}
+  			if(!header_spf && headerAuthArr[h].indexOf('spf=')!=-1){
+  				spf_result = headerAuthArr[h];
+  				if(dkim_result)
+  					break;
+  			}
+  		}
 
-		if(this.options.show_dkim && dkim_result){
-			dkim_result=dkim_result.replace(/^\s+/,"");
-			var dkimArr=dkim_result.split(' ');
-			this.mailhopsDataPaneDKIM.setAttribute('value','DKIM: '+dkimArr[0].replace('dkim=',''));
-			this.mailhopsDataPaneDKIM.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+dkimArr[0].replace('dkim=','')+'.png)';
-			this.mailhopsDataPaneDKIM.setAttribute('tooltiptext',dkim_result+'\n'+mailHopsUtils.dkim(dkimArr[0].replace('dkim=','')));
-			this.mailhopsDataPaneDKIM.style.display='block';
-		} else {
-			this.mailhopsDataPaneDKIM.style.display='none';
-		}
+  		if(this.options.show_dkim && dkim_result){
+  			dkim_result=dkim_result.replace(/^\s+/,"");
+  			var dkimArr=dkim_result.split(' ');
+  			this.mailhopsDataPaneDKIM.setAttribute('value','DKIM: '+dkimArr[0].replace('dkim=',''));
+  			this.mailhopsDataPaneDKIM.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+dkimArr[0].replace('dkim=','')+'.png)';
+  			this.mailhopsDataPaneDKIM.setAttribute('tooltiptext',dkim_result+'\n'+mailHopsUtils.dkim(dkimArr[0].replace('dkim=','')));
+  			this.mailhopsDataPaneDKIM.style.display='block';
+  		} else {
+  			this.mailhopsDataPaneDKIM.style.display='none';
+  		}
 
-		if(this.options.show_spf && spf_result){
-			spf_result=spf_result.replace(/^\s+/,"");
-			var spfArr=spf_result.split(' ');
-			this.mailhopsDataPaneSPF.setAttribute('value','SPF: '+spfArr[0].replace('spf=',''));
-			this.mailhopsDataPaneSPF.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+spfArr[0].replace('spf=','')+'.png)';
-			this.mailhopsDataPaneSPF.setAttribute('tooltiptext',spf_result+'\n'+mailHopsUtils.spf(spfArr[0].replace('spf=','')));
-			this.mailhopsDataPaneSPF.style.display='block';
-		}
-	} else {
-		this.mailhopsDataPaneDKIM.style.display='none';
-	}
-	//X-Mailer, User-Agent or X-MimeOLE
-	if(header_xmailer){
-		this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
-		if(header_xmailer.indexOf('(')!=-1)
-			this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('(')));
-		else if(header_xmailer.indexOf('[')!=-1)
-			this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('[')));
-		else
-			this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer);
-		this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_xmailer);
-		this.mailhopsDataPaneMailer.style.display='block';
-	} else if(header_useragent){
-		this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
-		if(header_useragent.indexOf('(')!=-1)
-			this.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('(')));
-		else if(header_useragent.indexOf('[')!=-1)
-			this.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('[')));
-		else
-			this.mailhopsDataPaneMailer.setAttribute('value',header_useragent);
-		this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_useragent);
-		this.mailhopsDataPaneMailer.style.display='block';
-	} else if(header_xmimeole){
-		this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
+  		if(this.options.show_spf && spf_result){
+  			spf_result=spf_result.replace(/^\s+/,"");
+  			var spfArr=spf_result.split(' ');
+  			this.mailhopsDataPaneSPF.setAttribute('value','SPF: '+spfArr[0].replace('spf=',''));
+  			this.mailhopsDataPaneSPF.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+spfArr[0].replace('spf=','')+'.png)';
+  			this.mailhopsDataPaneSPF.setAttribute('tooltiptext',spf_result+'\n'+mailHopsUtils.spf(spfArr[0].replace('spf=','')));
+  			this.mailhopsDataPaneSPF.style.display='block';
+  		}
+  	} else {
+  		this.mailhopsDataPaneDKIM.style.display='none';
+  	}
+  	//X-Mailer, User-Agent or X-MimeOLE
+  	if(header_xmailer){
+  		this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
+  		if(header_xmailer.indexOf('(')!=-1)
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('(')));
+  		else if(header_xmailer.indexOf('[')!=-1)
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('[')));
+  		else
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer);
+  		this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_xmailer);
+  		this.mailhopsDataPaneMailer.style.display='block';
+  	} else if(header_useragent){
+  		this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
+  		if(header_useragent.indexOf('(')!=-1)
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('(')));
+  		else if(header_useragent.indexOf('[')!=-1)
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('[')));
+  		else
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_useragent);
+  		this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_useragent);
+  		this.mailhopsDataPaneMailer.style.display='block';
+  	} else if(header_xmimeole){
+  		this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
 
-		if(header_xmimeole.indexOf('(')!=-1)
-			header_xmimeole = header_xmimeole.substring(0,header_xmimeole.indexOf('('));
-		else if(header_xmimeole.indexOf('[')!=-1)
-			header_xmimeole = header_xmimeole.substring(0,header_xmimeole.indexOf('['));
+  		if(header_xmimeole.indexOf('(')!=-1)
+  			header_xmimeole = header_xmimeole.substring(0,header_xmimeole.indexOf('('));
+  		else if(header_xmimeole.indexOf('[')!=-1)
+  			header_xmimeole = header_xmimeole.substring(0,header_xmimeole.indexOf('['));
 
-		if(header_xmimeole.indexOf('Produced By ')!=-1)
-			this.mailhopsDataPaneMailer.setAttribute('value',header_xmimeole.replace('Produced By ',''));
-		else
-			this.mailhopsDataPaneMailer.setAttribute('value',header_xmimeole);
+  		if(header_xmimeole.indexOf('Produced By ')!=-1)
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_xmimeole.replace('Produced By ',''));
+  		else
+  			this.mailhopsDataPaneMailer.setAttribute('value',header_xmimeole);
 
-		this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_xmimeole);
-		this.mailhopsDataPaneMailer.style.display='block';
-	} else {
-		this.mailhopsDataPaneMailer.style.display='none';
-	}
+  		this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_xmimeole);
+  		this.mailhopsDataPaneMailer.style.display='block';
+  	} else {
+  		this.mailhopsDataPaneMailer.style.display='none';
+  	}
   },
 
   error: function(status,data){
@@ -372,15 +374,15 @@ var mailHopsDisplay =
 
 			label.setAttribute('tooltiptext','Click for whois '+tiptext);
 
-			//append details
-	   		this.resultDetails.appendChild(label);
+		  //append details
+   		this.resultDetails.appendChild(label);
 
-	        //append weather
-	        if(!weather && response.route[i].weather){
-	          weather = response.route[i].weather;
-	        }
+      //append weather
+      if(!weather && response.route[i].weather){
+        weather = response.route[i].weather;
+      }
 
-	   		if(this.options.show_secure){
+	   	if(this.options.show_secure){
 				//reset the tooltip
 				secureToolTipText=mailHopsUtils.getSecureTrans(response.route[i].ip, message);
 				//check for secure transmission
@@ -392,8 +394,8 @@ var mailHopsDisplay =
 				}
 			}
 
-	   		//append host
-	   		if(this.options.show_host && response.route[i].host){
+	   	// append host
+	   	if(this.options.show_host && response.route[i].host){
 				var host = document.createElement('label');
 				host.setAttribute('value',response.route[i].host);
 				if(secureToolTipText)
@@ -403,7 +405,7 @@ var mailHopsDisplay =
 				this.resultDetails.appendChild(host);
 			}
 
-			//auth & dnsbl
+			// auth & dnsbl
 			if(!response.route[i].private && response.route[i].dnsbl && response.route[i].dnsbl.listed){
 				this.mailhopsDataPaneDNSBL.setAttribute('value','Blacklisted '+mailHopsUtils.dnsbl(response.route[i].dnsbl.record,true));
 				this.mailhopsDataPaneDNSBL.setAttribute('data-ip',response.route[i].ip);
@@ -468,10 +470,13 @@ var mailHopsDisplay =
       distanceText += ' in '+Math.round(message.time/60/60)+' hrs.';
   }
 
-  if(header_route)
-  	this.resultMapLink.setAttribute("data-route", header_route);
-  else
-	this.resultMapLink.removeAttribute("data-route");
+  if(header_route){
+    this.resultMapLink.setAttribute("data-route", header_route);
+    this.resultSlackLink.setAttribute("data-api_url", lookup_url.replace('lookup','map'));
+  } else {
+    this.resultMapLink.removeAttribute("data-route");
+    this.resultSlackLink.removeAttribute("data-api_url");
+  }
 
   this.resultTextDataPane.style.backgroundImage = 'url('+image+')';
   this.resultTextDataPane.value = displayText;

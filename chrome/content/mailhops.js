@@ -39,7 +39,7 @@ mailHops.init = function() {
   //load preferences
   mailHops.loadPref();
 
-  document.getElementById("mailhopsDataPanePrefsLink").addEventListener("click", function () {
+  document.getElementById("mailhopsLogo").addEventListener("click", function () {
         window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
       });
 
@@ -63,7 +63,6 @@ mailHops.loadPref = function()
   mailHops.options.show_details = mailHops.getCharPref('mail.mailHops.show_details','true')=='true'?true:false;
   mailHops.options.show_meta = mailHops.getCharPref('mail.mailHops.show_meta','true')=='true'?true:false;
   mailHops.options.show_auth = mailHops.getCharPref('mail.mailHops.show_auth','true')=='true'?true:false;
-  mailHops.options.show_lists = mailHops.getCharPref('mail.mailHops.show_lists','true')=='true'?true:false;
 
   //Details options
   mailHops.options.show_host = mailHops.getCharPref('mail.mailHops.show_host','true')=='true'?true:false;
@@ -174,8 +173,7 @@ mailHops.getRoute = function(){
   var headXMimeOLE = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "X-MimeOLE" , false ) : null;
   var headReceivedSPF = (mailHops.options.show_auth && mailHops.options.show_spf) ? mailHops.headers.extractHeader ( "Received-SPF" , false ) : null;
   var headAuth = mailHops.options.show_auth ? mailHops.headers.extractHeader ( "Authentication-Results" , false ) : null;
-  //lists box
-  var headListUnsubscribe = mailHops.options.show_lists ? mailHops.headers.extractHeader ( "List-Unsubscribe" , false ) : null;
+  var headListUnsubscribe = mailHops.headers.extractHeader ( "List-Unsubscribe" , false ) ;
 
   var all_ips = new Array();
   var rline = '',firstDate=headDate,lastDate;
@@ -183,9 +181,7 @@ mailHops.getRoute = function(){
   mailHops.message.secure = [];
   mailHops.message.time = null;
 
-  if(mailHops.options.show_lists){
-      mailHopsDisplay.lists( headListUnsubscribe );
-  }
+  mailHopsDisplay.lists( headListUnsubscribe );
 
   if(mailHops.options.show_auth){
       mailHopsDisplay.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF );

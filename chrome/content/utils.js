@@ -64,7 +64,6 @@ switch(result){
     default:
      	return '';
    }
-
 },
 
 dnsbl: function(result,abbr){
@@ -182,10 +181,10 @@ getDistance: function(from, to, unit) {
     if(!from || !to || !from['lat'] || !to['lat'])
       return 0;
 
-		lat = parseFloat(from['lat']);
-		lon1 = parseFloat(from['lng']);
-		lat2 = parseFloat(to['lat']);
-		lon2 = parseFloat(to['lng']);
+		var lat = parseFloat(from['lat']);
+		var lon1 = parseFloat(from['lng']);
+		var lat2 = parseFloat(to['lat']);
+		var lon2 = parseFloat(to['lng']);
     unit = unit || 'mi';//mi or km
 
 		lat *= (Math.PI/180);
@@ -193,12 +192,11 @@ getDistance: function(from, to, unit) {
 		lat2 *= (Math.PI/180);
 		lon2 *= (Math.PI/180);
 
-		dist = 2*Math.asin(Math.sqrt( Math.pow((Math.sin((lat-lat2)/2)),2) + Math.cos(lat)*Math.cos(lat2)*Math.pow((Math.sin((lon1-lon2)/2)),2))) * 6378.137;
+		var dist = 2*Math.asin(Math.sqrt( Math.pow((Math.sin((lat-lat2)/2)),2) + Math.cos(lat)*Math.cos(lat2)*Math.pow((Math.sin((lon1-lon2)/2)),2))) * 6378.137;
 
 		if (unit == 'mi') {
 			dist = (dist / 1.609344);
 		}
-
 		return dist;
 	},
 
@@ -211,6 +209,19 @@ getDistance: function(from, to, unit) {
       };
     }
     return '';
-  }
+  },
 
+  postToWebhook: function(mapUrl,options){
+    var slackUrl = 'https://hooks.slack.com/services/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';
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", slackUrl, false);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState === 4 && xhr.status == 200) {
+        return JSON.parse(xmlhttp.responseText);
+      }
+    }
+    var payload = {"text":"MailHops <"+mapUrl+"|Map> "};
+    xhr.send(JSON.stringify(payload));
+  }
 };

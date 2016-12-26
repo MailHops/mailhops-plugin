@@ -35,11 +35,6 @@ var mailHopPreferences = {
   	else
   		document.getElementById("mailhop.show_meta").checked = false;
 
-  	if(pref.getCharPref("mail.mailHops.show_lists",'true')=='true')
-  		document.getElementById("mailhop.show_lists").checked = true;
-  	else
-  		document.getElementById("mailhop.show_lists").checked = false;
-
   	if(pref.getCharPref("mail.mailHops.show_auth",'true')=='true')
   		document.getElementById("mailhop.show_auth").checked = true;
   	else
@@ -135,7 +130,6 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.show_dkim", String(document.getElementById("mailhop.show_dkim").checked));
     pref.setCharPref("mail.mailHops.show_mailer", String(document.getElementById("mailhop.show_mailer").checked));
     pref.setCharPref("mail.mailHops.show_dnsbl", String(document.getElementById("mailhop.show_dnsbl").checked));
-    pref.setCharPref("mail.mailHops.show_lists", String(document.getElementById("mailhop.show_lists").checked));
     pref.setCharPref("mail.mailHops.show_auth", String(document.getElementById("mailhop.show_auth").checked));
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
 
@@ -194,7 +188,7 @@ var mailHopPreferences = {
           api_key = this.api_key.value.trim(),
           self = this;
 
-      xmlhttp.open("GET", apiBase+accountURL,true);
+      xmlhttp.open("GET", apiBase+accountURL, true);
        xmlhttp.onreadystatechange=function() {
         if (xmlhttp.readyState===4) {
           try {

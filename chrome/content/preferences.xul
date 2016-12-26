@@ -482,7 +482,6 @@
 	    	<groupbox flex="1">
 				<caption label="Display Boxes"/>
 				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
-				<checkbox id="mailhop.show_lists" label="Show Unsubscribe Links" checked="true"/>
 				<checkbox id="mailhop.show_meta" label="Show Meta" checked="true"/>
 			</groupbox>
 			<groupbox flex="1">
