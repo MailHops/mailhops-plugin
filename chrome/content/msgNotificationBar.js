@@ -10,14 +10,12 @@ var mailHopsDisplay =
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
   mailhopsUnsubscribe:    null,
-  mailhopsNoficationBox:  null,
   options:                null,
 
   init: function(options){
 
     this.options = options;
 
-    this.mailhopsNoficationBox = document.getElementById("mailhopsNoficationBox");
     this.container = document.getElementById("mailhopsBox");
     this.resultBox = document.getElementById("mailhopsResult");
     this.resultText = document.getElementById("mailhopsResultText");
