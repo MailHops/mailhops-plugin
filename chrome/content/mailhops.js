@@ -54,7 +54,7 @@ mailHops.init = function() {
 
 };
 
-mailHops.loadPref = function()
+mailHops.loadPref = function(reload)
 {
   mailHops.LOG('load MailHops prefs');
   //get preferences
@@ -86,7 +86,7 @@ mailHops.loadPref = function()
   mailHops.options.country_filter = mailHops.getCharPref('mail.mailHops.country_filter',[]);
 
   //init display
-  mailHopsDisplay.init( mailHops.options );
+  mailHopsDisplay.init( mailHops.options, reload );
 };
 
 mailHops.StreamListener =
@@ -330,7 +330,7 @@ mailHops.unregisterObserver = function(){
 mailHops.observe = function ( aSubject , aTopic , aData )
 {
   if ( aTopic == "nsPref:changed" )
-    mailHops.loadPref();
+    mailHops.loadPref(true);
 };
 
 mailHops.getCharPref = function ( strName , strDefault ){

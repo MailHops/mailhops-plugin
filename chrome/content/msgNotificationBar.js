@@ -10,12 +10,13 @@ var mailHopsDisplay =
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
   mailhopsUnsubscribe:    null,
+  mhBox:                  null,
   options:                null,
 
-  init: function(options){
+  init: function(options, reload){
 
     this.options = options;
-
+    this.mhBox = document.getElementById("mailhopsNoficationBox");
     this.container = document.getElementById("mailhopsBox");
     this.resultBox = document.getElementById("mailhopsResult");
     this.resultText = document.getElementById("mailhopsResultText");
@@ -28,6 +29,9 @@ var mailHopsDisplay =
     this.mailhopsDataPaneMailer = document.getElementById("mailhopsDataPaneMailer");
     this.mailhopsDataPaneDNSBL = document.getElementById("mailhopsDataPaneDNSBL");
 
+    //wait for message to be selected before showing
+    if(!reload)
+      this.mhBox.style.display = 'none';
 
     //event listner for route click to launch map
     this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
@@ -44,12 +48,12 @@ var mailHopsDisplay =
       });
 
       if(!!options.bar_color)
-        document.getElementById("mailhopsNoficationBox").style.background = options.bar_color;
+        this.mhBox.style.background = options.bar_color;
       else
-        document.getElementById("mailhopsNoficationBox").style.background = '';
+        this.mhBox.style.background = '';
 
       if(!!options.font_size)
-        document.getElementById("mailhopsNoficationBox").style.fontSize = options.font_size;
+        this.mhBox.style.fontSize = options.font_size;
 
       if(!!options.font_color){
         this.resultText.style.color = options.font_color;
@@ -192,7 +196,7 @@ var mailHopsDisplay =
   },
 
   clear: function(no_ips){
-
+    this.mhBox.style.display = '';
     this.mailhopsDataPaneDNSBL.style.display = 'none';
     this.mailhopsResultWeather.style.display = 'none';
     this.resultText.removeAttribute('data-route');
