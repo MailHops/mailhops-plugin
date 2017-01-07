@@ -482,6 +482,9 @@
 	    <tabpanel>
 	    	<groupbox flex="1">
 					<caption label="Display Styles"/>
+					<description>
+							Use any <label class="text-link plain" href="https://en.wikipedia.org/wiki/Web_colors" value="HTML color name or Hex code"/>.
+					</description>
 
 					<description id="display_preview" style="font-size: 14px; color: #FFF; background: #5E7A9B;">
 						<image src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32"/>
@@ -507,7 +510,7 @@
 							</row>
 							<row>
 								<span></span>
-								<button onclick="mailHopPreferences.ResetDisplay();">Reset Display</button>
+								<button onclick="mailHopPreferences.ResetDisplay();" style="text-align:center;">Reset Display</button>
 							</row>
 						</rows>
 					</grid>
