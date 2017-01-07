@@ -20,6 +20,7 @@ var mailHopsDisplay =
     this.resultBox = document.getElementById("mailhopsResult");
     this.resultText = document.getElementById("mailhopsResultText");
     this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
+    this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
     this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
     //auth
     this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
@@ -27,7 +28,6 @@ var mailHopsDisplay =
     this.mailhopsDataPaneMailer = document.getElementById("mailhopsDataPaneMailer");
     this.mailhopsDataPaneDNSBL = document.getElementById("mailhopsDataPaneDNSBL");
 
-    this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
 
     //event listner for route click to launch map
     this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
@@ -42,6 +42,24 @@ var mailHopsDisplay =
       else if(this.hasAttribute('data-route'))
         mailHopsUtils.launchMap( String(this.getAttribute('data-route')), options );
       });
+
+      if(!!options.bar_color)
+        document.getElementById("mailhopsNoficationBox").style.background = options.bar_color;
+      else
+        document.getElementById("mailhopsNoficationBox").style.background = '';
+
+      if(!!options.font_size)
+        document.getElementById("mailhopsNoficationBox").style.fontSize = options.font_size;
+
+      if(!!options.font_color){
+        this.resultText.style.color = options.font_color;
+        this.mailhopsResultWeather.style.color = options.font_color;
+        this.mailhopsUnsubscribe.style.color = options.font_color;
+        this.mailhopsDataPaneSPF.style.color = options.font_color;
+        this.mailhopsDataPaneDKIM.style.color = options.font_color;
+        this.mailhopsDataPaneMailer.style.color = options.font_color;
+        this.mailhopsDataPaneDNSBL.style.color = options.font_color;
+      }
   },
 
   lists: function( header_unsubscribe ){

@@ -9,7 +9,8 @@ var mailHopPreferences = {
   valid_api_key: false,
   fkey: '', //forecast.io api key
   country_filter: [],
-
+  previewBar: null,
+  
   loadPreferences: function(){
 
     this.api_host = document.getElementById("mailhop.api_host");
@@ -20,6 +21,8 @@ var mailHopPreferences = {
 
     this.fkey = document.getElementById("mailhop.fkey");
 
+    this.previewBar = document.getElementById("display_preview");
+
     document.getElementById("mailhop.lang").value = pref.getCharPref("mail.mailHops.lang",'en');
 
   	document.getElementById("mailhop.map_provider").value = pref.getCharPref("mail.mailHops.map_provider",'OpenStreetMap.Mapnik');
@@ -29,48 +32,15 @@ var mailHopPreferences = {
   	else
   	    document.getElementById("mailhop.unit").selectedIndex = 1;
 
-  	//Display Box Options
-  	if(pref.getCharPref("mail.mailHops.show_meta",'true')=='true')
-  		document.getElementById("mailhop.show_meta").checked = true;
-  	else
-  		document.getElementById("mailhop.show_meta").checked = false;
+  	//Display Box styles
+  	document.getElementById("mailhop.bar_color").value = pref.getCharPref("mail.mailHops.bar_color",'#5E7A9B');
+    document.getElementById("mailhop.font_color").value = pref.getCharPref("mail.mailHops.font_color",'#FFF');
+    document.getElementById("mailhop.font_size").value = pref.getCharPref("mail.mailHops.font_size",'14px');
 
-  	if(pref.getCharPref("mail.mailHops.show_auth",'true')=='true')
-  		document.getElementById("mailhop.show_auth").checked = true;
-  	else
-  		document.getElementById("mailhop.show_auth").checked = false;
-
-  	//Details Options
-  	if(pref.getCharPref("mail.mailHops.show_host",'true')=='true')
-  		document.getElementById("mailhop.show_host").checked = true;
-  	else
-  		document.getElementById("mailhop.show_host").checked = false;
-
-  	if(pref.getCharPref("mail.mailHops.show_secure",'true')=='true')
-  		document.getElementById("mailhop.show_secure").checked = true;
-  	else
-  		document.getElementById("mailhop.show_secure").checked = false;
-
-  	//Auth Options
-  	if(pref.getCharPref("mail.mailHops.show_spf",'true')=='true')
-  		document.getElementById("mailhop.show_spf").checked = true;
-  	else
-  		document.getElementById("mailhop.show_spf").checked = false;
-
-  	if(pref.getCharPref("mail.mailHops.show_dkim",'true')=='true')
-  		document.getElementById("mailhop.show_dkim").checked = true;
-  	else
-  		document.getElementById("mailhop.show_dkim").checked = false;
-
-  	if(pref.getCharPref("mail.mailHops.show_mailer",'true')=='true')
-  		document.getElementById("mailhop.show_mailer").checked = true;
-  	else
-  		document.getElementById("mailhop.show_mailer").checked = false;
-
-  	if(pref.getCharPref("mail.mailHops.show_dnsbl",'true')=='true')
-  		document.getElementById("mailhop.show_dnsbl").checked = true;
-  	else
-  		document.getElementById("mailhop.show_dnsbl").checked = false;
+    //Update styles
+    this.previewBar.style.background = document.getElementById("mailhop.bar_color").value;
+    this.previewBar.style.color = document.getElementById("mailhop.font_color").value;
+    this.previewBar.style.fontSize = document.getElementById("mailhop.font_size").value;
 
   	if(pref.getCharPref("mail.mailHops.debug",'true')=='true')
   		document.getElementById("mailhop.debug").checked = true;
@@ -118,19 +88,24 @@ var mailHopPreferences = {
       mailHopsUtils.launchExternalURL('https://darksky.net');
     });
     this.saveAPIKey();
+
+    document.getElementById("mailhop.bar_color").addEventListener("input", function () {
+      this.previewBar.style.background = this.value;
+    });
+    document.getElementById("mailhop.font_color").addEventListener("input", function () {
+      this.previewBar.style.color = this.value;
+    });
+    document.getElementById("mailhop.font_size").addEventListener("input", function () {
+      this.previewBar.style.fontSize = this.value;
+    });
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
     pref.setCharPref("mail.mailHops.map_provider", document.getElementById("mailhop.map_provider").selectedItem.value);
     pref.setCharPref("mail.mailHops.unit", document.getElementById("mailhop.unit").selectedItem.value);
-    pref.setCharPref("mail.mailHops.show_meta", String(document.getElementById("mailhop.show_meta").checked));
-    pref.setCharPref("mail.mailHops.show_host", String(document.getElementById("mailhop.show_host").checked));
-    pref.setCharPref("mail.mailHops.show_secure", String(document.getElementById("mailhop.show_secure").checked));
-    pref.setCharPref("mail.mailHops.show_spf", String(document.getElementById("mailhop.show_spf").checked));
-    pref.setCharPref("mail.mailHops.show_dkim", String(document.getElementById("mailhop.show_dkim").checked));
-    pref.setCharPref("mail.mailHops.show_mailer", String(document.getElementById("mailhop.show_mailer").checked));
-    pref.setCharPref("mail.mailHops.show_dnsbl", String(document.getElementById("mailhop.show_dnsbl").checked));
-    pref.setCharPref("mail.mailHops.show_auth", String(document.getElementById("mailhop.show_auth").checked));
+    pref.setCharPref("mail.mailHops.bar_color", String(document.getElementById("mailhop.bar_color").value));
+    pref.setCharPref("mail.mailHops.font_color", String(document.getElementById("mailhop.font_color").value));
+    pref.setCharPref("mail.mailHops.font_size", String(document.getElementById("mailhop.font_size").value));
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
 
     //API vars
@@ -256,5 +231,14 @@ var mailHopPreferences = {
    this.api_http.value=="https://";
    this.api_http.selectedIndex = 0;
  	 this.api_host.value='api.mailhops.com';
- }
+ },
+
+ ResetDisplay: function(){
+   document.getElementById("mailhop.bar_color").value = '#5E7A9B';
+   document.getElementById("mailhop.font_color").value = '#FFF';
+   document.getElementById("mailhop.font_size").value = '14px';
+   this.previewBar.style.background = document.getElementById("mailhop.bar_color").value;
+   this.previewBar.style.color = document.getElementById("mailhop.font_color").value;
+   this.previewBar.style.fontSize = document.getElementById("mailhop.font_size").value;
+  }
 };

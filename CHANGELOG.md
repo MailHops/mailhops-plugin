@@ -1,5 +1,27 @@
 # Change Log
 
+## 3.0.1 - 2017-01-07
+
+### Added
+- Display styles in settings to customize MailHops bar background color, font color and font size
+
+### Removed
+- Display show options, data is now always shown for:
+  - Unsubscribe link
+  - Mailer
+  - DKIM
+  - SPF
+  - DNSBL
+
+## 3.0.0 - 2016-12-26
+
+### Added
+- MailHops Bar for matching styles across supported mail clients
+
+### Removed
+- Thunderbird specific styles and MailHops bar from the header
+- Postbox specific styles and MailHops sidebar display
+
 ## 2.0.0 - 2016-10-10
 
 ### Added

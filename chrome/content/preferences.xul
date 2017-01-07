@@ -480,22 +480,37 @@
 	    </tabpanel>
 	    <tabpanel>
 	    	<groupbox flex="1">
-				<caption label="Display Boxes"/>
-				<checkbox id="mailhop.show_auth" label="Show Auth" checked="true"/>
-				<checkbox id="mailhop.show_meta" label="Show Meta" checked="true"/>
-			</groupbox>
-			<groupbox flex="1">
-				<caption label="Details menu items"/>
-				<label class="mailhopsHostPref"><checkbox id="mailhop.show_host" label="Show Host" checked="true"/></label>
-				<label class="mailhopsSecurePref"><checkbox id="mailhop.show_secure" label="Show Secure Transmission" checked="true"/></label>
-			</groupbox>
-			<groupbox flex="1">
-				<caption label="Authentication menu items"/>
-				<checkbox id="mailhop.show_mailer" label="Show Mailer" checked="true"/>
-				<checkbox id="mailhop.show_spf" label="Show SPF" checked="true"/>
-				<checkbox id="mailhop.show_dkim" label="Show DKIM" checked="true"/>
-				<checkbox id="mailhop.show_dnsbl" label="Show DNS Blacklist" checked="true"/>
-			</groupbox>
+					<caption label="Display Styles"/>
+
+					<description id="display_preview" style="font-size: 14px; color: #FFF; background: #5E7A9B;">
+						<image src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32"/>
+						MailHops Bar
+					</description>
+					<div height="20"></div>
+					<grid>
+					  <columns>
+							<column/>
+					  </columns>
+					  <rows>
+					    <row>
+								<label value="Bar Color"></label>
+								<textbox id="mailhop.bar_color" value="#5E7A9B" placeholder="Enter a hex color code"/>
+							</row>
+							<row>
+								<label value="Font Color"></label>
+								<textbox id="mailhop.font_color" value="#FFF" placeholder="Enter a hex color code"/>
+							</row>
+							<row>
+								<label value="Font Size"></label>
+								<textbox id="mailhop.font_size" value="14px" placeholder="Enter a size in pixels"/>
+							</row>
+							<row>
+								<span></span>
+								<button onclick="mailHopPreferences.ResetDisplay();">Reset Display</button>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
 	    </tabpanel>
 
 	    <tabpanel>
