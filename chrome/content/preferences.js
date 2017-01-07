@@ -10,8 +10,9 @@ var mailHopPreferences = {
   fkey: '', //forecast.io api key
   country_filter: [],
   previewBar: null,
-  
+
   loadPreferences: function(){
+    var self = this;
 
     this.api_host = document.getElementById("mailhop.api_host");
 
@@ -90,13 +91,13 @@ var mailHopPreferences = {
     this.saveAPIKey();
 
     document.getElementById("mailhop.bar_color").addEventListener("input", function () {
-      this.previewBar.style.background = this.value;
+      self.previewBar.style.background = this.value;
     });
     document.getElementById("mailhop.font_color").addEventListener("input", function () {
-      this.previewBar.style.color = this.value;
+      self.previewBar.style.color = this.value;
     });
     document.getElementById("mailhop.font_size").addEventListener("input", function () {
-      this.previewBar.style.fontSize = this.value;
+      self.previewBar.style.fontSize = this.value;
     });
   },
   savePreferences: function() {
