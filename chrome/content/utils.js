@@ -1,5 +1,7 @@
 var mailHopsUtils = {
 
+countries: ["ad","ae","af","ag","ai","al","am","an","ao","ar","as","at","au","aw","ax","az","ba","bb","bd","be","bf","bg","bh","bi","bj","bm","bn","bo","br","bs","bt","bv","bw","by","bz","ca","catalonia","cc","cd","cf","cg","ch","ci","ck","cl","cm","cn","co","cr","cs","cu","cv","cx","cy","cz","de","dj","dk","dm","do","dz","ec","ee","eg","eh","england","er","es","et","europeanunion","fam","fi","fj","fk","fm","fo","fr","ga","gb","gd","ge","gf","gh","gi","gl","gm","gn","gp","gq","gr","gs","gt","gu","gw","gy","hk","hm","hn","hr","ht","hu","id","ie","il","in","io","iq","ir","is","it","jm","jo","jp","ke","kg","kh","ki","km","kn","kp","kr","kw","ky","kz","la","lb","lc","li","lk","lr","ls","lt","lu","lv","ly","ma","mc","md","me","mg","mh","mk","ml","mm","mn","mo","mp","mq","mr","ms","mt","mu","mv","mw","mx","my","mz","na","nc","ne","nf","ng","ni","nl","no","np","nr","nu","nz","om","pa","pe","pf","pg","ph","pk","pl","pm","pn","pr","ps","pt","pw","py","qa","re","ro","rs","ru","rw","sa","sb","sc","scotland","sd","se","sg","sh","si","sj","sk","sl","sm","sn","so","sr","st","sv","sy","sz","tc","td","tf","tg","th","tj","tk","tl","tm","tn","to","tr","tt","tv","tw","tz","ua","ug","um","us","uy","uz","va","vc","ve","vg","vi","vn","vu","wales","wf","ws","ye","yt","za","zm","zw"],
+
 dkim: function(result){
 
    switch(result){
@@ -62,7 +64,6 @@ switch(result){
     default:
      	return '';
    }
-
 },
 
 dnsbl: function(result,abbr){
@@ -73,7 +74,7 @@ dnsbl: function(result,abbr){
    	case '127.0.0.3':
          if(abbr)
             return 'SBL';
-         else   
+         else
 			     return 'Static UBE sources, verified spam services and ROKSO spammers.';
 
 		case '127.0.0.4':
@@ -82,32 +83,19 @@ dnsbl: function(result,abbr){
 		case '127.0.0.7':
          if(abbr)
             return 'XBL';
-         else   
+         else
             return 'Illegal 3rd party exploits, including proxies, worms and trojan exploits.';
 
 		case '127.0.0.10':
 		case '127.0.0.11':
          if(abbr)
             return 'PBL';
-         else   
+         else
 			     return 'IP ranges which should not be delivering unauthenticated SMTP email.';
 
 		default:
 			return '';
 	}
-},
-
-error: function(error_code){
-   switch(error_code){
-         case 400:
-            return 'Missing route parameter';
-         case 410:
-            return 'Down for Maintenance';
-         case 500:
-            return 'Server Error';
-         default:
-            return 'Service Unavailable';
-      }
 },
 
 addCommas: function(nStr){
@@ -128,23 +116,36 @@ launchExternalURL: function(url){
 },
 
 launchWhoIs: function(ip){
-   this.launchExternalURL('http://www.mailhops.com/whois/'+ip);
+   this.launchExternalURL('https://www.mailhops.com/whois/' + ip);
 },
 
 launchSpamHausURL: function(ip){
-   this.launchExternalURL('http://www.spamhaus.org/query/bl?ip='+ip);
+   this.launchExternalURL('http://www.spamhaus.org/query/bl?ip=' + ip);
 },
 
 launchMap: function(route,options){
 
    if(route != ''){
-      var lookupURL=options.api_url+'/v1/map/?app='+options.version+'&l='+options.lan+'&u='+options.unit+'&r='+String(route);
+      var lookupURL=this.getAPIUrl(options)+'/map/?'+this.getAPIUrlParams(options)+'&l='+options.lan+'&u='+options.unit+'&r='+String(route);
 
     if(options.fkey != '')
       lookupURL += '&fkey='+options.fkey;
 
-      window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});    
+    if(options.map_provider)
+      lookupURL += '&mp='+options.map_provider;
+
+      window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});
    }
+},
+
+getAPIUrl: function(options){
+  return options.api_http+options.api_host+'/v2';
+},
+
+getAPIUrlParams: function(options){
+  if(!!options.api_key && options.api_key != '')
+    return 'app='+options.version+'&api_key='+options.api_key;
+  return 'app='+options.version;
 },
 
 getSecureTrans: function(ip, message){
@@ -174,6 +175,39 @@ getWeatherIcon: function(icon){
     var hr = (new Date).getHours();
     var time = (hr >= 4 && hr <= 18)?'day':'night';
     return 'chrome://mailhops/content/images/weather/'+forecast_icons[icon][time]+'.png';
-}
+},
 
+getDistance: function(from, to, unit) {
+    if(!from || !to || !from['lat'] || !to['lat'])
+      return 0;
+
+		var lat = parseFloat(from['lat']);
+		var lon1 = parseFloat(from['lng']);
+		var lat2 = parseFloat(to['lat']);
+		var lon2 = parseFloat(to['lng']);
+    unit = unit || 'mi';//mi or km
+
+		lat *= (Math.PI/180);
+		lon1 *= (Math.PI/180);
+		lat2 *= (Math.PI/180);
+		lon2 *= (Math.PI/180);
+
+		var dist = 2*Math.asin(Math.sqrt( Math.pow((Math.sin((lat-lat2)/2)),2) + Math.cos(lat)*Math.cos(lat2)*Math.pow((Math.sin((lon1-lon2)/2)),2))) * 6378.137;
+
+		if (unit == 'mi') {
+			dist = (dist / 1.609344);
+		}
+		return dist;
+	},
+
+  getOriginatingCountryCode: function(route) {
+    if(route && route.length){
+      for(var r=0; r<route.length; r++){
+        if(typeof route[r].local == 'undefined' && typeof route[r].client == 'undefined' && !!route[r].countryCode){
+          return route[r].countryCode;
+        }
+      };
+    }
+    return '';
+  }
 };

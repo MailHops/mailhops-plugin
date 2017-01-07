@@ -5,31 +5,30 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:type>2</em:type>
 		<em:id>thunderbird@mailhops.com</em:id>
-		<em:version>1.0.1</em:version>
+		<em:version>3.0.0</em:version>
 
 		<em:name>MailHops</em:name>
-		<em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>
+		<em:description>MailHops maps the route an email took to get to you. Displaying the senders location, weather, user-agent and authentication used.</em:description>
 		<em:iconURL>chrome://mailhops/content/images/mailhops32.png</em:iconURL>
-		<em:homepageURL>http://www.mailhops.com</em:homepageURL>
+		<em:homepageURL>https://www.mailhops.com</em:homepageURL>
 		<em:creator>Andrew Van Tassel</em:creator>
 		<em:optionsURL>chrome://mailhops/content/preferences.xul</em:optionsURL>
-		<!-- <em:updateURL>https://dl.dropbox.com/u/1533417/mailhops_update.rdf</em:updateURL> -->
 
 	 	<!-- Postbox -->
-		<em:targetApplication>		 
-		  	<Description> 
+		<em:targetApplication>
+		  	<Description>
 	        	<em:id>postbox@postbox-inc.com</em:id>
 		        <em:minVersion>2.0</em:minVersion>
 	        	<em:maxVersion>4.*</em:maxVersion>
-	      	</Description> 		 
+	      	</Description>
 		</em:targetApplication>
 
 		<!-- Thunderbird -->
-		<em:targetApplication>	
+		<em:targetApplication>
 			<Description>
 				<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
 				<em:minVersion>3.0.*</em:minVersion>
-				<em:maxVersion>40.*</em:maxVersion>
+				<em:maxVersion>47.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 
@@ -39,7 +38,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops Karten die Route eine E-Mail gereist, um bei Ihnen melden. Verwendung GeoIP es zeigt auch zurückgelegte Strecke zusammen mit dem Standort ( Ort, Bundesland und Land) des Absenders.</em:description>
 		  </Description>
-		</em:localized>	
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -47,7 +46,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops maps the route an email traveled to get to you.  Using GeoIP it also displays distance traveled along with the location (city, state and country) of the sender.</em:description>
 		  </Description>
-		</em:localized>		
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -55,7 +54,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>Mapas MailHops la ruta un correo electrónico viajó a llegar a usted. Usando GeoIP también muestra la distancia recorrida junto con la ubicación ( ciudad, estado y país) del remitente.</em:description>
 		  </Description>
-		</em:localized>	
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -63,7 +62,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops mappe la route un email parcouru pour arriver à vous . Utilisation GeoIP il affiche aussi la distance parcourue avec le lieu (ville , état ​​et pays ) de l'expéditeur.</em:description>
 		  </Description>
-		</em:localized>	
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -71,7 +70,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops電子メールがあなたに取得するために旅したルートをマップします。のGeoIPを使用しても距離が送信者の場所（都市、州や国）と一緒に旅に表示されます。</em:description>
 		  </Description>
-		</em:localized>	
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -79,7 +78,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops mapeia a rota um e-mail viajou para chegar até você . Usando GeoIP ele também exibe a distância percorrida , juntamente com a localização (cidade , estado e país ) do remetente.</em:description>
 		  </Description>
-		</em:localized>	
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -87,7 +86,7 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops отображает маршрутэлектронной почты , пройденное , чтобы добраться до вас. Использование GeoIP также отображает расстояние вместе с места (город, штат и страна ) отправителя.</em:description>
 		  </Description>
-		</em:localized>	
+		</em:localized>
 
 		<em:localized>
 		  <Description>
@@ -95,8 +94,8 @@
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops映射電子郵件前往得到你的路線。使用GeoIP的它也顯示行駛距離隨著發送者的位置（城市，州和國家）</em:description>
 		  </Description>
-		</em:localized>		
-	
+		</em:localized>
+
 	</Description>
-	
+
 </RDF>

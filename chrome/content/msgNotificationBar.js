@@ -1,32 +1,33 @@
 var mailHopsDisplay =
-{	
+{
   resultBox:              null,
   resultText:             null,
   resultDetails:          null,
   container:              null,
-  mapLink:                null,
   mailhopsDataPaneSPF:    null,
   mailhopsDataPaneDKIM:   null,
   mailhopsDataPaneMailer: null,
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
+  mailhopsUnsubscribe:    null,
   options:                null,
 
   init: function(options){
-    
+
     this.options = options;
 
-    this.container = document.getElementById ( "mailhopsBox" ) ;
-    this.resultBox = document.getElementById ( "mailhopsResult" ) ;
-    this.resultText = document.getElementById ( "mailhopsResultText" ) ;
-    this.mailhopsResultWeather = document.getElementById ( "mailhopsResultWeather" ) ;
-    this.resultDetails = document.getElementById ( "mailhopsDataPaneDetails");
-    this.mapLink = document.getElementById ( "mailhopsMapLink");
+    this.container = document.getElementById("mailhopsBox");
+    this.resultBox = document.getElementById("mailhopsResult");
+    this.resultText = document.getElementById("mailhopsResultText");
+    this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
+    this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
     //auth
-    this.mailhopsDataPaneSPF = document.getElementById ( "mailhopsDataPaneSPF");
-    this.mailhopsDataPaneDKIM = document.getElementById ( "mailhopsDataPaneDKIM");
-    this.mailhopsDataPaneMailer = document.getElementById ( "mailhopsDataPaneMailer");
-    this.mailhopsDataPaneDNSBL = document.getElementById ( "mailhopsDataPaneDNSBL");
+    this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
+    this.mailhopsDataPaneDKIM = document.getElementById("mailhopsDataPaneDKIM");
+    this.mailhopsDataPaneMailer = document.getElementById("mailhopsDataPaneMailer");
+    this.mailhopsDataPaneDNSBL = document.getElementById("mailhopsDataPaneDNSBL");
+
+    this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
 
     //event listner for route click to launch map
     this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
@@ -34,14 +35,38 @@ var mailHopsDisplay =
           mailHopsUtils.launchSpamHausURL( this.getAttribute('data-ip') );
       });
 
-    this.mapLink.addEventListener("click", function () {
-      if(this.hasAttribute('data-route'))
+    this.resultText.addEventListener("click", function () {
+      if(this.value.indexOf('Rate Limit')!==-1){
+        window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
+      }
+      else if(this.hasAttribute('data-route'))
         mailHopsUtils.launchMap( String(this.getAttribute('data-route')), options );
       });
   },
 
   lists: function( header_unsubscribe ){
 
+    this.mailhopsUnsubscribe.style.display='none';
+
+  	if(header_unsubscribe){
+      this.mailhopsUnsubscribe.style.display='';
+  		var listArr=header_unsubscribe.split(',');
+  		var href='';
+  		if(listArr.length){
+  			for(var h=0;h<listArr.length;h++){
+  				href = listArr[h].replace('<','').replace('>','');
+  				if(href.indexOf('mailto:')!=-1){
+  					if(href.toLowerCase().indexOf('subject=')==-1){
+  						if(href.indexOf('?')==-1)
+  							href+='?subject=Unsubscribe';
+  						else
+  							href+='&subject=Unsubscribe';
+  					}
+  				}
+  				this.mailhopsUnsubscribe.setAttribute('href',href);
+  			}
+  		}
+  	}
   },
 
   auth: function( header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf ){
@@ -136,15 +161,11 @@ var mailHopsDisplay =
     }
   },
 
-  error: function(data){
+  error: function(status,data){
     this.container.removeAttribute("route");
-    if(data && data.meta.code==410)
-      this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/info.png)';
-    else
-      this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/error.png)';
 
     if(data && data.error){
-      this.resultText.setAttribute('value', mailHopsUtils.error(data.meta.code));
+      this.resultText.setAttribute('value', status+': '+data.error.message);
       this.resultText.setAttribute('tooltiptext',data.error.message);
     } else {
       this.resultText.setAttribute('value', ' Service Unavailable.');
@@ -156,15 +177,19 @@ var mailHopsDisplay =
 
     this.mailhopsDataPaneDNSBL.style.display = 'none';
     this.mailhopsResultWeather.style.display = 'none';
-    
+    this.resultText.removeAttribute('data-route');
+    this.resultText.style.backgroundImage = '';
+    //remove child details
+    while(this.resultDetails.firstChild) {
+        this.resultDetails.removeChild(this.resultDetails.firstChild);
+    }
+
     if(no_ips){
-      this.resultText.style.backgroundImage='url(chrome://mailhops/content/images/loader.gif)';
-      this.resultText.setAttribute('value',' Looking Up Route');
-      this.resultText.setAttribute('tooltiptext',' Looking Up Route');
+      this.resultText.style.backgroundImage = "url('chrome://mailhops/content/images/local.png')";
+      this.resultText.value = ' Looks like a local message';
     } else {
-      this.resultText.style.backgroundImage = 'url(chrome://mailhops/content/images/loader.gif)';
-      this.resultText.value = ' Looking Up Route';
-      this.resultText.setAttribute('tooltiptext','Looking Up Route');   
+      this.resultText.style.backgroundImage = "url('chrome://mailhops/content/images/refresh.png')";
+      this.resultText.value = ' Looking Up Route...';
     }
   },
 
@@ -173,35 +198,35 @@ var mailHopsDisplay =
   var displayText=''
     , distanceText=''
     , image='chrome://mailhops/content/images/local.png'
-    , city=null
-    , state=null
-    , countryName=null
-    , gotFirst=false
-    , weather=null;
+    , weatherRoute=null
+    , first=null;
 
   //remove child details
   while(this.resultDetails.firstChild) {
       this.resultDetails.removeChild(this.resultDetails.firstChild);
   }
 
-  if(response && response.route && response.route.length > 0){
+  if(response && response.route && response.route.length){
 
       if(this.options.client_location){
         var client_location = JSON.parse(this.options.client_location);
+        //get distance from last route to client_location and add to response.distance.miles or kilometers
+        if(!response.route[response.route.length-1]['private']){
+          if(this.options.unit=='km')
+            response.distance.kilometers += mailHopsUtils.getDistance(response.route[response.route.length-1],client_location.route[0],this.options.unit);
+          else
+            response.distance.miles += mailHopsUtils.getDistance(response.route[response.route.length-1],client_location.route[0],this.options.unit);
+        }
+        //push client location to the end of the route
         response.route.push(client_location.route[0]);
       }
       for(var i=0; i<response.route.length;i++){
             //get the first hop location
-            if(!gotFirst && !response.route[i].private && !response.route[i].client){
-              if(response.route[i].countryCode)
+            if(!first && !response.route[i].private && !response.route[i].client){
+              first = response.route[i];
+              if(!!response.route[i].countryCode)
                 image='chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png';
-              if(response.route[i].city)
-                city=response.route[i].city;
-              if(response.route[i].state)
-                state=response.route[i].state;
-              if(response.route[i].countryName)
-                countryName=response.route[i].countryName;
-              gotFirst=true;
+              this.resultText.setAttribute('tooltiptext','View Map');
             }
 
             var menuitem = document.createElement('menuitem');
@@ -214,8 +239,12 @@ var mailHopsDisplay =
             else
               menuitem.setAttribute('image','chrome://mailhops/content/images/local.png');
 
-            if(response.route[i].city && response.route[i].state){
-              label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state;
+            if(response.route[i].city){
+              if(response.route[i].city && response.route[i].state)
+                label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state;
+              else
+                label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].countryCode;
+
               menuitem.setAttribute('tooltiptext','Click for WhoIs');
               menuitem.setAttribute('data-ip',response.route[i].ip);
               menuitem.addEventListener("click", function () {
@@ -246,8 +275,8 @@ var mailHopsDisplay =
           menuitem.setAttribute('label',label);
 
           //append weather
-          if(!weather && response.route[i].weather){
-            weather = response.route[i].weather;
+          if(!weatherRoute && !!response.route[i].weather){
+            weatherRoute = response.route[i];
           }
 
           //append details
@@ -268,35 +297,55 @@ var mailHopsDisplay =
     }
 
     //set weather of sender
-  if(weather){
-    this.mailhopsResultWeather.style.display = 'block';
-    this.mailhopsResultWeather.setAttribute('tooltiptext',new Date(weather.time*1000));
-    this.mailhopsResultWeather.value = weather.summary+' '+Math.round(weather.temp)+'\u00B0';
-    this.mailhopsResultWeather.style.backgroundImage = 'url('+mailHopsUtils.getWeatherIcon(weather.icon)+')';
-  }
+    if(weatherRoute){
+      this.mailhopsResultWeather.style.display = 'block';
+      this.mailhopsResultWeather.setAttribute('tooltiptext','Weather in '+weatherRoute.city+' '+weatherRoute.state);
+      this.mailhopsResultWeather.value = weatherRoute.weather.summary+' '+Math.round(weatherRoute.weather.temp)+'\u00B0';
+      this.mailhopsResultWeather.style.backgroundImage = 'url('+mailHopsUtils.getWeatherIcon(weatherRoute.weather.icon)+')';
+      if(weatherRoute.coords)
+        this.mailhopsResultWeather.setAttribute('href','https://darksky.net/forecast/'+weatherRoute.coords[1]+','+weatherRoute.coords[0]);
+      else if(weatherRoute.lat)
+        this.mailhopsResultWeather.setAttribute('href','https://darksky.net/forecast/'+weatherRoute.lat+','+weatherRoute.lng);
+    }
 
-  if(image.indexOf('local')!=-1) {
-    displayText = ' Local message.';
-  } else {
-    if(city && state)
-      displayText = city+', '+state;
-    else if(countryName)
-        displayText = countryName;
-      if(response.distance && response.distance.miles > 0){
-        if(this.options.unit=='mi')
-          distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled )';
-        else
-          distanceText =' ( '+mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled )';
-    } else if(displayText=='')
+    if(image.indexOf('local')!=-1) {
       displayText = ' Local message.';
-  }
+    } else {
 
-  if(header_route)
-      this.mapLink.setAttribute("data-route", header_route);
+      if(!!first){
+        if(!!first.city && !!first.state)
+            displayText = first.city+', '+first.state;
+        else if(!!first.city)
+            displayText = first.city+', '+first.countryCode;
+        else if(!!first.countryName)
+            displayText = first.countryName;
+      }
+
+      if(response.distance){
+        if(this.options.unit=='km' && response.distance.kilometers > 0)
+          distanceText = mailHopsUtils.addCommas(Math.round(response.distance.kilometers))+' km traveled';
+        else if(response.distance.miles > 0)
+          distanceText = mailHopsUtils.addCommas(Math.round(response.distance.miles))+' mi traveled';
+      } else if(displayText=='')
+        displayText = ' Local message.';
+    }
+
+    if(message.time != null){
+      message.time = message.time/1000;
+      if(message.time < 60)
+        distanceText += ' in '+message.time+' sec.';
+      else if(message.time < 3600) //something is wrong if it takes this long
+        distanceText += ' in '+Math.round(message.time/60)+' min.';
+      else //something is wrong if it takes this long
+        distanceText += ' in '+Math.round(message.time/60/60)+' hr.';
+    }
+
+    if(header_route)
+      this.resultText.setAttribute("data-route", header_route);
     else
-    this.mapLink.removeAttribute("data-route");
+      this.resultText.removeAttribute("data-route");
 
-  this.resultText.setAttribute('value', displayText+' '+distanceText);
+    this.resultText.setAttribute('value', displayText+' ( '+distanceText+' )');
     this.resultText.style.backgroundImage = 'url('+image+')';
   }//end route
 };

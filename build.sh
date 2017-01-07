@@ -22,3 +22,6 @@ mv $filename.xpi ../
 cd ..
 rm -rf build
 
+# git clone https://github.com/nmaier/xpisign.py.git
+# add this for cert signing
+# python xpisign.py -k cert.pem mailhops.xpi mailhops.signed.xpi
