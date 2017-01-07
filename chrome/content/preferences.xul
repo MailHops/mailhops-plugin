@@ -356,6 +356,7 @@
 					<radio value="es" label="Spanish"/>
 					<radio value="fr" label="French"/>
 					<radio value="ja" label="Japanese"/>
+					<radio value="pl" label="Polish"/>
 					<radio value="pt-BR" label="Portuguese"/>
 					<radio value="ru" label="Russian"/>
 					<radio value="zh-CH" label="Chinese"/>

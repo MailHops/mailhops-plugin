@@ -74,6 +74,14 @@
 
 		<em:localized>
 		  <Description>
+		    <em:locale>pl</em:locale>
+		    <em:name>MailHops</em:name>
+		    <em:description>Wskazuje trasę, którą e-mail dotarł do adresata. Korzystając z GeoIP, pokazuje także przybliżony dystans do nadawcy oraz jego położenie (miasto, region i państwo).</em:description>
+		  </Description>
+		</em:localized>
+
+		<em:localized>
+		  <Description>
 		    <em:locale>pt-BR</em:locale>
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops mapeia a rota um e-mail viajou para chegar até você . Usando GeoIP ele também exibe a distância percorrida , juntamente com a localização (cidade , estado e país ) do remetente.</em:description>
