@@ -37,7 +37,6 @@
   line-height: 24px;
   font-weight: normal;
   background: #5E7A9B;
-  border-bottom: 1px solid #355069;
 }
 
 #mailhopsNoficationBox #mailhopsDataPanePrefsLink {
@@ -47,9 +46,22 @@
   right: 0;
 }
 
-#mailhopsNoficationBox #mailhopsLogo, #mailhopsNoficationBox #mailhopsResultWeather, #mailhopsNoficationBox #mailhopsResultText{
-  cursor: pointer;
+#mailhopsNoficationBox #mailhopsLogo,
+#mailhopsNoficationBox #mailhopsResultText,
+#mailhopsNoficationBox #mailhopsResultWeather,
+#mailhopsNoficationBox #mailhopsUnsubscribe,
+#mailhopsNoficationBox #mailhopsDataPaneDNSBL,
+#mailhopsNoficationBox #mailhopsDataPaneDKIM,
+#mailhopsNoficationBox #mailhopsDataPaneSPF,
+#mailhopsNoficationBox #mailhopsDataPaneMailer {
   color: #fff;
+}
+
+#mailhopsNoficationBox #mailhopsLogo,
+#mailhopsNoficationBox #mailhopsResultText,
+#mailhopsNoficationBox #mailhopsResultWeather,
+#mailhopsNoficationBox #mailhopsUnsubscribe {
+  cursor: pointer;
 }
 
 #mailhopsNoficationBox .unsubscribe {

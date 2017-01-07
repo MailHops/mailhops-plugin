@@ -9,12 +9,15 @@ var mailHops =
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.0.0',
+      'version':'MailHops Plugin 3.0.1',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
       'api_host':'api.mailhops.com',
       'debug':false,
+      'bar_color': '#5E7A9B',
+      'font_color': '#FFF',
+      'font_size': '14px',
       'country_tag':false,
       'travel_time_junk':false,
       'country_filter':[]
@@ -51,7 +54,7 @@ mailHops.init = function() {
 
 };
 
-mailHops.loadPref = function()
+mailHops.loadPref = function(reload)
 {
   mailHops.LOG('load MailHops prefs');
   //get preferences
@@ -59,20 +62,12 @@ mailHops.loadPref = function()
   mailHops.options.unit = mailHops.getCharPref('mail.mailHops.unit','mi');
   mailHops.options.fkey = mailHops.getCharPref('mail.mailHops.fkey','');//forecast.io api_key
 
-  //Display Boxes
-  mailHops.options.show_details = mailHops.getCharPref('mail.mailHops.show_details','true')=='true'?true:false;
-  mailHops.options.show_meta = mailHops.getCharPref('mail.mailHops.show_meta','true')=='true'?true:false;
-  mailHops.options.show_auth = mailHops.getCharPref('mail.mailHops.show_auth','true')=='true'?true:false;
+  //Display
+  mailHops.options.bar_color = mailHops.getCharPref('mail.mailHops.bar_color','#5E7A9B');
 
-  //Details options
-  mailHops.options.show_host = mailHops.getCharPref('mail.mailHops.show_host','true')=='true'?true:false;
-  mailHops.options.show_secure = mailHops.getCharPref('mail.mailHops.show_secure','true')=='true'?true:false;
+  mailHops.options.font_color = mailHops.getCharPref('mail.mailHops.font_color','#FFF');
 
-  //Auth options
-  mailHops.options.show_dkim = mailHops.getCharPref('mail.mailHops.show_dkim','true')=='true'?true:false;
-  mailHops.options.show_spf = mailHops.getCharPref('mail.mailHops.show_spf','true')=='true'?true:false;
-  mailHops.options.show_mailer = mailHops.getCharPref('mail.mailHops.show_mailer','true')=='true'?true:false;
-  mailHops.options.show_dnsbl = mailHops.getCharPref('mail.mailHops.show_dnsbl','true')=='true'?true:false;
+  mailHops.options.font_size = mailHops.getCharPref('mail.mailHops.font_size','14px');
 
   mailHops.options.debug = mailHops.getCharPref('mail.mailHops.debug','false')=='true'?true:false;
 
@@ -91,7 +86,7 @@ mailHops.loadPref = function()
   mailHops.options.country_filter = mailHops.getCharPref('mail.mailHops.country_filter',[]);
 
   //init display
-  mailHopsDisplay.init( mailHops.options );
+  mailHopsDisplay.init( mailHops.options, reload );
 };
 
 mailHops.StreamListener =
@@ -168,11 +163,11 @@ mailHops.getRoute = function(){
   var headXReceived = mailHops.headers.extractHeader ( "X-Received" , false );
   var headXOrigIP = mailHops.headers.extractHeader ( "X-Originating-IP" , false );
   // auth box
-  var headXMailer = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "X-Mailer" , false ) : null;
-  var headUserAgent = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "User-Agent" , false ) : null;
-  var headXMimeOLE = (mailHops.options.show_auth && mailHops.options.show_mailer) ? mailHops.headers.extractHeader ( "X-MimeOLE" , false ) : null;
-  var headReceivedSPF = (mailHops.options.show_auth && mailHops.options.show_spf) ? mailHops.headers.extractHeader ( "Received-SPF" , false ) : null;
-  var headAuth = mailHops.options.show_auth ? mailHops.headers.extractHeader ( "Authentication-Results" , false ) : null;
+  var headXMailer = mailHops.headers.extractHeader ( "X-Mailer" , false );
+  var headUserAgent = mailHops.headers.extractHeader ( "User-Agent" , false );
+  var headXMimeOLE = mailHops.headers.extractHeader ( "X-MimeOLE" , false );
+  var headReceivedSPF = mailHops.headers.extractHeader ( "Received-SPF" , false );
+  var headAuth = mailHops.headers.extractHeader ( "Authentication-Results" , false );
   var headListUnsubscribe = mailHops.headers.extractHeader ( "List-Unsubscribe" , false ) ;
 
   var all_ips = new Array();
@@ -183,9 +178,7 @@ mailHops.getRoute = function(){
 
   mailHopsDisplay.lists( headListUnsubscribe );
 
-  if(mailHops.options.show_auth){
-      mailHopsDisplay.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF );
-  }
+  mailHopsDisplay.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF );
 
   //loop through the received headers and parse for IP addresses
   if (!!headReceived){
@@ -275,6 +268,7 @@ mailHops.testIP = function(ip,header){
         || lastchar.match(/\.|\d|\-/)
         || ( firstchar == '?' && lastchar == '?' )
         || lastchar == ';'
+        || header.toLowerCase().indexOf('id '+ip) !== -1
         || parseInt(ip.substring(0,ip.indexOf('.'))) >= 240 //IANA-RESERVED
     ){
       //only if there is one instance of this IP
@@ -337,7 +331,7 @@ mailHops.unregisterObserver = function(){
 mailHops.observe = function ( aSubject , aTopic , aData )
 {
   if ( aTopic == "nsPref:changed" )
-    mailHops.loadPref();
+    mailHops.loadPref(true);
 };
 
 mailHops.getCharPref = function ( strName , strDefault ){

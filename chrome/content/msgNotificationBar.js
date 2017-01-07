@@ -10,16 +10,18 @@ var mailHopsDisplay =
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
   mailhopsUnsubscribe:    null,
+  mhBox:                  null,
   options:                null,
 
-  init: function(options){
+  init: function(options, reload){
 
     this.options = options;
-
+    this.mhBox = document.getElementById("mailhopsNoficationBox");
     this.container = document.getElementById("mailhopsBox");
     this.resultBox = document.getElementById("mailhopsResult");
     this.resultText = document.getElementById("mailhopsResultText");
     this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
+    this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
     this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
     //auth
     this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
@@ -27,7 +29,9 @@ var mailHopsDisplay =
     this.mailhopsDataPaneMailer = document.getElementById("mailhopsDataPaneMailer");
     this.mailhopsDataPaneDNSBL = document.getElementById("mailhopsDataPaneDNSBL");
 
-    this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
+    //wait for message to be selected before showing
+    if(!reload)
+      this.mhBox.style.display = 'none';
 
     //event listner for route click to launch map
     this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
@@ -42,6 +46,24 @@ var mailHopsDisplay =
       else if(this.hasAttribute('data-route'))
         mailHopsUtils.launchMap( String(this.getAttribute('data-route')), options );
       });
+
+      if(!!options.bar_color)
+        this.mhBox.style.background = options.bar_color;
+      else
+        this.mhBox.style.background = '';
+
+      if(!!options.font_size)
+        this.mhBox.style.fontSize = options.font_size;
+
+      if(!!options.font_color){
+        this.resultText.style.color = options.font_color;
+        this.mailhopsResultWeather.style.color = options.font_color;
+        this.mailhopsUnsubscribe.style.color = options.font_color;
+        this.mailhopsDataPaneSPF.style.color = options.font_color;
+        this.mailhopsDataPaneDKIM.style.color = options.font_color;
+        this.mailhopsDataPaneMailer.style.color = options.font_color;
+        this.mailhopsDataPaneDNSBL.style.color = options.font_color;
+      }
   },
 
   lists: function( header_unsubscribe ){
@@ -174,7 +196,7 @@ var mailHopsDisplay =
   },
 
   clear: function(no_ips){
-
+    this.mhBox.style.display = '';
     this.mailhopsDataPaneDNSBL.style.display = 'none';
     this.mailhopsResultWeather.style.display = 'none';
     this.resultText.removeAttribute('data-route');

@@ -5,7 +5,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:type>2</em:type>
 		<em:id>thunderbird@mailhops.com</em:id>
-		<em:version>3.0.0</em:version>
+		<em:version>3.0.1</em:version>
 
 		<em:name>MailHops</em:name>
 		<em:description>MailHops maps the route an email took to get to you. Displaying the senders location, weather, user-agent and authentication used.</em:description>
@@ -60,8 +60,8 @@
 		  <Description>
 		    <em:locale>fr</em:locale>
 		    <em:name>MailHops</em:name>
-		    <em:description>MailHops mappe la route un email parcouru pour arriver à vous . Utilisation GeoIP il affiche aussi la distance parcourue avec le lieu (ville , état ​​et pays ) de l'expéditeur.</em:description>
-		  </Description>
+		    <em:description>MailHops vous permet de connaître la route empruntée par un mail avant qu'il ne parvienne dans votre messagerie. Grâce à MailHops vous pourrez : connaître le lieu d'émission du mail (pays, ville); visualiser le parcours du mail sur une carte (avec un grand choix de styles de carte); ou encore connaître des informations plus techniques (le user-agent et l'authentification utilisés par l'expéditeur) et d'autres informations plus amusantes comme la distance totale parcourue par le mail ou la météo actuelle sur le lieu d'émission. La version gratuite (sans clef API) permet d'obtenir ces informations et bien d'autres pour 100 messages par tranche de 24h.</em:description>		
+  </Description>
 		</em:localized>
 
 		<em:localized>
@@ -69,6 +69,14 @@
 		    <em:locale>ja</em:locale>
 		    <em:name>MailHops</em:name>
 		    <em:description>MailHops電子メールがあなたに取得するために旅したルートをマップします。のGeoIPを使用しても距離が送信者の場所（都市、州や国）と一緒に旅に表示されます。</em:description>
+		  </Description>
+		</em:localized>
+
+		<em:localized>
+		  <Description>
+		    <em:locale>pl</em:locale>
+		    <em:name>MailHops</em:name>
+		    <em:description>Wskazuje trasę, którą e-mail dotarł do adresata. Korzystając z GeoIP, pokazuje także przybliżony dystans do nadawcy oraz jego położenie (miasto, region i państwo).</em:description>
 		  </Description>
 		</em:localized>
 

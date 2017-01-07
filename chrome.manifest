@@ -5,6 +5,7 @@ locale    mailhops   en             jar:chrome/mailhops.jar!/locale/en/
 locale    mailhops   es             jar:chrome/mailhops.jar!/locale/es/
 locale    mailhops   fr             jar:chrome/mailhops.jar!/locale/fr/
 locale    mailhops   ja             jar:chrome/mailhops.jar!/locale/ja/
+locale    mailhops   pl             jar:chrome/mailhops.jar!/locale/pl/
 locale    mailhops   pt-BR          jar:chrome/mailhops.jar!/locale/pt-BR/
 locale    mailhops   ru             jar:chrome/mailhops.jar!/locale/ru/
 locale    mailhops   zh-CN          jar:chrome/mailhops.jar!/locale/zh-CN/
