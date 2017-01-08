@@ -4,6 +4,7 @@
 
 ### Added
 - Display styles in settings to customize MailHops bar background color, font color and font size
+- Polish language locale
 
 ### Removed
 - Display show options, data is now always shown for:
@@ -12,6 +13,11 @@
   - DKIM
   - SPF
   - DNSBL
+
+### Fixed
+- Received header id parsed as an IP address
+- MailHops bar showing up on load with no message selected
+
 
 ## 3.0.0 - 2016-12-26
 

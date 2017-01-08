@@ -21,7 +21,7 @@
 
             <label id="mailhopsResultWeather" class="text-link"></label>
 
-       			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="hops" tooltiptext="Click to view route.">
+       			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_hops;">
          				<menupopup id="mailhopsDataPaneDetails">
   					    </menupopup>
     				</button>
@@ -36,7 +36,7 @@
 
     				<label id="mailhopsDataPaneDNSBL" class="text-link auth-item" value="" tooltiptext="DNSBL"></label>
 
-            <label id="mailhopsUnsubscribe" class="text-link unsubscribe" value="Unsubscribe" tooltiptext="Unsubscribe"></label>
+            <label id="mailhopsUnsubscribe" class="text-link unsubscribe" value="&mailhops_unsubscribe;"></label>
 
        		</hbox>
 		</row>
