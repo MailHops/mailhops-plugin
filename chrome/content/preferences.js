@@ -99,6 +99,10 @@ var mailHopPreferences = {
     document.getElementById("mailhop.font_size").addEventListener("input", function () {
       self.previewBar.style.fontSize = this.value;
     });
+    document.getElementById("randomColorHue").addEventListener("change", function () {
+      self.RandomColor(this.value);
+    });
+
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
@@ -234,12 +238,31 @@ var mailHopPreferences = {
  	 this.api_host.value='api.mailhops.com';
  },
 
- ResetDisplay: function(){
-   document.getElementById("mailhop.bar_color").value = '#5E7A9B';
-   document.getElementById("mailhop.font_color").value = '#FFF';
-   document.getElementById("mailhop.font_size").value = '14px';
+ ResetDisplay: function(bar,font,size){
+   if(bar){
+     if(bar.indexOf('rgb(')===0)
+      document.getElementById("mailhop.bar_color").value = this.rgb2hex(bar);
+     else
+      document.getElementById("mailhop.bar_color").value = bar;
+   }
+   if(font) {
+     if(font.indexOf('rgb(')===0)
+      document.getElementById("mailhop.font_color").value = this.rgb2hex(font);
+     else
+      document.getElementById("mailhop.font_color").value = font;     
+   }
+   if(size) document.getElementById("mailhop.font_size").value = size;
    this.previewBar.style.background = document.getElementById("mailhop.bar_color").value;
    this.previewBar.style.color = document.getElementById("mailhop.font_color").value;
    this.previewBar.style.fontSize = document.getElementById("mailhop.font_size").value;
+ },
+
+  rgb2hex: function(rgb) {
+      rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      function hex(x) {
+          return ("0" + parseInt(x).toString(16)).slice(-2);
+      }
+      return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
   }
-};
+
+ };

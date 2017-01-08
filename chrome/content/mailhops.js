@@ -268,7 +268,7 @@ mailHops.testIP = function(ip,header){
         || lastchar.match(/\.|\d|\-/)
         || ( firstchar == '?' && lastchar == '?' )
         || lastchar == ';'
-        || header.toLowerCase().indexOf('id '+ip) !== -1
+        || header.toLowerCase().indexOf(' id '+ip) !== -1
         || parseInt(ip.substring(0,ip.indexOf('.'))) >= 240 //IANA-RESERVED
     ){
       //only if there is one instance of this IP

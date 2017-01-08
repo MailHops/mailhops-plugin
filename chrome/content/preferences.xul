@@ -13,8 +13,6 @@
 	<script type="application/x-javascript" src="chrome://mailhops/content/utils.js"/>
 	<script type="application/x-javascript" src="chrome://mailhops/content/preferences.js"/>
 
-	<!-- <image src="chrome://mailhops/content/images/mailhops-logo.png" width="200"/> -->
-
 	<vbox width="400px">
 
 	<tabbox id="mhTabs" selectedIndex="0">
@@ -490,7 +488,9 @@
 						<image src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32"/>
 						MailHops Bar
 					</description>
+
 					<div height="20"></div>
+
 					<grid>
 					  <columns>
 							<column/>
@@ -499,10 +499,55 @@
 					    <row>
 								<label value="Bar Color"></label>
 								<textbox id="mailhop.bar_color" value="#5E7A9B" placeholder="Enter a hex color code"/>
+								<grid>
+								  <columns>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+										<column/>
+								  </columns>
+								  <rows>
+								    <row>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #e8e8e8"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #c9c9c9"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #afafaf"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #a9e0f2"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #5cade0"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #84e8af"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #569603"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #f7e7bb"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #f2a232"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #fff1cc"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #e8f28c"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #d1994b"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #754947"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #e7c0f9"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #53067c"></div>
+										</row>
+									</rows>
+								</grid>
 							</row>
 							<row>
 								<label value="Font Color"></label>
 								<textbox id="mailhop.font_color" value="#FFF" placeholder="Enter a hex color code"/>
+								<grid>
+								  <columns>
+										<column/>
+										<column/>
+									</columns>
+									<rows>
+										<row>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(null,this.style.backgroundColor);" style="cursor: pointer; background-color: #ffffff"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(null,this.style.backgroundColor);" style="cursor: pointer; background-color: #000000"></div>
+										</row>
+									</rows>
+								</grid>
 							</row>
 							<row>
 								<label value="Font Size"></label>
@@ -510,10 +555,11 @@
 							</row>
 							<row>
 								<span></span>
-								<button onclick="mailHopPreferences.ResetDisplay();" style="text-align:center;">Reset Display</button>
+								<button onclick="mailHopPreferences.ResetDisplay('#5E7A9B','#FFF','14px');" style="text-align:center;">Reset Display</button>
 							</row>
 						</rows>
 					</grid>
+
 				</groupbox>
 	    </tabpanel>
 
