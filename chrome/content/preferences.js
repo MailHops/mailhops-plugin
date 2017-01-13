@@ -82,6 +82,11 @@ var mailHopPreferences = {
     else
       document.getElementById("mailhop.travel_time_junk").checked = true;
 
+    if(pref.getCharPref("mail.mailHops.hide_compact",'false')=='false')
+      document.getElementById("mailhop.hide_compact").checked = false;
+    else
+      document.getElementById("mailhop.hide_compact").checked = true;
+
     document.getElementById("mailhops-membership-link").addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
     });
@@ -99,10 +104,6 @@ var mailHopPreferences = {
     document.getElementById("mailhop.font_size").addEventListener("input", function () {
       self.previewBar.style.fontSize = this.value;
     });
-    document.getElementById("randomColorHue").addEventListener("change", function () {
-      self.RandomColor(this.value);
-    });
-
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);
@@ -112,6 +113,7 @@ var mailHopPreferences = {
     pref.setCharPref("mail.mailHops.font_color", String(document.getElementById("mailhop.font_color").value));
     pref.setCharPref("mail.mailHops.font_size", String(document.getElementById("mailhop.font_size").value));
     pref.setCharPref("mail.mailHops.debug", String(document.getElementById("mailhop.debug").checked));
+    pref.setCharPref("mail.mailHops.hide_compact", String(document.getElementById("mailhop.hide_compact").checked));
 
     //API vars
     if(!this.valid_api_key)
@@ -249,7 +251,7 @@ var mailHopPreferences = {
      if(font.indexOf('rgb(')===0)
       document.getElementById("mailhop.font_color").value = this.rgb2hex(font);
      else
-      document.getElementById("mailhop.font_color").value = font;     
+      document.getElementById("mailhop.font_color").value = font;
    }
    if(size) document.getElementById("mailhop.font_size").value = size;
    this.previewBar.style.background = document.getElementById("mailhop.bar_color").value;

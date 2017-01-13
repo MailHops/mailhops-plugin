@@ -15,6 +15,7 @@ var mailHops =
       'api_http':'https://',
       'api_host':'api.mailhops.com',
       'debug':false,
+      'hide_compact':false,
       'bar_color': '#5E7A9B',
       'font_color': '#FFF',
       'font_size': '14px',
@@ -70,6 +71,8 @@ mailHops.loadPref = function(reload)
   mailHops.options.font_size = mailHops.getCharPref('mail.mailHops.font_size','14px');
 
   mailHops.options.debug = mailHops.getCharPref('mail.mailHops.debug','false')=='true'?true:false;
+
+  mailHops.options.hide_compact = mailHops.getCharPref('mail.mailHops.hide_compact','false')=='true'?true:false;
 
   mailHops.options.api_host = mailHops.getCharPref('mail.mailHops.api_host','api.mailhops.com');
 
@@ -135,14 +138,16 @@ mailHops.StreamListener =
 */
 mailHops.loadHeaderData = function() {
 
-  // CompactHeader toggle header logic
-  var compactHeadersView = document.getElementById('CompactHeader_collapsedHeaderView');
-  if(!!compactHeadersView){
-    if(compactHeadersView.collapsed===true){
-      mailHopsDisplay.toggleMailHopsBar(true);
-    } else if(compactHeadersView.collapsed===false){
-      mailHopsDisplay.toggleMailHopsBar(false);
-      return;
+  if(!!mailHops.options.hide_compact){
+    // CompactHeader toggle header logic
+    var compactHeadersView = document.getElementById('CompactHeader_collapsedHeaderView');
+    if(!!compactHeadersView){
+      if(compactHeadersView.collapsed===true){
+        mailHopsDisplay.toggleMailHopsBar(true);
+      } else if(compactHeadersView.collapsed===false){
+        mailHopsDisplay.toggleMailHopsBar(false);
+        return;
+      }
     }
   }
 

@@ -560,6 +560,8 @@
 						</rows>
 					</grid>
 
+					<checkbox id="mailhop.hide_compact" label="Hide MailHops Bar when CompactHeaders" checked="false"/>
+
 				</groupbox>
 	    </tabpanel>
 
