@@ -3,6 +3,11 @@
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://mailhops/skin/pb-styles.css" type="text/css"?>
 
+<!DOCTYPE window [
+<!ENTITY % MailHopsDTD SYSTEM "chrome://mailhops/locale/prefs.dtd">
+%MailHopsDTD;
+]>
+
 <dialog id="mailHopsPreferences"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept,cancel"
@@ -17,11 +22,11 @@
 
 	<tabbox id="mhTabs" selectedIndex="0">
 	  <tabs>
-			<tab label="Member"/>
-			<tab label="Filters"/>
-			<tab label="Defaults"/>
-	    <tab label="Display"/>
-	    <tab label="API &amp; Hosting"/>
+			<tab label="&mailhops_tab_member_label;"/>
+			<tab label="&mailhops_tab_filters_label;"/>
+			<tab label="&mailhops_tab_defaults_label;"/>
+	    <tab label="&mailhops_tab_display_label;"/>
+	    <tab label="&mailhops_tab_api_label;"/>
 	  </tabs>
 	  <tabpanels>
 			<tabpanel>

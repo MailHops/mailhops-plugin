@@ -5,7 +5,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:type>2</em:type>
 		<em:id>thunderbird@mailhops.com</em:id>
-		<em:version>3.0.1</em:version>
+		<em:version>3.0.2</em:version>
 
 		<em:name>MailHops</em:name>
 		<em:description>MailHops maps the route an email took to get to you. Displaying the senders location, weather, user-agent and authentication used.</em:description>
@@ -60,7 +60,7 @@
 		  <Description>
 		    <em:locale>fr</em:locale>
 		    <em:name>MailHops</em:name>
-		    <em:description>MailHops vous permet de connaître la route empruntée par un mail avant qu'il ne parvienne dans votre messagerie. Grâce à MailHops vous pourrez : connaître le lieu d'émission du mail (pays, ville); visualiser le parcours du mail sur une carte (avec un grand choix de styles de carte); ou encore connaître des informations plus techniques (le user-agent et l'authentification utilisés par l'expéditeur) et d'autres informations plus amusantes comme la distance totale parcourue par le mail ou la météo actuelle sur le lieu d'émission. La version gratuite (sans clef API) permet d'obtenir ces informations et bien d'autres pour 100 messages par tranche de 24h.</em:description>		
+		    <em:description>MailHops vous permet de connaître la route empruntée par un mail avant qu'il ne parvienne dans votre messagerie. Grâce à MailHops vous pourrez : connaître le lieu d'émission du mail (pays, ville); visualiser le parcours du mail sur une carte (avec un grand choix de styles de carte); ou encore connaître des informations plus techniques (le user-agent et l'authentification utilisés par l'expéditeur) et d'autres informations plus amusantes comme la distance totale parcourue par le mail ou la météo actuelle sur le lieu d'émission. La version gratuite (sans clef API) permet d'obtenir ces informations et bien d'autres pour 100 messages par tranche de 24h.</em:description>
   </Description>
 		</em:localized>
 
