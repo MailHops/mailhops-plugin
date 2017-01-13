@@ -1,9 +1,17 @@
 # Change Log
 
+## 3.0.3 -
+
+### Added
+- All locale translations for preferences
+
+### Fixed
+- Messages marked as local due to missing countryCode but had coords
+
 ## 3.0.2 - 2017-01-12
 
 ### Added
-- Added Display option for hiding the MailHops bar for CompactHeaders add-on
+- Display option for hiding the MailHops bar for CompactHeaders add-on
 - Started adding locale translations for preferences
 
 ## 3.0.1 - 2017-01-07

@@ -355,7 +355,7 @@ var mailHopsDisplay =
         displayText = ' Local message.';
     }
 
-    if(message.time != null){
+    if(!!message.time && message.time >= 0){
       message.time = message.time/1000;
       if(message.time < 60)
         distanceText += ' in '+message.time+' sec.';
