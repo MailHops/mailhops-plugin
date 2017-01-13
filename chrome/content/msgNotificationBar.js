@@ -258,26 +258,29 @@ var mailHopsDisplay =
 
             if(response.route[i].countryCode)
               menuitem.setAttribute('image','chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png');
+            else if(response.route[i].coords)
+              menuitem.setAttribute('image','chrome://mailhops/content/images/auth/none.png');
             else
               menuitem.setAttribute('image','chrome://mailhops/content/images/local.png');
 
-            if(response.route[i].city){
+            if(response.route[i].coords){
+
               if(response.route[i].city && response.route[i].state)
                 label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state;
-              else
+              else if(response.route[i].city && response.route[i].countryCode)
                 label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].countryCode;
+              else if(response.route[i].city)
+                label='Hop #'+(i+1)+' '+response.route[i].city;
+              else if(response.route[i].state)
+                label='Hop #'+(i+1)+' '+response.route[i].state;
+              else if(response.route[i].countryName)
+                label='Hop #'+(i+1)+' '+response.route[i].countryName;
+              else
+                label='Hop #'+(i+1);
 
               menuitem.setAttribute('tooltiptext','Click for WhoIs');
               menuitem.setAttribute('data-ip',response.route[i].ip);
               menuitem.addEventListener("click", function () {
-                  mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
-                }
-              , false);
-          } else if(response.route[i].countryName){
-            label='Hop #'+(i+1)+' '+response.route[i].countryName;
-            menuitem.setAttribute('tooltiptext','Click for WhoIs');
-            menuitem.setAttribute('data-ip',response.route[i].ip);
-            menuitem.addEventListener("click", function () {
                   mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
                 }
               , false);
