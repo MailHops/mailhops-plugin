@@ -134,6 +134,18 @@ mailHops.StreamListener =
 *	loop through the header, find out if we have received-from headers
 */
 mailHops.loadHeaderData = function() {
+
+  // CompactHeader toggle header logic
+  var compactHeadersView = document.getElementById('CompactHeader_collapsedHeaderView');
+  if(!!compactHeadersView){
+    if(compactHeadersView.collapsed===true){
+      mailHopsDisplay.toggleMailHopsBar(true);
+    } else if(compactHeadersView.collapsed===false){
+      mailHopsDisplay.toggleMailHopsBar(false);
+      return;
+    }
+  }
+
   var msgURI = null ;
 
   if ( gDBView ){

@@ -369,5 +369,12 @@ var mailHopsDisplay =
 
     this.resultText.setAttribute('value', displayText+' ( '+distanceText+' )');
     this.resultText.style.backgroundImage = 'url('+image+')';
-  }//end route
+  }, //end route
+
+  toggleMailHopsBar: function(show){
+    if(show && this.mhBox.style.display=='none')
+      this.mhBox.style.display='';
+    else if(!show && this.mhBox.style.display=='')
+      this.mhBox.style.display='none';
+  }
 };
