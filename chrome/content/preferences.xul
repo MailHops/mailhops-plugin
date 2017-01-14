@@ -592,8 +592,8 @@
 							<row>
 								<hbox/>
 								<hbox flex="1">
-									<button onclick="mailHopPreferences.TestConnection();">Test Connection</button>
-									<button onclick="mailHopPreferences.ResetConnection();">Reset Connection</button>
+									<button onclick="mailHopPreferences.TestConnection();">&mailhops_connection_test;</button>
+									<button onclick="mailHopPreferences.ResetConnection();">&mailhops_connection_reset;</button>
 								</hbox>
 							</row>
 						</rows>
