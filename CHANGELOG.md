@@ -3,10 +3,11 @@
 ## 3.0.3 -
 
 ### Added
-- All locale translations for preferences
+- More locale translations for preferences
 
 ### Fixed
 - Messages marked as local due to missing countryCode but had coords
+- Preferences styles
 
 ## 3.0.2 - 2017-01-12
 

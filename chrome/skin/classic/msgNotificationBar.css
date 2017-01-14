@@ -37,6 +37,7 @@
   line-height: 24px;
   font-weight: normal;
   background: #5E7A9B;
+	overflow-x: scroll;
 }
 
 #mailhopsNoficationBox #mailhopsDataPanePrefsLink {

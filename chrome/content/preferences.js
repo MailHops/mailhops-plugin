@@ -90,9 +90,7 @@ var mailHopPreferences = {
     document.getElementById("mailhops-membership-link").addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
     });
-    document.getElementById("forecastio").addEventListener("click", function () {
-      mailHopsUtils.launchExternalURL('https://darksky.net');
-    });
+    
     this.saveAPIKey();
 
     document.getElementById("mailhop.bar_color").addEventListener("input", function () {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="chrome://mailhops/skin/pb-styles.css" type="text/css"?>
+<?xml-stylesheet href="chrome://mailhops/skin/prefs.css" type="text/css"?>
 
 <!DOCTYPE window [
 <!ENTITY % MailHopsDTD SYSTEM "chrome://mailhops/locale/prefs.dtd">
@@ -13,7 +13,7 @@
 	buttons="accept,cancel"
 	onload="mailHopPreferences.loadPreferences();"
 	ondialogaccept="return mailHopPreferences.savePreferences();"
-	title="MailHops Preferences">
+	title="MailHops &mailhops_preferences;">
 
 	<script type="application/x-javascript" src="chrome://mailhops/content/utils.js"/>
 	<script type="application/x-javascript" src="chrome://mailhops/content/preferences.js"/>
@@ -31,13 +31,13 @@
 	  <tabpanels>
 			<tabpanel>
 				<groupbox flex="1">
-					<caption label="MailHops Membership"/>
+					<caption label="MailHops &mailhops_tab_member_label;"/>
 					<description>
 						API Key <label id="mailhops-membership-link" class="text-link plain" value="Join MailHops" data-account-url="https://mailhops.com"/>
 					</description>
 					<hbox align="center">
 						<textbox id="mailhop.api_key" placeholder="Enter your MailHops API Member Key" width="500"/>
-						<button onclick="mailHopPreferences.saveAPIKey();">Save Key</button>
+						<button onclick="mailHopPreferences.saveAPIKey();">Save API Key</button>
 					</hbox>
 					<hbox align="center">
 						<description>
@@ -74,7 +74,7 @@
 
 			<tabpanel>
 				<groupbox flex="1" style="height:400px;overflow: scroll;">
-					<caption label="Filters"/>
+					<caption label="&mailhops_tab_filters_label;"/>
 							<checkbox id="mailhop.country_tag" label="Tag messages with country origin" checked="false" disabled="true" class="filters"/>
 							<checkbox id="mailhop.travel_time_junk" label="Tag messages that take longer than 10 seconds as Junk" checked="false" disabled="true" class="filters"/>
 
@@ -352,7 +352,7 @@
 
 			<tabpanel>
 	    	<groupbox flex="1">
-				<caption label="Default Language"/>
+				<caption label="&mailhops_tab_defaults_label; Language"/>
 				<radiogroup id="mailhop.lang">
 					<radio value="en" label="English" selected="true"/>
 					<radio value="de" label="German"/>
@@ -367,7 +367,7 @@
 				</groupbox>
 
 			<groupbox flex="1">
-				<caption label="Default Units"/>
+				<caption label="&mailhops_tab_defaults_label; Units"/>
 				<radiogroup id="mailhop.unit">
 					<radio value="mi" label="Miles and ºF" selected="true"/>
 					<radio value="km" label="Kilometers and ºC"/>
@@ -375,7 +375,7 @@
 			</groupbox>
 
 			<groupbox flex="1">
-				<caption label="Default Map"/>
+				<caption label="&mailhops_tab_defaults_label; Map"/>
 				<menulist id="mailhop.map_provider">
 					<menupopup>
 					<menuitem value="OpenStreetMap.Mapnik" label="OpenStreetMap.Mapnik" />
@@ -484,7 +484,7 @@
 	    </tabpanel>
 	    <tabpanel>
 	    	<groupbox flex="1">
-					<caption label="Display Styles"/>
+					<caption label="&mailhops_tab_display_label;"/>
 					<description>
 							Use any <label class="text-link plain" href="https://en.wikipedia.org/wiki/Web_colors" value="HTML color name or Hex code"/>.
 					</description>
@@ -504,7 +504,7 @@
 					    <row>
 								<label value="Bar Color"></label>
 								<textbox id="mailhop.bar_color" value="#5E7A9B" placeholder="Enter a hex color code"/>
-								<grid>
+								<grid class="grid-color">
 								  <columns>
 										<column/>
 										<column/>
@@ -541,7 +541,7 @@
 							<row>
 								<label value="Font Color"></label>
 								<textbox id="mailhop.font_color" value="#FFF" placeholder="Enter a hex color code"/>
-								<grid>
+								<grid class="grid-color">
 								  <columns>
 										<column/>
 										<column/>
@@ -565,19 +565,15 @@
 						</rows>
 					</grid>
 
-					<checkbox id="mailhop.hide_compact" label="Hide MailHops Bar when CompactHeaders" checked="false"/>
+					<checkbox id="mailhop.hide_compact" label="Hide MailHops Bar when CompactHeaders are collapsed" checked="false"/>
+					<label class="text-link plain" href="https://addons.mozilla.org/en-us/thunderbird/addon/compactheader/" value="CompactHeaders Add-on"/>
 
 				</groupbox>
 	    </tabpanel>
 
 	    <tabpanel>
 	    	<groupbox>
-				<caption label="MailHops API &amp; Hosting"/>
-				<!-- <description>
-					MailHops API hosting is sponsored by
-					<image src="https://mailhops.com/images/sponsor.png" width="200"/>
-				</description> -->
-
+				<caption label="&mailhops_tab_api_label;"/>
 				<grid>
 				  <columns>
 						<column/>
@@ -606,7 +602,7 @@
 				<spacer/>
 
 				<description>
-					MailHops API uses <label id="forecastio" class="text-link plain" value="DarkSky"/> to get the weather of the sender, register for an API Key to enable this feature.
+					MailHops API uses <label class="text-link plain" value="DarkSky" href="https://darksky.net"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
 
 				<textbox id="mailhop.fkey" value="" placeholder="Enter your DarkSky API Key"/>
