@@ -68,3 +68,13 @@
 #mailhopsNoficationBox .unsubscribe {
   color: #CCC;
 }
+
+#mailhopsNoficationBox #mailhopsLogo {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+#mailhopsNoficationBox #mailhopsLogo:hover {
+	-webkit-filter: none;
+	filter: none;
+}

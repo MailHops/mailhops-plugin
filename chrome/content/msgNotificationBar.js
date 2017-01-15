@@ -3,7 +3,6 @@ var mailHopsDisplay =
   resultBox:              null,
   resultText:             null,
   resultDetails:          null,
-  container:              null,
   mailhopsDataPaneSPF:    null,
   mailhopsDataPaneDKIM:   null,
   mailhopsDataPaneMailer: null,
@@ -17,7 +16,6 @@ var mailHopsDisplay =
 
     this.options = options;
     this.mhBox = document.getElementById("mailhopsNoficationBox");
-    this.container = document.getElementById("mailhopsBox");
     this.resultBox = document.getElementById("mailhopsResult");
     this.resultText = document.getElementById("mailhopsResultText");
     this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
@@ -184,8 +182,6 @@ var mailHopsDisplay =
   },
 
   error: function(status,data){
-    this.container.removeAttribute("route");
-
     if(data && data.error){
       this.resultText.setAttribute('value', status+': '+data.error.message);
       this.resultText.setAttribute('tooltiptext',data.error.message);
