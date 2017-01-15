@@ -519,7 +519,7 @@
 								  </columns>
 								  <rows>
 								    <row>
-											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #e8e8e8"></div>
+											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #eeeeee"></div>
 											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #c9c9c9"></div>
 											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #afafaf"></div>
 											<div width="25px" height="25px" onclick="mailHopPreferences.ResetDisplay(this.style.backgroundColor);" style="cursor: pointer; background-color: #a9e0f2"></div>
@@ -540,7 +540,7 @@
 							</row>
 							<row>
 								<label value="Font Color"></label>
-								<textbox id="mailhop.font_color" value="#FFF" placeholder="Enter a hex color code"/>
+								<textbox id="mailhop.font_color" value="#ffffff" placeholder="Enter a hex color code"/>
 								<grid class="grid-color">
 								  <columns>
 										<column/>
@@ -560,7 +560,7 @@
 							</row>
 							<row>
 								<span></span>
-								<button onclick="mailHopPreferences.ResetDisplay('#5E7A9B','#FFF','14px');" style="text-align:center;">Reset Display</button>
+								<button onclick="mailHopPreferences.ResetDisplay('#5E7A9B','#ffffff','14px');" style="text-align:center;">Reset Display</button>
 							</row>
 						</rows>
 					</grid>

@@ -28,40 +28,47 @@ var mailHopsDisplay =
     this.mailhopsDataPaneDNSBL = document.getElementById("mailhopsDataPaneDNSBL");
 
     //wait for message to be selected before showing
-    if(!reload)
-      this.mhBox.style.display = 'none';
+    if(!reload) this.mhBox.style.display = 'none';
 
     //event listner for route click to launch map
     this.mailhopsDataPaneDNSBL.addEventListener("click", function () {
-        if(this.hasAttribute('data-ip'))
-          mailHopsUtils.launchSpamHausURL( this.getAttribute('data-ip') );
-      });
+      if(this.hasAttribute('data-ip'))
+        mailHopsUtils.launchSpamHausURL( this.getAttribute('data-ip') );
+    });
 
     this.resultText.addEventListener("click", function () {
-      if(this.value.indexOf('Rate Limit')!==-1){
+      if(this.value.indexOf('Rate Limit')!==-1)
         window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
-      }
       else if(this.hasAttribute('data-route'))
         mailHopsUtils.launchMap( String(this.getAttribute('data-route')), options );
-      });
+    });
 
-      if(!!options.bar_color)
-        this.mhBox.style.background = options.bar_color;
-      else
-        this.mhBox.style.background = '';
+    this.mailhopsResultWeather.addEventListener("click", function () {
+      mailHopsUtils.launchExternalURL(this.getAttribute('href'));
+    });
 
-      if(!!options.font_size)
-        this.mhBox.style.fontSize = options.font_size;
+    this.mailhopsUnsubscribe.addEventListener("click", function () {
+      if(this.getAttribute('href'))
+        mailHopsUtils.launchExternalURL(this.getAttribute('href'));
+    });
 
-      if(!!options.font_color){
-        this.resultText.style.color = options.font_color;
-        this.mailhopsResultWeather.style.color = options.font_color;
-        this.mailhopsUnsubscribe.style.color = options.font_color;
-        this.mailhopsDataPaneSPF.style.color = options.font_color;
-        this.mailhopsDataPaneDKIM.style.color = options.font_color;
-        this.mailhopsDataPaneMailer.style.color = options.font_color;
-        this.mailhopsDataPaneDNSBL.style.color = options.font_color;
-      }
+    if(!!options.bar_color)
+      this.mhBox.style.background = options.bar_color;
+    else
+      this.mhBox.style.background = '';
+
+    if(!!options.font_size)
+      this.mhBox.style.fontSize = options.font_size;
+
+    if(!!options.font_color){
+      this.resultText.style.color = options.font_color;
+      this.mailhopsResultWeather.style.color = options.font_color;
+      this.mailhopsUnsubscribe.style.color = options.font_color;
+      this.mailhopsDataPaneSPF.style.color = options.font_color;
+      this.mailhopsDataPaneDKIM.style.color = options.font_color;
+      this.mailhopsDataPaneMailer.style.color = options.font_color;
+      this.mailhopsDataPaneDNSBL.style.color = options.font_color;
+    }
   },
 
   lists: function( header_unsubscribe ){

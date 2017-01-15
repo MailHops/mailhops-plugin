@@ -35,7 +35,7 @@ var mailHopPreferences = {
 
   	//Display Box styles
   	document.getElementById("mailhop.bar_color").value = pref.getCharPref("mail.mailHops.bar_color",'#5E7A9B');
-    document.getElementById("mailhop.font_color").value = pref.getCharPref("mail.mailHops.font_color",'#FFF');
+    document.getElementById("mailhop.font_color").value = pref.getCharPref("mail.mailHops.font_color",'#ffffff');
     document.getElementById("mailhop.font_size").value = pref.getCharPref("mail.mailHops.font_size",'14px');
 
     //Update styles
@@ -90,7 +90,7 @@ var mailHopPreferences = {
     document.getElementById("mailhops-membership-link").addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
     });
-    
+
     this.saveAPIKey();
 
     document.getElementById("mailhop.bar_color").addEventListener("input", function () {

@@ -17,16 +17,16 @@
 
        		<hbox id="mailhopsResult" flex="1">
 
-       			<label id="mailhopsResultText" class="text-link"></label>
+       			<label id="mailhopsResultText" class="bar-link"></label>
 
-            <label id="mailhopsResultWeather" class="text-link"></label>
+            <label id="mailhopsResultWeather" class="bar-link"></label>
 
        			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_hops;">
          				<menupopup id="mailhopsDataPaneDetails">
   					    </menupopup>
     				</button>
 
-    				<button id="mailhopsDataPaneRefreshLink" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_refresh_label;"></button>
+    				<button id="mailhopsDataPaneRefresh" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_refresh_label;"></button>
 
     				<label id="mailhopsDataPaneMailer" class="auth-item" value="" tooltiptext="Mailer"></label>
 
@@ -34,9 +34,9 @@
 
     				<label id="mailhopsDataPaneDKIM" class="auth-item" value="" tooltiptext="DKIM"></label>
 
-    				<label id="mailhopsDataPaneDNSBL" class="text-link auth-item" value="" tooltiptext="DNSBL"></label>
+    				<label id="mailhopsDataPaneDNSBL" class="bar-link auth-item" value="" tooltiptext="DNSBL"></label>
 
-            <label id="mailhopsUnsubscribe" class="text-link unsubscribe" value="&mailhops_unsubscribe;"></label>
+            <label id="mailhopsUnsubscribe" class="bar-link unsubscribe" value="&mailhops_unsubscribe;"></label>
 
        		</hbox>
 		</row>

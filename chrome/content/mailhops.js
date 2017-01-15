@@ -17,7 +17,7 @@ var mailHops =
       'debug':false,
       'hide_compact':false,
       'bar_color': '#5E7A9B',
-      'font_color': '#FFF',
+      'font_color': '#ffffff',
       'font_size': '14px',
       'country_tag':false,
       'travel_time_junk':false,
@@ -47,7 +47,7 @@ mailHops.init = function() {
         window.openDialog("chrome://mailhops/content/preferences.xul","","chrome, dialog, modal, centerscreen").focus();
       });
 
-  document.getElementById("mailhopsDataPaneRefreshLink").addEventListener("click", function () {
+  document.getElementById("mailhopsDataPaneRefresh").addEventListener("click", function () {
         mailHops.refreshCache();
       });
 
@@ -66,7 +66,7 @@ mailHops.loadPref = function(reload)
   //Display
   mailHops.options.bar_color = mailHops.getCharPref('mail.mailHops.bar_color','#5E7A9B');
 
-  mailHops.options.font_color = mailHops.getCharPref('mail.mailHops.font_color','#FFF');
+  mailHops.options.font_color = mailHops.getCharPref('mail.mailHops.font_color','#ffffff');
 
   mailHops.options.font_size = mailHops.getCharPref('mail.mailHops.font_size','14px');
 

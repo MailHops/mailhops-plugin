@@ -38,6 +38,16 @@
   font-weight: normal;
   background: #5E7A9B;
 	overflow-x: scroll;
+	padding: 5px;
+}
+
+#mailhopsNoficationBox .bar-link {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+#mailhopsNoficationBox .bar-link:hover {
+	text-decoration: underline;
 }
 
 #mailhopsNoficationBox #mailhopsDataPanePrefsLink {
