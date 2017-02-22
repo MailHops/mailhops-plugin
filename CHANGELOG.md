@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.1.0 - 2017-02-21
+
+### Fixed
+- IP order when Received header has multiple IPs.  
+
 ## 3.0.3 - 2017-01-13
 
 ### Added
