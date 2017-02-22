@@ -5,7 +5,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:type>2</em:type>
 		<em:id>thunderbird@mailhops.com</em:id>
-		<em:version>3.0.3</em:version>
+		<em:version>3.1.0</em:version>
 
 		<em:name>MailHops</em:name>
 		<em:description>MailHops maps the route an email took to get to you. Displaying the senders location, weather, user-agent and authentication used.</em:description>

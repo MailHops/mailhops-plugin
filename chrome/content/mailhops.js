@@ -9,7 +9,7 @@ var mailHops =
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.0.3',
+      'version':'MailHops Plugin 3.1.0',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -223,7 +223,7 @@ mailHops.getRoute = function(){
       received_ips = received_ips.filter(function(item, pos) {
                       return received_ips.indexOf(item) == pos;
                     });
-      for( var r=0; r < received_ips.length; r++ ){
+      for( var r=received_ips.length; r >= 0 ; r-- ){
         if(regexIp.test(received_ips[r]) && mailHops.testIP(received_ips[r],rline)){
   				all_ips.unshift( received_ips[r] );
   		  }
