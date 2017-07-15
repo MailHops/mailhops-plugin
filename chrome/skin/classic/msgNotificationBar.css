@@ -1,6 +1,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#mailhopsNoficationBox #mailhopsResultText { padding-left:20px; background-repeat: no-repeat; }
+ #mailhopsResultText { padding-left:20px; background-repeat: no-repeat; }
 
 #mailhopsNoficationBox menuitem .menu-iconic-icon { width: 16px; height: 11px; }
 
@@ -37,7 +37,8 @@
   line-height: 24px;
   font-weight: normal;
   background: #5E7A9B;
-	overflow-x: scroll;
+	display: block;
+	position: relative;
 	padding: 5px;
 }
 
@@ -57,21 +58,21 @@
   right: 0;
 }
 
-#mailhopsNoficationBox #mailhopsLogo,
-#mailhopsNoficationBox #mailhopsResultText,
-#mailhopsNoficationBox #mailhopsResultWeather,
-#mailhopsNoficationBox #mailhopsUnsubscribe,
-#mailhopsNoficationBox #mailhopsDataPaneDNSBL,
-#mailhopsNoficationBox #mailhopsDataPaneDKIM,
-#mailhopsNoficationBox #mailhopsDataPaneSPF,
-#mailhopsNoficationBox #mailhopsDataPaneMailer {
+#mailhopsLogo,
+#mailhopsResultText,
+#mailhopsResultWeather,
+#mailhopsUnsubscribe,
+#mailhopsDataPaneDNSBL,
+#mailhopsDataPaneDKIM,
+#mailhopsDataPaneSPF,
+#mailhopsDataPaneMailer {
   color: #fff;
 }
 
-#mailhopsNoficationBox #mailhopsLogo,
-#mailhopsNoficationBox #mailhopsResultText,
-#mailhopsNoficationBox #mailhopsResultWeather,
-#mailhopsNoficationBox #mailhopsUnsubscribe {
+#mailhopsLogo,
+#mailhopsResultText,
+#mailhopsResultWeather,
+#mailhopsUnsubscribe {
   cursor: pointer;
 }
 
@@ -79,12 +80,26 @@
   color: #CCC;
 }
 
-#mailhopsNoficationBox #mailhopsLogo {
+#mailhopsLogo {
 	-webkit-filter: grayscale(100%);
 	filter: grayscale(100%);
 }
 
-#mailhopsNoficationBox #mailhopsLogo:hover {
+#mailhopsLogo:hover {
 	-webkit-filter: none;
 	filter: none;
+}
+
+#mailHopsMessage {
+	z-index:10;
+	border-radius: 10px;
+	display: none;
+	position: absolute;
+	padding:10px;
+	margin-top:40px;
+	margin-left: -28px;
+	width: auto;
+	border: 1px solid #CCC;
+	color: #777;
+	background-color: #FFF;
 }

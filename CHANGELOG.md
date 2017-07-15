@@ -1,5 +1,14 @@
 # Change Log
 
+## 3.1.1 - 2017-07-15
+
+### Added
+- Language Pull Requests
+- Account Messages
+
+### Fixed
+- Missing blacklisted icon in MailHops bar
+
 ## 3.1.0 - 2017-02-21
 
 ### Fixed

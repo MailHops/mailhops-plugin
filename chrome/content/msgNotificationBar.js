@@ -9,6 +9,8 @@ var mailHopsDisplay =
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
   mailhopsUnsubscribe:    null,
+  mailHopsMessage:        null,
+  mailHopsMessageText:    null,
   mhBox:                  null,
   options:                null,
 
@@ -21,6 +23,9 @@ var mailHopsDisplay =
     this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
     this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
     this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
+    this.mailHopsMessage = document.getElementById("mailHopsMessage");
+    this.mailHopsMessageText = document.getElementById("mailHopsMessageText");
+
     //auth
     this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
     this.mailhopsDataPaneDKIM = document.getElementById("mailhopsDataPaneDKIM");
@@ -44,6 +49,10 @@ var mailHopsDisplay =
     });
 
     this.mailhopsResultWeather.addEventListener("click", function () {
+      mailHopsUtils.launchExternalURL(this.getAttribute('href'));
+    });
+
+    this.mailHopsMessageText.addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('href'));
     });
 
@@ -189,6 +198,7 @@ var mailHopsDisplay =
   },
 
   error: function(status,data){
+    this.resultText.style.backgroundImage = "url('chrome://mailhops/content/images/auth/error.png')";
     if(data && data.error){
       this.resultText.setAttribute('value', status+': '+data.error.message);
       this.resultText.setAttribute('tooltiptext',data.error.message);
@@ -375,6 +385,16 @@ var mailHopsDisplay =
 
     this.resultText.setAttribute('value', displayText+' ( '+distanceText+' )');
     this.resultText.style.backgroundImage = 'url('+image+')';
+
+    if(meta && meta.message){
+      this.mailHopsMessage.style.display = 'inline';
+      if(meta.message.text)
+        this.mailHopsMessageText.value = meta.message.text;
+      if(meta.message.url)
+        this.mailHopsMessageText.setAttribute('href', meta.message.url);
+    } else {
+      this.mailHopsMessage.style.display = 'none';
+    }
   }, //end route
 
   toggleMailHopsBar: function(show){

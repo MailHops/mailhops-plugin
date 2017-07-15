@@ -14,6 +14,9 @@
 	<rows id="msgNotificationBar">
 		<row id="mailhopsNoficationBox" collapsed="false">
 			    <image id="mailhopsLogo" src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32" tooltiptext="&mailhops_route_nav_options_label;"/>
+          <div id="mailHopsMessage">
+            <label id="mailHopsMessageText" class="bar-link" value="Join today for metrics and more."></label>
+          </div>
 
        		<hbox id="mailhopsResult" flex="1">
 

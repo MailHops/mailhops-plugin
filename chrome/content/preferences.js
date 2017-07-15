@@ -34,8 +34,8 @@ var mailHopPreferences = {
   	    document.getElementById("mailhop.unit").selectedIndex = 1;
 
   	//Display Box styles
-  	document.getElementById("mailhop.bar_color").value = pref.getCharPref("mail.mailHops.bar_color",'#5E7A9B');
-    document.getElementById("mailhop.font_color").value = pref.getCharPref("mail.mailHops.font_color",'#ffffff');
+  	document.getElementById("mailhop.bar_color").value = pref.getCharPref("mail.mailHops.bar_color",'#FFF');
+    document.getElementById("mailhop.font_color").value = pref.getCharPref("mail.mailHops.font_color",'#777');
     document.getElementById("mailhop.font_size").value = pref.getCharPref("mail.mailHops.font_size",'14px');
 
     //Update styles
@@ -177,7 +177,7 @@ var mailHopPreferences = {
                 self.valid_api_key=true;
                 document.getElementById("plan-error").style.display = 'none';
                 // set plan info
-                document.getElementById("plan").value = "Plan: "+data.account.subscriptions.data[0].plan.id;
+                document.getElementById("plan").value = "Plan: "+data.account.subscriptions.data[0].plan.name;
                 document.getElementById("status").value = "Status: "+data.account.subscriptions.data[0].status;
                 document.getElementById("rate-limit").value = "Limit: "+data.account.rate.limit;
                 document.getElementById("rate-remaining").value = "Remaining: "+data.account.rate.remaining;

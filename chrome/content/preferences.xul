@@ -489,7 +489,7 @@
 							Use any <label class="text-link plain" href="https://en.wikipedia.org/wiki/Web_colors" value="HTML color name or Hex code"/>.
 					</description>
 
-					<description id="display_preview" style="font-size: 14px; color: #FFF; background: #5E7A9B;">
+					<description id="display_preview" style="font-size: 14px; color: #777; background: #FFF;">
 						<image src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32"/>
 						MailHops Bar
 					</description>
@@ -503,7 +503,7 @@
 					  <rows>
 					    <row>
 								<label value="Bar Color"></label>
-								<textbox id="mailhop.bar_color" value="#5E7A9B" placeholder="Enter a hex color code"/>
+								<textbox id="mailhop.bar_color" value="#FFF" placeholder="Enter a hex color code"/>
 								<grid class="grid-color">
 								  <columns>
 										<column/>
@@ -540,7 +540,7 @@
 							</row>
 							<row>
 								<label value="Font Color"></label>
-								<textbox id="mailhop.font_color" value="#ffffff" placeholder="Enter a hex color code"/>
+								<textbox id="mailhop.font_color" value="#777" placeholder="Enter a hex color code"/>
 								<grid class="grid-color">
 								  <columns>
 										<column/>
@@ -560,7 +560,7 @@
 							</row>
 							<row>
 								<span></span>
-								<button onclick="mailHopPreferences.ResetDisplay('#5E7A9B','#ffffff','14px');" style="text-align:center;">Reset Display</button>
+								<button onclick="mailHopPreferences.ResetDisplay('#FFF','#777','14px');" style="text-align:center;">Reset Display</button>
 							</row>
 						</rows>
 					</grid>
