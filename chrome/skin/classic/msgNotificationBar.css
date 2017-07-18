@@ -90,15 +90,11 @@
 	filter: none;
 }
 
-#mailHopsMessage {
+#mailHopsAccountMessage {
 	z-index:10;
 	border-radius: 10px;
 	display: none;
-	position: absolute;
-	padding:10px;
-	margin-top:40px;
-	margin-left: -28px;
-	width: auto;
+	padding: 10px;
 	border: 1px solid #CCC;
 	color: #777;
 	background-color: #FFF;

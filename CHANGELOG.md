@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.1.2 - 2017-07-18
+
+### Fixed
+- Account Message Bubble
+
 ## 3.1.1 - 2017-07-15
 
 ### Added

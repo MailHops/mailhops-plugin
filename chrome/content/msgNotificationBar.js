@@ -9,8 +9,7 @@ var mailHopsDisplay =
   mailhopsDataPaneDNSBL:  null,
   mailhopsResultWeather:  null,
   mailhopsUnsubscribe:    null,
-  mailHopsMessage:        null,
-  mailHopsMessageText:    null,
+  mailHopsAccountMessage: null,
   mhBox:                  null,
   options:                null,
 
@@ -23,8 +22,7 @@ var mailHopsDisplay =
     this.mailhopsResultWeather = document.getElementById("mailhopsResultWeather");
     this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
     this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
-    this.mailHopsMessage = document.getElementById("mailHopsMessage");
-    this.mailHopsMessageText = document.getElementById("mailHopsMessageText");
+    this.mailHopsAccountMessage = document.getElementById("mailHopsAccountMessage");
 
     //auth
     this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
@@ -52,8 +50,9 @@ var mailHopsDisplay =
       mailHopsUtils.launchExternalURL(this.getAttribute('href'));
     });
 
-    this.mailHopsMessageText.addEventListener("click", function () {
+    this.mailHopsAccountMessage.addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('href'));
+      this.style.display = 'none';
     });
 
     this.mailhopsUnsubscribe.addEventListener("click", function () {
@@ -214,6 +213,7 @@ var mailHopsDisplay =
     this.mailhopsResultWeather.style.display = 'none';
     this.resultText.removeAttribute('data-route');
     this.resultText.style.backgroundImage = '';
+    this.mailHopsAccountMessage.style.display = 'none';
     //remove child details
     while(this.resultDetails.firstChild) {
         this.resultDetails.removeChild(this.resultDetails.firstChild);
@@ -346,8 +346,9 @@ var mailHopsDisplay =
         this.mailhopsResultWeather.setAttribute('href','https://darksky.net/forecast/'+weatherRoute.lat+','+weatherRoute.lng);
     }
 
-    if(image.indexOf('local')!=-1) {
+    if(image.indexOf('local') !== -1) {
       displayText = ' Local message.';
+      this.mailHopsAccountMessage.style.display = 'none';
     } else {
 
       if(!!first){
@@ -387,13 +388,13 @@ var mailHopsDisplay =
     this.resultText.style.backgroundImage = 'url('+image+')';
 
     if(meta && meta.message){
-      this.mailHopsMessage.style.display = 'inline';
+      this.mailHopsAccountMessage.style.display = 'inline';
       if(meta.message.text)
-        this.mailHopsMessageText.value = meta.message.text;
+        this.mailHopsAccountMessage.value = meta.message.text;
       if(meta.message.url)
-        this.mailHopsMessageText.setAttribute('href', meta.message.url);
+        this.mailHopsAccountMessage.setAttribute('href', meta.message.url);
     } else {
-      this.mailHopsMessage.style.display = 'none';
+      this.mailHopsAccountMessage.style.display = 'none';
     }
   }, //end route
 
