@@ -23,10 +23,10 @@
 
             <label id="mailhopsResultWeather" class="bar-link"></label>
 
-       			<button type="menu" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_hops;">
-         				<menupopup id="mailhopsDataPaneDetails">
-  					    </menupopup>
-    				</button>
+            <hbox id="mailhopsHopsBox">
+       			    <button id="mailhopsDataPaneHops" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_hops;"></button>
+                <vbox id="mailhopsDataPaneDetails"></vbox>
+            </hbox>
 
     				<button id="mailhopsDataPaneRefresh" class="msgHeaderView-button msgHeaderView-flat-button" label="&mailhops_route_nav_refresh_label;"></button>
 

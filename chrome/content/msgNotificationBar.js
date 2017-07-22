@@ -3,6 +3,7 @@ var mailHopsDisplay =
   resultBox:              null,
   resultText:             null,
   resultDetails:          null,
+  mailhopsDataPaneHops:   null,
   mailhopsDataPaneSPF:    null,
   mailhopsDataPaneDKIM:   null,
   mailhopsDataPaneMailer: null,
@@ -23,6 +24,7 @@ var mailHopsDisplay =
     this.mailhopsUnsubscribe = document.getElementById("mailhopsUnsubscribe");
     this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
     this.mailHopsAccountMessage = document.getElementById("mailHopsAccountMessage");
+    this.mailhopsDataPaneHops = document.getElementById("mailhopsDataPaneHops");
 
     //auth
     this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
@@ -53,6 +55,13 @@ var mailHopsDisplay =
     this.mailHopsAccountMessage.addEventListener("click", function () {
       mailHopsUtils.launchExternalURL(this.getAttribute('href'));
       this.style.display = 'none';
+    });
+
+    this.mailhopsDataPaneHops.addEventListener("click", function () {
+      if(mailHopsDisplay.resultDetails.style.display !== 'block')
+        mailHopsDisplay.resultDetails.style.display = 'block';
+      else
+        mailHopsDisplay.resultDetails.style.display = 'none';
     });
 
     this.mailhopsUnsubscribe.addEventListener("click", function () {
@@ -110,7 +119,7 @@ var mailHopsDisplay =
       header_spf=header_spf.replace(/^\s+/,"");
       var headerSPFArr=header_spf.split(' ');
       this.mailhopsDataPaneSPF.setAttribute('value','SPF: '+headerSPFArr[0]);
-      this.mailhopsDataPaneSPF.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+headerSPFArr[0]+'.png)';
+      this.mailhopsDataPaneSPF.style.backgroundImage = "url('chrome://mailhops/content/images/auth/"+headerSPFArr[0]+".png')";
       this.mailhopsDataPaneSPF.setAttribute('tooltiptext',header_spf+'\n'+mailHopsUtils.spf(headerSPFArr[0]));
       this.mailhopsDataPaneSPF.style.display='block';
     } else {
@@ -138,7 +147,7 @@ var mailHopsDisplay =
         dkim_result=dkim_result.replace(/^\s+/,"");
         var dkimArr=dkim_result.split(' ');
         this.mailhopsDataPaneDKIM.setAttribute('value','DKIM: '+dkimArr[0].replace('dkim=',''));
-        this.mailhopsDataPaneDKIM.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+dkimArr[0].replace('dkim=','')+'.png)';
+        this.mailhopsDataPaneDKIM.style.backgroundImage = "url('chrome://mailhops/content/images/auth/"+dkimArr[0].replace('dkim=','')+".png')";
         this.mailhopsDataPaneDKIM.setAttribute('tooltiptext',dkim_result+'\n'+mailHopsUtils.dkim(dkimArr[0].replace('dkim=','')));
         this.mailhopsDataPaneDKIM.style.display='block';
       } else {
@@ -148,7 +157,7 @@ var mailHopsDisplay =
         spf_result=spf_result.replace(/^\s+/,"");
         var spfArr=spf_result.split(' ');
         this.mailhopsDataPaneSPF.setAttribute('value','SPF: '+spfArr[0].replace('spf=',''));
-        this.mailhopsDataPaneSPF.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/'+spfArr[0].replace('spf=','')+'.png)';
+        this.mailhopsDataPaneSPF.style.backgroundImage = "url('chrome://mailhops/content/images/auth/"+spfArr[0].replace('spf=','')+".png')";
         this.mailhopsDataPaneSPF.setAttribute('tooltiptext',spf_result+'\n'+mailHopsUtils.spf(spfArr[0].replace('spf=','')));
         this.mailhopsDataPaneSPF.style.display='block';
       }
@@ -157,7 +166,7 @@ var mailHopsDisplay =
     }
     //X-Mailer, User-Agent or X-MimeOLE
     if(header_xmailer){
-      this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
+      this.mailhopsDataPaneMailer.style.backgroundImage = "url('chrome://mailhops/content/images/email.png')";
       if(header_xmailer.indexOf('(')!=-1)
         this.mailhopsDataPaneMailer.setAttribute('value',header_xmailer.substring(0,header_xmailer.indexOf('(')));
       else if(header_xmailer.indexOf('[')!=-1)
@@ -167,7 +176,7 @@ var mailHopsDisplay =
       this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_xmailer);
       this.mailhopsDataPaneMailer.style.display='block';
     } else if(header_useragent){
-      this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
+      this.mailhopsDataPaneMailer.style.backgroundImage = "url('chrome://mailhops/content/images/email.png')";
       if(header_useragent.indexOf('(')!=-1)
         this.mailhopsDataPaneMailer.setAttribute('value',header_useragent.substring(0,header_useragent.indexOf('(')));
       else if(header_useragent.indexOf('[')!=-1)
@@ -177,7 +186,7 @@ var mailHopsDisplay =
       this.mailhopsDataPaneMailer.setAttribute('tooltiptext',header_useragent);
       this.mailhopsDataPaneMailer.style.display='block';
     } else if(header_xmimeole){
-      this.mailhopsDataPaneMailer.style.backgroundImage = 'url(chrome://mailhops/content/images/email.png)';
+      this.mailhopsDataPaneMailer.style.backgroundImage = "url('chrome://mailhops/content/images/email.png')";
 
       if(header_xmimeole.indexOf('(')!=-1)
         header_xmimeole = header_xmimeole.substring(0,header_xmimeole.indexOf('('));
@@ -213,12 +222,12 @@ var mailHopsDisplay =
     this.mailhopsResultWeather.style.display = 'none';
     this.resultText.removeAttribute('data-route');
     this.resultText.style.backgroundImage = '';
-    this.mailHopsAccountMessage.style.display = 'none';
     //remove child details
     while(this.resultDetails.firstChild) {
         this.resultDetails.removeChild(this.resultDetails.firstChild);
     }
-
+    this.mailHopsAccountMessage.style.display = 'none';
+    
     if(no_ips){
       this.resultText.style.backgroundImage = "url('chrome://mailhops/content/images/local.png')";
       this.resultText.value = ' Looks like a local message';
@@ -264,19 +273,19 @@ var mailHopsDisplay =
               this.resultText.setAttribute('tooltiptext','View Map');
             }
 
-            var menuitem = document.createElement('menuitem');
+            var hop = document.createElement('label');
             var label = '';
 
-            menuitem.setAttribute('class','menuitem-iconic');
-
             if(response.route[i].countryCode)
-              menuitem.setAttribute('image','chrome://mailhops/content/images/flags/'+response.route[i].countryCode.toLowerCase()+'.png');
+              hop.style.backgroundImage = "url('chrome://mailhops/content/images/flags/"+response.route[i].countryCode.toLowerCase()+".png')";
             else if(response.route[i].coords)
-              menuitem.setAttribute('image','chrome://mailhops/content/images/auth/none.png');
+              hop.style.backgroundImage = "url('chrome://mailhops/content/images/auth/none.png')";
             else
-              menuitem.setAttribute('image','chrome://mailhops/content/images/local.png');
+              hop.style.backgroundImage = "url('chrome://mailhops/content/images/local.png')";
 
             if(response.route[i].coords){
+
+              hop.setAttribute('class','bar-link hop');
 
               if(response.route[i].city && response.route[i].state)
                 label='Hop #'+(i+1)+' '+response.route[i].city+', '+response.route[i].state;
@@ -291,34 +300,47 @@ var mailHopsDisplay =
               else
                 label='Hop #'+(i+1);
 
-              menuitem.setAttribute('tooltiptext','Click for WhoIs');
-              menuitem.setAttribute('data-ip',response.route[i].ip);
-              menuitem.addEventListener("click", function () {
+              hop.setAttribute('data-ip',response.route[i].ip);
+              hop.setAttribute('tooltiptext','Click for whois');
+              hop.addEventListener("click", function () {
                   mailHopsUtils.launchWhoIs(this.getAttribute('data-ip'));
                 }
               , false);
           } else {
+            hop.setAttribute('class','hop');
             label='Hop #'+(i+1)+' Private';
           }
 
           label+=' '+response.route[i].ip;
+          hop.setAttribute('value',label);
 
+          //append the hop
+          this.resultDetails.appendChild(hop);
+
+          //append the host
+          label = '';
           if(response.route[i].host)
-              label+=' '+response.route[i].host;
+            label += response.route[i].host;
           if(response.route[i].whois && response.route[i].whois.descr)
-              label+=' '+response.route[i].whois.descr;
+            label += response.route[i].whois.descr;
           if(response.route[i].whois && response.route[i].whois.netname)
-              label+=' '+response.route[i].whois.netname;
+            label += response.route[i].whois.netname;
 
-          menuitem.setAttribute('label',label);
+          if(label !== ''){
+            hop = document.createElement('label');
+            if(message.secure.indexOf(response.route[i].ip) !== -1)
+              hop.style.backgroundImage = "url('chrome://mailhops/content/images/auth/secure.png')";
+            else if(!response.route[i].client)
+              hop.style.backgroundImage = "url('chrome://mailhops/content/images/auth/not_secure.png')";
+            hop.setAttribute('class','host');
+            hop.setAttribute('value',label);
+            this.resultDetails.appendChild(hop);
+          }
 
           //append weather
           if(!weatherRoute && !!response.route[i].weather){
             weatherRoute = response.route[i];
           }
-
-          //append details
-          this.resultDetails.appendChild(menuitem);
 
             //auth & dnsbl
           if(!response.route[i].private && response.route[i].dnsbl && response.route[i].dnsbl.listed){
@@ -328,7 +350,7 @@ var mailHopsDisplay =
               this.mailhopsDataPaneDNSBL.setAttribute('tooltiptext','Click for more details.\n'+mailHopsUtils.dnsbl(response.route[i].dnsbl.record));
             else
               this.mailhopsDataPaneDNSBL.setAttribute('tooltiptext','Click for more details.');
-            this.mailhopsDataPaneDNSBL.style.backgroundImage = 'url(chrome://mailhops/content/images/auth/bomb.png)';
+            this.mailhopsDataPaneDNSBL.style.backgroundImage = "url('chrome://mailhops/content/images/auth/bomb.png')";
             this.mailhopsDataPaneDNSBL.style.display = 'block';
           }
         }
@@ -339,7 +361,7 @@ var mailHopsDisplay =
       this.mailhopsResultWeather.style.display = 'block';
       this.mailhopsResultWeather.setAttribute('tooltiptext','Weather in '+weatherRoute.city+' '+weatherRoute.state);
       this.mailhopsResultWeather.value = weatherRoute.weather.summary+' '+Math.round(weatherRoute.weather.temp)+'\u00B0';
-      this.mailhopsResultWeather.style.backgroundImage = 'url('+mailHopsUtils.getWeatherIcon(weatherRoute.weather.icon)+')';
+      this.mailhopsResultWeather.style.backgroundImage = "url('"+mailHopsUtils.getWeatherIcon(weatherRoute.weather.icon)+"')";
       if(weatherRoute.coords)
         this.mailhopsResultWeather.setAttribute('href','https://darksky.net/forecast/'+weatherRoute.coords[1]+','+weatherRoute.coords[0]);
       else if(weatherRoute.lat)
@@ -385,7 +407,7 @@ var mailHopsDisplay =
       this.resultText.removeAttribute("data-route");
 
     this.resultText.setAttribute('value', displayText+' ( '+distanceText+' )');
-    this.resultText.style.backgroundImage = 'url('+image+')';
+    this.resultText.style.backgroundImage = "url('"+image+"')";
 
     if(meta && meta.message){
       this.mailHopsAccountMessage.style.display = 'inline';
@@ -399,9 +421,9 @@ var mailHopsDisplay =
   }, //end route
 
   toggleMailHopsBar: function(show){
-    if(show && this.mhBox.style.display=='none')
-      this.mhBox.style.display='';
-    else if(!show && this.mhBox.style.display=='')
-      this.mhBox.style.display='none';
+    if(show && this.mhBox.style.display == 'none')
+      this.mhBox.style.display = '';
+    else if(!show && this.mhBox.style.display == '')
+      this.mhBox.style.display = 'none';
   }
 };

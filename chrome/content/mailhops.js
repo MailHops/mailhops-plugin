@@ -9,7 +9,7 @@ var mailHops =
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.1.2',
+      'version':'MailHops Plugin 3.1.3',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -221,7 +221,7 @@ mailHops.getRoute = function(){
         continue;
       //get unique IPs for each Received header
       received_ips = received_ips.filter(function(item, pos) {
-                      return received_ips.indexOf(item) == pos;
+                      return received_ips.indexOf(item) === pos;
                     });
       for( var r=received_ips.length; r >= 0 ; r-- ){
         if(regexIp.test(received_ips[r]) && mailHops.testIP(received_ips[r],rline)){
@@ -234,9 +234,9 @@ mailHops.getRoute = function(){
   }
 
   // parse dates
-  if(firstDate && firstDate.indexOf('(')!==-1)
+  if(firstDate && firstDate.indexOf('(') !==- 1)
     firstDate = firstDate.substring(0,firstDate.indexOf('(')).trim();
-  if(lastDate && lastDate.indexOf('(')!==-1)
+  if(lastDate && lastDate.indexOf('(') !== -1)
     lastDate = lastDate.substring(0,lastDate.indexOf('(')).trim();
   if(firstDate && lastDate){
     try {
@@ -284,6 +284,7 @@ mailHops.testIP = function(ip,header){
 		if(firstchar.match(/\.|\d|\-/)
         || lastchar.match(/\.|\d|\-/)
         || ( firstchar == '?' && lastchar == '?' )
+        || firstchar == ':'
         || lastchar == ';'
         || header.toLowerCase().indexOf(' id '+ip) !== -1
         || parseInt(ip.substring(0,ip.indexOf('.'))) >= 240 //IANA-RESERVED
@@ -291,22 +292,12 @@ mailHops.testIP = function(ip,header){
       //only if there is one instance of this IP
       if(header.indexOf(ip) == header.lastIndexOf(ip))
 			   validIP = false;
-    } else {
-      //check if this IP was part of a secure transmission
-      if(header.indexOf('using SSL') != -1){
-        if(header.substring(header.indexOf('using SSL')+11,header.indexOf('using SSL')+12) == '.')
-          mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+14));
-        else
-				  mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using SSL'),header.indexOf('using TLS')+11));
-      }
-			else if(header.indexOf('using TLS') != -1){
-        if(header.substring(header.indexOf('using TLS')+11,header.indexOf('using TLS')+12) == '.')
-				  mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),header.indexOf('using TLS')+14));
-        else
-          mailHops.message.secure.push(ip+':'+header.substring(header.indexOf('using TLS'),header.indexOf('using TLS')+11));
-      }
-			else if(header.indexOf('version=TLSv1/SSLv3') != -1)
-				mailHops.message.secure.push(ip+':'+'using TLSv1/SSLv3');
+    } else if(header.indexOf('using SSL') !== -1
+        || header.indexOf('using TLS') !== -1
+        || header.indexOf('version=TLSv1/SSLv3') !== -1
+      ){
+        //check if this IP was part of a secure transmission
+        mailHops.message.secure.push(ip);
 		}
 	} catch(e) {
 		mailHops.LOG('testIP Error: '+JSON.stringify(e));

@@ -42,6 +42,11 @@
 	padding: 5px;
 }
 
+#mailhopsResult {
+  position: relative;
+	display: inline-flex;
+}
+
 #mailhopsNoficationBox .bar-link {
 	cursor: pointer;
 	text-decoration: none;
@@ -91,11 +96,37 @@
 }
 
 #mailHopsAccountMessage {
-	z-index:10;
 	border-radius: 10px;
 	display: none;
 	padding: 10px;
 	border: 1px solid #CCC;
 	color: #777;
 	background-color: #FFF;
+}
+
+#mailhopsDataPaneDetails {
+  border-radius: 10px;
+	display: none;
+	padding: 10px;
+	border: 1px solid #CCC;
+	color: #333;
+	background-color: #FFF;
+  position: absolute;
+	margin-top: 0;
+}
+
+#mailhopsDataPaneDetails .hop {
+  background-repeat: no-repeat;
+  display: block;
+  position: relative;
+  padding-left: 22px;
+}
+
+#mailhopsDataPaneDetails .host {
+  background-repeat: no-repeat;
+  display: block;
+  position: relative;
+  color: #777;
+  padding-left: 22px;
+  margin-left: 22px;
 }

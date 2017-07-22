@@ -1,5 +1,13 @@
 # Change Log
 
+## 3.1.3 - 2017-07-22
+
+### Added
+- Secure host icon to hop list
+
+### Changed
+- Moved hop list from drop down to new layout bubble
+
 ## 3.1.2 - 2017-07-18
 
 ### Fixed
