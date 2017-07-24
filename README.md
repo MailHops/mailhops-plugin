@@ -11,11 +11,21 @@ MailHops is an email route API. It does a few things:
 1. Will tag and mark messages as Junk if from a Country you don't like
 1. Performs DNSBL check on messages
 
-<img src="images/screenshot-thunderbird.png" alt="MailHops screenshot" title="MailHops" style="border: 1px solid #777;" />
+### MailHops Message View
 
-Change the bar color in Preferences
+<img src="images/screenshot-thunderbird.png" alt="MailHops Message View" title="MailHops Message View" style="border: 1px solid #777;" />
 
-<img src="images/screenshot-display.png" alt="MailHops screenshot" title="MailHops" style="border: 1px solid #777;" />
+### MailHops Route Map
+
+<img src="images/screenshot-map.png" alt="MailHops Route Map" title="MailHops Route Map" style="border: 1px solid #777;" />
+
+### MailHops Options
+
+<img src="images/screenshot-display.png" alt="MailHops Options" title="MailHops Options" style="border: 1px solid #777;" />
+
+### MailHops Dashboard
+
+<img src="images/screenshot-dashboard.png" alt="MailHops Dashboard" title="MailHops Dashboard" style="border: 1px solid #777;" />
 
 ### Editing the code
 1. After you make changes you can run the [build.sh](build.sh) script

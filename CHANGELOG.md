@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.1.4 - 2017-07-24
+
+### Fixed
+- IP test when IP regex finds a semantic version with a trailing colon
+
 ## 3.1.3 - 2017-07-22
 
 ### Added

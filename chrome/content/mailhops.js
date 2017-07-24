@@ -9,7 +9,7 @@ var mailHops =
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.1.3',
+      'version':'MailHops Plugin 3.1.4',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -284,7 +284,7 @@ mailHops.testIP = function(ip,header){
 		if(firstchar.match(/\.|\d|\-/)
         || lastchar.match(/\.|\d|\-/)
         || ( firstchar == '?' && lastchar == '?' )
-        || firstchar == ':'
+        || (firstchar == ':' || lastchar == ':')
         || lastchar == ';'
         || header.toLowerCase().indexOf(' id '+ip) !== -1
         || parseInt(ip.substring(0,ip.indexOf('.'))) >= 240 //IANA-RESERVED
