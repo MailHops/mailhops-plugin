@@ -9,7 +9,7 @@ var mailHops =
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.1.4',
+      'version':'MailHops Plugin 3.1.5',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -169,11 +169,7 @@ mailHops.getRoute = function(){
   //IP regex
   var regexIp=/(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}$/;
   var regexAllIp = /(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)\.(1\d{0,2}|2(?:[0-4]\d{0,1}|[6789]|5[0-5]?)?|[3-9]\d?|0)(\/(?:[012]\d?|3[012]?|[456789])){0,1}/g;
-
-  // TODO test IPV6 regex for Received headers, currently only used for X-Originating-IP
-  // IPv6 addresses including compressed and IPv4-embedded variants (RFC 2373)
-  // http://regexlib.com/REDetails.aspx?regexp_id=2919
-  var regexIPV6 = /(::|(([a-fA-F0-9]{1,4}):){7}(([a-fA-F0-9]{1,4}))|(:(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){1,6}:)|((([a-fA-F0-9]{1,4}):)(:([a-fA-F0-9]{1,4})){1,6})|((([a-fA-F0-9]{1,4}):){2}(:([a-fA-F0-9]{1,4})){1,5})|((([a-fA-F0-9]{1,4}):){3}(:([a-fA-F0-9]{1,4})){1,4})|((([a-fA-F0-9]{1,4}):){4}(:([a-fA-F0-9]{1,4})){1,3})|((([a-fA-F0-9]{1,4}):){5}(:([a-fA-F0-9]{1,4})){1,2}))/;
+  var regexIPV6 = /s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*/g;
 
   var headReceived = mailHops.headers.extractHeader ( "Received" , true );
   var headDate = mailHops.headers.extractHeader ( "Date" , true );
@@ -214,11 +210,22 @@ mailHops.getRoute = function(){
           lastDate = rline.substring(rline.indexOf(';')+1).trim();
       }
 
+      // IPV6 check
+      rline = rline.replace(/\[IPv6\:/g,'[');
+      if(rline.match(regexIPV6)){
+          all_ips.unshift( rline.match(regexIPV6)[0] );
+          //reset the line
+          rline='';
+          continue;
+      }
       // parse IPs out of Received line
       received_ips = rline.match(regexAllIp);
       //continue if no IPs found
-      if(!received_ips)
+      if(!received_ips){
+        //reset the line
+        rline='';
         continue;
+      }
       //get unique IPs for each Received header
       received_ips = received_ips.filter(function(item, pos) {
                       return received_ips.indexOf(item) === pos;
@@ -253,11 +260,12 @@ mailHops.getRoute = function(){
 
   //get the originating IP address
 	if(!!headXOrigIP){
-    //remove brackets
-    headXOrigIP = headXOrigIP.replace('[','').replace(']','');
+    headXOrigIP = headXOrigIP.replace(/\[IPv6\:/g,'[');
     //IPV6 check
-    if(headXOrigIP.indexOf(':') !== -1 && headXOrigIP.match(regexIPV6)){
-      all_ips.unshift( headXOrigIP );
+    if(headXOrigIP.match(regexIPV6)){
+      var ip = headXOrigIP.match(regexIPV6)
+      if(!!ip && ip.length && all_ips.indexOf(ip[0])==-1)
+        all_ips.unshift( ip[0] );
     } else {
       var ip = headXOrigIP.match(regexAllIp);
   		if(!!ip && ip.length && all_ips.indexOf(ip[0])==-1)
