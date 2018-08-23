@@ -162,7 +162,6 @@ var mailHopPreferences = {
 
     if(!!this.api_key && this.api_key.value != ''){
       var xmlhttp = new XMLHttpRequest();
-      var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
       var apiBase = this.api_http.value+this.api_host.value,
           accountURL = '/v2/accounts/?api_key='+this.api_key.value.trim(),
           api_key = this.api_key.value.trim(),
@@ -208,7 +207,6 @@ var mailHopPreferences = {
 
   TestConnection: function(){
  	var xmlhttp = new XMLHttpRequest();
- 	var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
  	var apiBase = this.api_http.value+this.api_host.value,
        lookupURL = '/v1/lookup/?healthcheck';
 

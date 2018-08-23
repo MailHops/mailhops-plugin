@@ -9,7 +9,7 @@ var mailHops =
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.1.6',
+      'version':'MailHops Plugin 3.1.7',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -37,8 +37,6 @@ mailHops.LOG = function(msg) {
 };
 
 mailHops.init = function() {
-  //import nativeJSON
-  var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
 
   //load preferences
   mailHops.loadPref();
@@ -332,7 +330,7 @@ mailHops.setupEventListener = function(){
 mailHops.registerObserver = function(){
   var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefService ) ;
   mailHops._branch = prefService.getBranch( "mail.mailHops." ) ;
-  mailHops._branch.QueryInterface( Components.interfaces.nsIPrefBranchInternal ) ;
+  mailHops._branch.QueryInterface( Components.interfaces.nsIPrefBranch ) ;
   mailHops._branch.addObserver( "" , mailHops , false ) ;
 };
 
