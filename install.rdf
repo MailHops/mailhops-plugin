@@ -19,7 +19,7 @@
 		  	<Description>
 	        	<em:id>postbox@postbox-inc.com</em:id>
 		        <em:minVersion>2.0</em:minVersion>
-	        	<em:maxVersion>6.*</em:maxVersion>
+	        	<em:maxVersion>5.*</em:maxVersion>
 	      	</Description>
 		</em:targetApplication>
 
