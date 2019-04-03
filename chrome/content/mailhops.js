@@ -405,7 +405,7 @@ mailHops.LOG(lookupURL);
           var d = new Date();
           data.meta.cached = d.toISOString();
           //save the result
-  	   		mailHops.saveResults(JSON.stringify(data),data.response.route);
+  	   		mailHops.saveResults(data, data.response.route);
           //display the result
   	   		mailHopsDisplay.route(header_route, mailHops.message, data.response, data.meta, lookupURL);
   	   } else if(data.error){
@@ -422,7 +422,7 @@ mailHops.LOG(lookupURL);
  xmlhttp.send(null);
 };
 
-mailHops.saveResults = function(results,route){
+mailHops.saveResults = function(results, route){
 
 	if(!mailHops.msgURI)
 		return false;
@@ -432,13 +432,23 @@ mailHops.saveResults = function(results,route){
 
 	if(!msgHdr)
 		return false;
+  
+  if(!results){
+    msgHdr.setStringProperty( "MH-Route", '' );
+    return false;
+  }
 
-  msgHdr.setStringProperty( "MH-Route", results );
+  var countryCode = mailHopsUtils.getOriginatingCountryCode(route); 
+  
+  if(!!countryCode){
+    results.sender = { countryCode: countryCode };
+  }
+  
+  msgHdr.setStringProperty( "MH-Route", JSON.stringify(results) );
 
   //Add tag
-  if(!!route && !!mailHops.options.api_key){
-    try {
-      var countryCode = mailHopsUtils.getOriginatingCountryCode(route);
+  if(!!countryCode && !!mailHops.options.api_key){
+    try {      
       var msg = Components.classes["@mozilla.org/array;1"].createInstance(Components.interfaces.nsIMutableArray);
       msg.clear();
       msg.appendElement(msgHdr, false);
@@ -488,8 +498,8 @@ mailHops.getResults = function(){
 };
 
 mailHops.refreshCache = function(){
-	mailHops.saveResults('');
+	mailHops.saveResults();
 	mailHops.getRoute();
 };
 
-addEventListener ( "messagepane-loaded" , mailHops.setupEventListener , true ) ;
+addEventListener( "messagepane-loaded" , mailHops.setupEventListener , true );

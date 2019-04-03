@@ -70,7 +70,7 @@ var mailHopPreferences = {
     }
     if(!!this.api_key.value.trim()){
       document.getElementById("mailhops-membership-link").value='My Account';
-      document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+this.api_key.value.trim());
+      document.getElementById("mailhops-membership-link").setAttribute('href','https://mailhops.com/account/'+this.api_key.value.trim());
     }
     if(pref.getCharPref("mail.mailHops.country_tag",'false')=='false')
   		document.getElementById("mailhop.country_tag").checked = false;
@@ -86,10 +86,6 @@ var mailHopPreferences = {
       document.getElementById("mailhop.hide_compact").checked = false;
     else
       document.getElementById("mailhop.hide_compact").checked = true;
-
-    document.getElementById("mailhops-membership-link").addEventListener("click", function () {
-      mailHopsUtils.launchExternalURL(this.getAttribute('data-account-url'));
-    });
 
     this.saveAPIKey();
 
@@ -152,11 +148,17 @@ var mailHopPreferences = {
     document.getElementById("rate-remaining").value='';
     document.getElementById("rate-reset").value='';
     document.getElementById("mailhops-membership-link").value='Join MailHops';
-    document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com');
+    document.getElementById("mailhops-membership-link").setAttribute('href','https://mailhops.com');
     var items = document.getElementsByClassName('filters');
-    for(x in items){ items[x].disabled = true; }
+    for(x in items){ 
+      items[x].disabled = true; 
+    }
     var items = document.getElementsByClassName('country');
-    for(x in items){ items[x].disabled = true; if(items[x].label) items[x].label = items[x].label.toUpperCase();}
+    for(x in items){ 
+      items[x].disabled = true; 
+      if(items[x].label) 
+        items[x].label = items[x].label.toUpperCase();
+    }
   },
   saveAPIKey: function() {
 
@@ -185,7 +187,7 @@ var mailHopPreferences = {
                 else
                   document.getElementById("rate-reset").value = "Resets in: "+Math.round(data.account.rate.reset/60/60)+" hr.";
                 document.getElementById("mailhops-membership-link").value='My Account';
-                document.getElementById("mailhops-membership-link").setAttribute('data-account-url','https://mailhops.com/account/'+api_key);
+                document.getElementById("mailhops-membership-link").setAttribute('href','https://mailhops.com/account/'+api_key);
 
                 var items = document.getElementsByClassName('filters');
                 for(x in items){ items[x].disabled = false;}

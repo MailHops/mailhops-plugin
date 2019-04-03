@@ -33,7 +33,7 @@
 				<groupbox flex="1">
 					<caption label="MailHops &mailhops_tab_member_label;"/>
 					<description>
-						API Key <label id="mailhops-membership-link" class="text-link plain" value="Join MailHops" data-account-url="https://mailhops.com"/>
+						API Key <label id="mailhops-membership-link" class="text-link plain" value="Join MailHops" href="https://mailhops.com"/>
 					</description>
 					<hbox align="center">
 						<textbox id="mailhop.api_key" placeholder="Enter your MailHops API Member Key" width="500"/>

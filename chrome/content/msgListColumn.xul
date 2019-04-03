@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<overlay id="mailhops_listcolumn"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <tree id="threadTree">
+    <treecols id="threadCols">
+    <splitter class="tree-splitter" />
+    <treecol id="colMailHops" persist="hidden ordinal width" 
+           currentView="unthreaded" flex="2"
+           label="Country" tooltiptext="Click to sort by Country" />
+    </treecols>
+  </tree>
+  
+  <!-- include our javascript file -->
+  <script type="application/x-javascript" src="chrome://mailhops/content/utils.js"/>
+  <script type="application/x-javascript" src="chrome://mailhops/content/msgListColumn.js"/> 
+</overlay>

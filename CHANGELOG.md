@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.2 - 2019-04-03
+
+### Added
+- Country column to message list
+
 ## 3.1.4 - 2017-07-24
 
 ### Fixed
