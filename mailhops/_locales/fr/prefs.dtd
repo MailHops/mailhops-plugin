@@ -1,0 +1,8 @@
+<!ENTITY mailhops_preferences           "Préférences">
+<!ENTITY mailhops_tab_member_label           "Compte">
+<!ENTITY mailhops_tab_filters_label           "Filtrage">
+<!ENTITY mailhops_tab_defaults_label           "Autres paramètres">
+<!ENTITY mailhops_tab_display_label           "Apparence de la barre">
+<!ENTITY mailhops_tab_api_label           "Serveur &amp; API">
+<!ENTITY mailhops_connection_test           "Tester la connexion">
+<!ENTITY mailhops_connection_reset           "Rétablir la connexion par défaut">

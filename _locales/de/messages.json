@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MailHops"    
+  },
+  "appDesc": {
+    "message": "MailHops Karten die Route eine E-Mail gereist, um bei Ihnen melden. Verwendung GeoIP es zeigt auch zurückgelegte Strecke zusammen mit dem Standort ( Ort, Bundesland und Land) des Absenders."
+  }
+}

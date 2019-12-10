@@ -1,0 +1,8 @@
+<!ENTITY mailhops_preferences           "設定">
+<!ENTITY mailhops_tab_member_label           "Member">
+<!ENTITY mailhops_tab_filters_label           "Filters">
+<!ENTITY mailhops_tab_defaults_label           "Default">
+<!ENTITY mailhops_tab_display_label           "Display">
+<!ENTITY mailhops_tab_api_label           "API &amp; Hosting">
+<!ENTITY mailhops_connection_test           "Test Connection">
+<!ENTITY mailhops_connection_reset           "Reset Connection">

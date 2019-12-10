@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MailHops"
+  }, 
+  "appDesc": {
+    "message": "MailHops vous permet de connaître la route empruntée par un mail avant qu'il ne parvienne dans votre messagerie. Grâce à MailHops vous pourrez : connaître le lieu d'émission du mail (pays, ville); visualiser le parcours du mail sur une carte (avec un grand choix de styles de carte); ou encore connaître des informations plus techniques (le user-agent et l'authentification utilisés par l'expéditeur) et d'autres informations plus amusantes comme la distance totale parcourue par le mail ou la météo actuelle sur le lieu d'émission. La version gratuite (sans clef API) permet d'obtenir ces informations et bien d'autres pour 100 messages par tranche de 24h."
+  }
+}

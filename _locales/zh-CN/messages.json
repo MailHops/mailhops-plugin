@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MailHops"
+  } , 
+  "appDesc": {
+    "message": "MailHops 映射電子郵件前往得到你的路線。使用GeoIP的它也顯示行駛距離隨著發送者的位置（城市，州和國家"
+  }
+}

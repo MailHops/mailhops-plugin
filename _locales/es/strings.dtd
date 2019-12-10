@@ -1,0 +1,9 @@
+<!ENTITY mailhops_header_route_label           "MailHops Ruta">
+<!ENTITY mailhops_header_auth_label            "MailHops Mailer/Aut">
+<!ENTITY mailhops_header_meta_label            "MailHops Meta">
+<!ENTITY mailhops_route_nav_map_label          "mapa">
+<!ENTITY mailhops_route_nav_details_label      "detalles">
+<!ENTITY mailhops_route_nav_refresh_label      "refrescar">
+<!ENTITY mailhops_route_nav_options_label      "Preferencias">
+<!ENTITY mailhops_unsubscribe      "Unsubscribe">
+<!ENTITY mailhops_hops      "Hops">

@@ -1,0 +1,9 @@
+<!ENTITY mailhops_header_route_label           "MailHops路线">
+<!ENTITY mailhops_header_auth_label            "MailHops梅勒/验证">
+<!ENTITY mailhops_header_meta_label            "MailHops元">
+<!ENTITY mailhops_route_nav_map_label          "地圖">
+<!ENTITY mailhops_route_nav_details_label      "詳細信息">
+<!ENTITY mailhops_route_nav_refresh_label      "刷新">
+<!ENTITY mailhops_route_nav_options_label      "优先">
+<!ENTITY mailhops_unsubscribe      "Unsubscribe">
+<!ENTITY mailhops_hops      "Hops">

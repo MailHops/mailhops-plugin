@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MailHops"
+  }, 
+  "appDesc": {
+    "message": "MailHops 電子メールがあなたに取得するために旅したルートをマップします。のGeoIPを使用しても距離が送信者の場所（都市、州や国）と一緒に旅に表示されます。"
+  }
+}

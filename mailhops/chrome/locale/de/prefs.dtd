@@ -1,0 +1,8 @@
+<!ENTITY mailhops_preferences           "Einstellungen">
+<!ENTITY mailhops_tab_member_label           "Mitglied">
+<!ENTITY mailhops_tab_filters_label           "Filter">
+<!ENTITY mailhops_tab_defaults_label           "Grundeinstellungen">
+<!ENTITY mailhops_tab_display_label           "Anzeige">
+<!ENTITY mailhops_tab_api_label           "API &amp; Hosting">
+<!ENTITY mailhops_connection_test           "Verbindung testen">
+<!ENTITY mailhops_connection_reset           "Verbindung zurücksetzen">

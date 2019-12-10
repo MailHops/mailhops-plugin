@@ -1,0 +1,25 @@
+#mailHopsPreferences {
+		font-family: 'Raleway',Arial,sans-serif;
+		font-size: 14px;
+}
+
+#mailHopsPreferences textbox {
+	font-size: 14px;
+	padding: 5px;
+	color: #777;
+}
+
+#mailHopsPreferences tab {
+	font-size: 14px;
+	padding: 5px;
+	color: #333;
+}
+
+#mailHopsPreferences button{
+	height: 35px;
+	color: #333;
+}
+
+#mailHopsPreferences .grid-color{
+  margin-top: 7px;
+}

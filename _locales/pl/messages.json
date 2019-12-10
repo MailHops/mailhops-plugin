@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MailHops"
+  } , 
+  "appDesc": {
+    "message": "Wskazuje trasę, którą e-mail dotarł do adresata. Korzystając z GeoIP, pokazuje także przybliżony dystans do nadawcy oraz jego położenie (miasto, region i państwo)."
+  }
+}

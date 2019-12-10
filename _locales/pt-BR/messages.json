@@ -1,0 +1,8 @@
+{
+  "appName": {
+    "message": "MailHops"
+  }, 
+  "appDesc": {
+    "message": "MailHops mapeia a rota um e-mail viajou para chegar até você . Usando GeoIP ele também exibe a distância percorrida , juntamente com a localização (cidade , estado e país ) do remetente."
+  }
+}

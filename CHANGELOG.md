@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.6.8 - 2019-12-09
+
+### Added
+- Support for Thunderbird 68.*
+
+# Change Log
+
 ## 3.2 - 2019-04-03
 
 ### Added
