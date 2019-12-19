@@ -8,7 +8,7 @@ var mailHops = {
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.6.8',
+      'version':'MailHops Plugin 3.7.0',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -329,7 +329,7 @@ mailHops.setupEventListener = function () {
 
 //preferences observers
 mailHops.registerObserver = function(){
-  var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefService ) ;
+  var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService ( Ci.nsIPrefService ) ;
   mailHops._branch = prefService.getBranch("mail.mailHops.");
   if (!("addObserver" in mailHops._branch))
     mailHops._branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
@@ -354,7 +354,7 @@ mailHops.observe = function ( aSubject , aTopic , aData )
 mailHops.getCharPref = function ( strName , strDefault ){
   var value;
   if (!pref){
-      var pref = Components.classes["@mozilla.org/preferences-service;1"].getService( Components.interfaces.nsIPrefBranch ) ;
+      var pref = Components.classes["@mozilla.org/preferences-service;1"].getService( Ci.nsIPrefBranch ) ;
   }
   try {
     value = pref.getCharPref ( strName ) ;

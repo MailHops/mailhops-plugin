@@ -1,5 +1,5 @@
 if (!pref) {
-  var pref = Components.classes["@mozilla.org/preferences-service;1"].getService ( Components.interfaces.nsIPrefBranch ) ;
+  var pref = Components.classes["@mozilla.org/preferences-service;1"].getService ( Ci.nsIPrefBranch ) ;
 }
 
 var mailHopPreferences = {
@@ -196,6 +196,7 @@ var mailHopPreferences = {
              } else if(!!data.error){
                 self.planError(xmlhttp.status+': '+data.error.message);
              }
+             mailHopPreferences.savePreferences();
            } catch (e){
              self.planError('Connection Failed to\n '+e+'!');
            }
