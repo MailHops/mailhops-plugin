@@ -98,6 +98,9 @@ var mailHopPreferences = {
     document.getElementById("mailhop.font_size").addEventListener("input", function () {
       self.previewBar.style.fontSize = this.value;
     });
+    document.addEventListener("dialogaccept", function(event) {
+      mailHopPreferences.savePreferences();
+    });
   },
   savePreferences: function() {
     pref.setCharPref("mail.mailHops.lang", document.getElementById("mailhop.lang").selectedItem.value);

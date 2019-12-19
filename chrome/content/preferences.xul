@@ -12,7 +12,6 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept,cancel"
 	onload="mailHopPreferences.loadPreferences();"
-	ondialogaccept="return mailHopPreferences.savePreferences();"
 	title="MailHops &mailhops_preferences;">
 
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops-1-utils.js"/>
