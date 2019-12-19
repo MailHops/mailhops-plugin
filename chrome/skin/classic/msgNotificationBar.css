@@ -138,7 +138,12 @@
 	padding: 0px 9px 9px 9px;
 	width: 75px;
 	font-weight: 400;
-	border-radius: .28571429rem;
-	box-shadow: 0 0 0 1px #1b1c1d inset!important;
-  color: #1b1c1d!important;
+	color: #777!important;
+	cursor: pointer;
+}
+
+#mailhopsNoficationBox .toolbarbutton:hover {
+	color: #333;
+	background-color: #e5e5e5;
+	border-radius: 10px;
 }
