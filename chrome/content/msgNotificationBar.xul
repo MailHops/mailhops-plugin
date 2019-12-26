@@ -17,10 +17,10 @@
 				<hbox class="messageDetails">
 			    <image id="mailhopsLogo" src="chrome://mailhops/content/images/mailhops32.png" tooltiptext="&mailhops_route_nav_options_label;"/>
 					
-          <label id="mailHopsAccountMessage" class="bar-link" value="Join today"></label>
-
-       		<hbox id="mailhopsResult" flex="1">
-
+          <hbox id="mailhopsResult" flex="1">
+						
+						<label id="mailHopsAccountMessage" class="bar-link" value="Join today" is="text-link" href="https://www.mailhops.com/#pricing"></label>
+						
        			<label id="mailhopsResultText" class="bar-link"></label>
 
             <label id="mailhopsResultWeather" class="bar-link"></label>

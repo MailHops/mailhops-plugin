@@ -100,12 +100,7 @@
 }
 
 #mailHopsAccountMessage {
-	border-radius: 10px;
-	display: none;
-	padding: 10px;
-	border: 1px solid #CCC;
-	color: #777;
-	background-color: #FFF;
+	display: none;	
 }
 
 #mailhopsDataPaneDetails {
@@ -146,7 +141,8 @@
 	cursor: pointer;
 }
 
-#mailhopsNoficationBox .toolbarbutton:hover {
+#mailhopsNoficationBox .toolbarbutton:hover, 
+#mailhopsNoficationBox .toolbarbutton.active {
 	color: #333;
 	background-color: #e5e5e5;
 	border-radius: 10px;

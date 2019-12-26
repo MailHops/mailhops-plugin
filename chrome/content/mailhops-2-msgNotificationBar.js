@@ -26,8 +26,7 @@ var mailHopsDisplay =
     this.resultDetails = document.getElementById("mailhopsDataPaneDetails");
     this.mailHopsAccountMessage = document.getElementById("mailHopsAccountMessage");
     this.mailhopsDataPaneHops = document.getElementById("mailhopsDataPaneHops");
-    
-    
+        
     //auth
     this.mailhopsDataPaneSPF = document.getElementById("mailhopsDataPaneSPF");
     this.mailhopsDataPaneDKIM = document.getElementById("mailhopsDataPaneDKIM");
@@ -61,6 +60,7 @@ var mailHopsDisplay =
     });
 
     this.mailhopsDataPaneHops.addEventListener("click", function () {
+      this.classList.toggle('active');
       if(mailHopsDisplay.resultDetails.style.display !== 'block')
         mailHopsDisplay.resultDetails.style.display = 'block';
       else
