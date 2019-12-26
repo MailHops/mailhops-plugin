@@ -32,7 +32,7 @@
 				<groupbox flex="1">
 					<caption label="MailHops &mailhops_tab_member_label;"/>
 					<description>
-						API Key <label id="mailhops-membership-link" class="text-link plain" value="Join MailHops" href="https://mailhops.com"/>
+						API Key <label xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" is="text-link" id="mailhops-membership-link" class="text-link plain" value="Join MailHops" href="https://mailhops.com"/>
 					</description>
 					<hbox align="center">
 						<textbox id="mailhop.api_key" placeholder="Enter your MailHops API Member Key" width="500"/>
@@ -485,7 +485,7 @@
 	    	<groupbox flex="1">
 					<caption label="&mailhops_tab_display_label;"/>
 					<description>
-							Use any <label class="text-link plain" href="https://en.wikipedia.org/wiki/Web_colors" value="HTML color name or Hex code"/>.
+							Use any <label xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" is="text-link" class="text-link plain" href="https://en.wikipedia.org/wiki/Web_colors" value="HTML color name or Hex code"/>.
 					</description>
 
 					<description id="display_preview" style="font-size: 14px; color: #777; background: #FFF;">
@@ -565,7 +565,7 @@
 					</grid>
 
 					<checkbox id="mailhop.hide_compact" label="Hide MailHops Bar when CompactHeaders are collapsed" checked="false"/>
-					<label class="text-link plain" href="https://addons.mozilla.org/en-us/thunderbird/addon/compactheader/" value="CompactHeaders Add-on"/>
+					<label xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" is="text-link" class="text-link plain" href="https://addons.mozilla.org/en-us/thunderbird/addon/compactheader/" value="CompactHeaders Add-on"/>
 
 				</groupbox>
 	    </tabpanel>
@@ -601,7 +601,7 @@
 				<spacer/>
 
 				<description>
-					MailHops API uses <label class="text-link plain" value="DarkSky" href="https://darksky.net"/> to get the weather of the sender, register for an API Key to enable this feature.
+					MailHops API uses <label xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" is="text-link" class="text-link plain" value="DarkSky" href="https://darksky.net"/> to get the weather of the sender, register for an API Key to enable this feature.
 				</description>
 
 				<textbox id="mailhop.fkey" value="" placeholder="Enter your DarkSky API Key"/>

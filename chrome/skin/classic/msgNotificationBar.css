@@ -1,6 +1,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
- #mailhopsResultText { padding-left:20px; background-repeat: no-repeat; }
+#mailhopsResultText { padding-left:20px; background-repeat: no-repeat; }
 
 #mailhopsNoficationBox menuitem .menu-iconic-icon { width: 16px; height: 11px; }
 
@@ -36,10 +36,14 @@
   font-size: 14px;
   line-height: 24px;
   font-weight: normal;
-  background: #5E7A9B;
-	display: block;
 	position: relative;
-	padding: 5px;
+	max-height: 50px;
+	width: 100%;
+	margin: auto;
+}
+
+#mailhopsNotification {
+	background: #f7f7f7;
 }
 
 #mailhopsResult {
@@ -111,7 +115,7 @@
 	border: 1px solid #CCC;
 	color: #333;
 	background-color: #FFF;
-  position: absolute;
+  position: fixed;
 	margin-top: 0;
 	z-index: 10000;
 }
@@ -146,4 +150,9 @@
 	color: #333;
 	background-color: #e5e5e5;
 	border-radius: 10px;
+}
+
+#mailhopsNoficationBox .messageCloseButton, 
+#mailhopsNoficationBox .messageDetails:nth-child(2) {
+	display: none!important;
 }

@@ -12,9 +12,11 @@
 	<script type="application/x-javascript" src="chrome://mailhops/content/mailhops-3.js"/>
 
 	<hbox id="mail-notification-top">
-		<stack id="mailhopsNoficationBox" collapsed="false" notificationside="top">
-			    <image id="mailhopsLogo" src="chrome://mailhops/content/images/mailhops32.png" width="32" height="32" tooltiptext="&mailhops_route_nav_options_label;"/>
-
+		<stack id="mailhopsNoficationBox" collapsed="false" notificationside="top" class="notificationbox-stack" flex="1">
+		<notification id="mailhopsNotification" class="animated" value="remoteContent" type="info">
+				<hbox class="messageDetails">
+			    <image id="mailhopsLogo" src="chrome://mailhops/content/images/mailhops32.png" tooltiptext="&mailhops_route_nav_options_label;"/>
+					
           <label id="mailHopsAccountMessage" class="bar-link" value="Join today"></label>
 
        		<hbox id="mailhopsResult" flex="1">
@@ -41,6 +43,8 @@
             <label id="mailhopsUnsubscribe" class="bar-link unsubscribe" value="&mailhops_unsubscribe;"></label>
 
        		</hbox>
+				</hbox>
+				</notification>
 		</stack>
 	</hbox>
 
