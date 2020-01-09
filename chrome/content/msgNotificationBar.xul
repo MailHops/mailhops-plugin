@@ -32,7 +32,7 @@
 
     				<toolbarbutton id="mailhopsDataPaneRefresh" label="&mailhops_route_nav_refresh_label;" class="toolbarbutton"></toolbarbutton>
 
-    				<label id="mailhopsDataPaneMailer" class="auth-item" value="" tooltiptext="Mailer"></label>
+    				<label id="mailhopsDataPaneMailer" class="auth-item" is="text-link" value="" tooltiptext="Mailer"></label>
 
     				<label id="mailhopsDataPaneSPF" class="auth-item" value="" tooltiptext="SPF"></label>
 
