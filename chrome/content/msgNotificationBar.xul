@@ -29,9 +29,15 @@
        			    <toolbarbutton id="mailhopsDataPaneHops" label="&mailhops_hops;" class="toolbarbutton"></toolbarbutton>
                 <vbox id="mailhopsDataPaneDetails"></vbox>
             </hbox>
-
-    				<toolbarbutton id="mailhopsDataPaneRefresh" label="&mailhops_route_nav_refresh_label;" class="toolbarbutton"></toolbarbutton>
-
+						<toolbarseparator />
+						<hbox id="mailhopsRefreshBox">
+    					<toolbarbutton id="mailhopsDataPaneRefresh" label="&mailhops_route_nav_refresh_label;" class="toolbarbutton"></toolbarbutton>
+						</hbox>
+						<toolbarseparator />
+						<hbox id="mailhopsUnsubscribeBox">
+							<toolbarbutton id="mailhopsUnsubscribe" label="&mailhops_unsubscribe;" class="toolbarbutton"></toolbarbutton>
+						</hbox>
+						<toolbarseparator />
     				<label id="mailhopsDataPaneMailer" class="auth-item" is="text-link" value="" tooltiptext="Mailer"></label>
 
     				<label id="mailhopsDataPaneSPF" class="auth-item" value="" tooltiptext="SPF"></label>
@@ -39,9 +45,7 @@
     				<label id="mailhopsDataPaneDKIM" class="auth-item" value="" tooltiptext="DKIM"></label>
 
     				<label id="mailhopsDataPaneDNSBL" class="bar-link auth-item" value="" tooltiptext="DNSBL"></label>
-
-            <label id="mailhopsUnsubscribe" class="bar-link unsubscribe" value="&mailhops_unsubscribe;"></label>
-
+						
        		</hbox>
 				</hbox>
 				</notification>

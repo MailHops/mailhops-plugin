@@ -131,18 +131,25 @@
   margin-left: 22px;
 }
 
+#mailhopsNoficationBox toolbarseparator {
+	appearance: none;
+	-moz-appearance: none;
+	margin: 3px 0px 3px 0px!important;
+}
+
 #mailhopsNoficationBox .toolbarbutton {
 	font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  margin: 0 .25em 0 0;
-	padding: 0px 9px 9px 9px;
-	width: 75px;
-	font-weight: 400;
+  font-weight: 400;
+	padding: 0 4px 0 4px;
+	margin: unset!important;
 	color: #777!important;
 	cursor: pointer;
 }
 
-#mailhopsNoficationBox .toolbarbutton:hover, 
-#mailhopsNoficationBox .toolbarbutton.active {
+#mailhopsNoficationBox #mailhopsHopsBox:hover, 
+#mailhopsNoficationBox #mailhopsRefreshBox:hover, 
+#mailhopsNoficationBox #mailhopsUnsubscribeBox:hover, 
+#mailhopsNoficationBox #mailhopsHopsBox.active {
 	color: #333;
 	background-color: #e5e5e5;
 	border-radius: 10px;

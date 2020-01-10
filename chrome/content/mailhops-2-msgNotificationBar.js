@@ -60,7 +60,7 @@ var mailHopsDisplay =
     });
 
     this.mailhopsDataPaneHops.addEventListener("click", function () {
-      this.classList.toggle('active');
+      this.parentElement.classList.toggle('active');
       if(mailHopsDisplay.resultDetails.style.display !== 'block')
         mailHopsDisplay.resultDetails.style.display = 'block';
       else
