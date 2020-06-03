@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
-  "version": "3.7.6",
+  "version": "3.8.0",
   "author": "Hopsware LLC",
   "developer": {
     "name": "Andrew Van Tassel",

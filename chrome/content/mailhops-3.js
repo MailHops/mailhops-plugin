@@ -8,7 +8,7 @@ var mailHops = {
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.7.6',
+      'version':'MailHops Plugin 3.8.0',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
