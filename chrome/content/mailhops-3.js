@@ -8,7 +8,7 @@ var mailHops = {
   msgURI:	null,
   isLoaded: false,
   options: {
-      'version':'MailHops Plugin 3.8.0',
+      'version':'MailHops Plugin 3.8.1',
       'lan':'en',
       'unit':'mi',
       'api_http':'https://',
@@ -126,8 +126,7 @@ mailHops.StreamListener =
     mailHops.headers = Components.classes["@mozilla.org/messenger/mimeheaders;1"].createInstance ( Components.interfaces.nsIMimeHeaders ) ;
     mailHops.headers.initialize(this.content, this.content.length);
     mailHops.headerData = this.content;
-    console.log(this.content);
-    mailHops.getRoute() ;
+    mailHops.getRoute();
   }
 };
 

@@ -331,11 +331,11 @@ var mailHopsDisplay =
 
           if(label !== ''){
             hop = document.createElement('label');
-            if(message.secure.indexOf(response.route[i].ip) !== -1)
-              hop.style.backgroundImage = "url('chrome://mailhops/content/images/auth/secure.png')";
-            else if(!response.route[i].client)
-              hop.style.backgroundImage = "url('chrome://mailhops/content/images/auth/not_secure.png')";
-            hop.setAttribute('class','host');
+            if (message.secure.indexOf(response.route[i].ip) !== -1) {
+              hop.style.backgroundImage = "url('chrome://mailhops/content/images/auth/lock.png')";
+              hop.setAttribute('tooltip','Used TLS or SSL');
+            }
+            hop.setAttribute('class', 'host');
             hop.setAttribute('value',label);
             this.resultDetails.appendChild(hop);
           }
