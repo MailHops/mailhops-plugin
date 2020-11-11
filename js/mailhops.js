@@ -15,9 +15,9 @@ const MailHops = {
     unit: 'mi',    
     api_http: 'https://',    
     api_host: 'api.Mailhops.com',    
-    debug: true,    
+    debug: false,    
     country_tag: false,    
-    travel_time_junk: false,    
+    travel_time_junk: true,    
     country_filter: []    
   },
   message: {
@@ -58,7 +58,10 @@ MailHops.init = function(reload)
     }
     if (data.unit) {
       MailHops.options.unit = data.unit;
-    }    
+    }   
+    if (typeof data.travel_time_junk != 'undefined') {
+      MailHops.options.travel_time_junk = data.travel_time_junk == 'on' ? true : false;
+    } 
     MailHops.LOG('load MailHops prefs');    
   }, error => {
     MailHops.LOG('Error loading MailHops prefs');      
@@ -95,7 +98,7 @@ MailHops.getRoute = function () {
   //empty secure and time
   MailHops.message.secure = [];
   MailHops.message.time = null;
-  MailHops.message.auth = MailHops.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF );
+  MailHops.message.auth = MailHops.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF, headListUnsubscribe );
 
   //loop through the received headers and parse for IP addresses
   if (Boolean(headReceived)){
@@ -241,13 +244,14 @@ MailHops.error = function(status, data){
     browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");
 }
 
-MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf) {
+MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf, header_unsubscribe) {
   let auth = [];
   //SPF
   if(header_spf){
     header_spf = header_spf.replace(/^\s+/, "");
     auth.push({
       type: 'SPF',
+      color: 'green',
       icon: '/images/auth/' + headerSPFArr[0] + '.png',
       copy: header_spf + '\n' + mailHopsUtils.spf(headerSPFArr[0])
     });    
@@ -275,6 +279,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
       var dkimArr=dkim_result.split(' ');
       auth.push({
         type: 'DKIM',
+        color: 'green',
         icon: '/images/auth/' + dkimArr[0].replace('dkim=','') + '.png',
         copy: dkim_result + '\n' + mailHopsUtils.dkim(dkimArr[0].replace('dkim=', ''))        
       });
@@ -284,11 +289,20 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
       var spfArr = spf_result.split(' ');
       auth.push({
         type: 'SPF',
+        color: 'green',
         icon: '/images/auth/' + spfArr[0].replace('spf=','') + '.png',
         copy: spf_result + '\n' + mailHopsUtils.spf(spfArr[0].replace('spf=', ''))        
       });
     }
   }   
+  if (header_unsubscribe) {
+    auth.push({
+      type: 'Unsubscribe',
+      color: 'grey',
+      link: header_unsubscribe.replace('<','').replace('>','')
+    });
+  }
+  console.log(auth);
   return auth;
 }
 
@@ -360,5 +374,3 @@ MailHops.tagResults = function(results, route){
     MailHops.LOG("Error adding CountryCode tag: " + e);      
   }
 };
-
-MailHops.init();

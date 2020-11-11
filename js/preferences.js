@@ -1,6 +1,7 @@
 var mailHopPreferences = {
   api_key: '', //api key
   valid_api_key: false,
+  distinace_unit: 'mi',
   owm_key: '', //OpenWeatherMap.org api key
 
   loadPreferences: function(){
@@ -8,31 +9,76 @@ var mailHopPreferences = {
     this.api_key = document.getElementById("mailhop.api_key");
     this.owm_key = document.getElementById("mailhop.owm_key");
     
-    document.getElementById("save").addEventListener("click", function () {
+    document.getElementById("save").addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
       self.saveAPIKey();
     });
+    
+    document.getElementById("save-options").addEventListener("click", function () {
+      self.savePreferences();
+    });
+    
+    document.getElementById("step_one").addEventListener("click", function () {
+      document.getElementById("step_two").classList.remove('active');
+      this.classList.add('active');
+      document.getElementById("step_settings").style.display = 'none';
+      document.getElementById("step_api_keys").style.display = 'block';
+      document.getElementById("saved_message").style.display = 'none';   
+    });
+    
+    document.getElementById("step_two").addEventListener("click", function () {
+      document.getElementById("step_one").classList.remove('active');
+      this.classList.add('active');      
+      document.getElementById("step_settings").style.display = 'block';
+      document.getElementById("step_api_keys").style.display = 'none';     
+      document.getElementById("saved_message").style.display = 'none';   
+    });
+    
     
     var getting = browser.storage.local.get();
     getting.then(data => {
       if (data.api_key) {
         self.api_key.value = data.api_key;
         document.getElementById("join-link").innerHTML = 'My Account';
-        document.getElementById("join-link").setAttribute('href','https://mailhops.com/account/'+data.api_key);
+        document.getElementById("join-link").setAttribute('href', 'https://mailhops.com/account/' + data.api_key);
+        this.saveAPIKey(true);
       }
       if (data.owm_key) {
         self.owm_key.value = data.owm_key;
+      }
+      if (data.distinace_unit) {
+        if (data.distinace_unit == "mi")
+          document.getElementById("unit_mi").setAttribute('checked', 'checked');
+        else
+          document.getElementById("unit_km").setAttribute('checked', 'checked');
+      } else {
+        document.getElementById("unit_mi").setAttribute('checked', 'checked');
+      }
+      console.log(data.travel_time_junk)
+      if (typeof data.travel_time_junk != 'undefined') {
+        if (data.travel_time_junk == 'on')
+          document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');
+        else
+          document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
+      } else {
+        document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');
       }
     }, error => {
       self.planError(JSON.stringify(error));
     });
   },
   
-  savePreferences: function () {
+  savePreferences: function (init) {
     var self = this;
     browser.storage.local.set({
       api_key: self.api_key.value.trim(),
-      owm_key: self.owm_key.value.trim()
+      owm_key: self.owm_key.value.trim(),
+      unit: document.querySelector('input[name="unit"]:checked').value,
+      travel_time_junk: document.querySelector('input[name="travel_time_junk"]:checked').value,
     });    
+    if(!init)
+      document.getElementById("saved_message").style.display = 'block';    
     return true;
   },
 
@@ -46,7 +92,7 @@ var mailHopPreferences = {
     document.getElementById("rate-remaining").innerHTML = '';
     document.getElementById("rate-reset").innerHTML = '';    
   },
-  saveAPIKey: function() {
+  saveAPIKey: function(init) {
     if(Boolean(this.api_key) && this.api_key.value != ''){
       var xmlhttp = new XMLHttpRequest();
       var apiBase = 'https://api.mailhops.com',
@@ -81,13 +127,14 @@ var mailHopPreferences = {
             else if (!!data.error) {
                 self.planError(xmlhttp.status+': '+data.error.message);
              }
-             mailHopPreferences.savePreferences();
+             mailHopPreferences.savePreferences(init);
            } catch (e){
              self.planError('Connection Failed to\n '+e+'!');
            }
          }
        };
-     xmlhttp.send(null);
+      xmlhttp.send(null);
+      return null;
    } else {
      this.planError('Enter a valid API key above.');
    }

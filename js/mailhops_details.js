@@ -13,12 +13,6 @@ document.getElementById("mh-options-button").addEventListener("click", function 
   browser.tabs.create({ url: '/content/preferences.html' });  
 });
 
-document.getElementById("mh-close-button").addEventListener("click", function () {
-  setTimeout(function () {
-    window.close();
-  }, 10);
-});
-
 function updateContent(msg) {    
   
   const route = msg.response.route || [];
@@ -78,7 +72,10 @@ function updateContent(msg) {
     var auth = '';
     if (msg.message.auth.length) {
       for (var a = 0; a < msg.message.auth.length; a++){
-        auth += '<label class="tiny ui label"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';        
+        if(msg.message.auth[a].icon)
+          auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';        
+        else if(msg.message.auth[a].link)
+          auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';        
       }
     }
     // append child
@@ -95,8 +92,8 @@ function updateContent(msg) {
     document.getElementById('hop-message-header').innerHTML += ' over '+MailHopsUtils.getDistance(sender, client, unit) + ' ' + unit;    
   }
   // hop list
-  document.getElementById('hop-list').innerHTML = items.join('') + distance;
-  
+  document.getElementById('hop-list').innerHTML = items.join('');
+  document.getElementById('mh-auth').innerHTML = auth;
 }
 
 function doOpenURL(url) {
