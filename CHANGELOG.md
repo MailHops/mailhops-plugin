@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.2 - 2020-11-11
+
+- TB78 Updates
+
 ## 4.0.0 - 2020-11-10
 - Support for Thunderbird 78.*
 - Complete rewrite of code structure 
