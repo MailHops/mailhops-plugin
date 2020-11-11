@@ -4,4 +4,4 @@ filename='mailhops'
 
 rm -f $filename.zip
 
-zip -r $filename.zip ./ -x ./images/* -i *.js *.xul *.png *.gif *.css *.json *.dtd _locales/*/messages.json *.manifest
+zip -r $filename.zip ./ -i *.js *.xhtml *.html *.png *.svg *.gif *.css *.json _locales/*/messages.json

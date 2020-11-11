@@ -13,7 +13,7 @@ MailHops is an email route API. It does a few things:
 
 ### MailHops Message View
 
-<img src="images/screenshot-thunderbird.png" alt="MailHops Message View" title="MailHops Message View" style="border: 1px solid #777;" />
+<img src="images/screenshot-tb78-view.png" alt="MailHops Message View" title="MailHops Message View" style="border: 1px solid #777;" />
 
 ### MailHops Route Map
 
@@ -21,7 +21,7 @@ MailHops is an email route API. It does a few things:
 
 ### MailHops Options
 
-<img src="images/screenshot-display.png" alt="MailHops Options" title="MailHops Options" style="border: 1px solid #777;" />
+<img src="images/screenshot-tb78-preferences.png" alt="MailHops Options" title="MailHops Options" style="border: 1px solid #777;" />
 
 ### MailHops Dashboard
 

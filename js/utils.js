@@ -1,4 +1,4 @@
-var mailHopsUtils = {
+const MailHopsUtils = {
 
 countries: ["ad","ae","af","ag","ai","al","am","an","ao","ar","as","at","au","aw","ax","az","ba","bb","bd","be","bf","bg","bh","bi","bj","bm","bn","bo","br","bs","bt","bv","bw","by","bz","ca","catalonia","cc","cd","cf","cg","ch","ci","ck","cl","cm","cn","co","cr","cs","cu","cv","cx","cy","cz","de","dj","dk","dm","do","dz","ec","ee","eg","eh","england","er","es","et","europeanunion","fam","fi","fj","fk","fm","fo","fr","ga","gb","gd","ge","gf","gh","gi","gl","gm","gn","gp","gq","gr","gs","gt","gu","gw","gy","hk","hm","hn","hr","ht","hu","id","ie","il","in","io","iq","ir","is","it","jm","jo","jp","ke","kg","kh","ki","km","kn","kp","kr","kw","ky","kz","la","lb","lc","li","lk","lr","ls","lt","lu","lv","ly","ma","mc","md","me","mg","mh","mk","ml","mm","mn","mo","mp","mq","mr","ms","mt","mu","mv","mw","mx","my","mz","na","nc","ne","nf","ng","ni","nl","no","np","nr","nu","nz","om","pa","pe","pf","pg","ph","pk","pl","pm","pn","pr","ps","pt","pw","py","qa","re","ro","rs","ru","rw","sa","sb","sc","scotland","sd","se","sg","sh","si","sj","sk","sl","sm","sn","so","sr","st","sv","sy","sz","tc","td","tf","tg","th","tj","tk","tl","tm","tn","to","tr","tt","tv","tw","tz","ua","ug","um","us","uy","uz","va","vc","ve","vg","vi","vn","vu","wales","wf","ws","ye","yt","za","zm","zw"],
 
@@ -110,36 +110,12 @@ addCommas: function(nStr){
    return x1 + x2;
 },
 
-launchExternalURL: function(url){
-  var messenger = Components.classes["@mozilla.org/messenger;1"].createInstance().QueryInterface(Components.interfaces.nsIMessenger);
-  messenger.launchExternalURL(url);
-},
-
-launchWhoIs: function(ip){
-   this.launchExternalURL('https://www.mailhops.com/whois/' + ip);
-},
-
 launchSpamHausURL: function(ip){
    this.launchExternalURL('http://www.spamhaus.org/query/bl?ip=' + ip);
 },
 
-launchMap: function(route,options){
-
-   if(route != ''){
-      var lookupURL=this.getAPIUrl(options)+'/map/?'+this.getAPIUrlParams(options)+'&l='+options.lan+'&u='+options.unit+'&r='+String(route);
-
-    if(options.fkey != '')
-      lookupURL += '&fkey='+options.fkey;
-
-    if(options.map_provider)
-      lookupURL += '&mp='+options.map_provider;
-
-      window.openDialog("chrome://mailhops/content/mailhopsMap.xul","MailHops",'toolbar=no,location=no,directories=no,menubar=yes,scrollbars=yes,close=yes,width=1024,height=768,resizable=yes', {src: lookupURL});
-   }
-},
-
-getAPIUrl: function(options){
-  return options.api_http+options.api_host+'/v2';
+getAPIUrl: function(){
+  return 'https://api.mailhops.com/v2';
 },
 
 getAPIUrlParams: function(options){
@@ -178,14 +154,14 @@ getWeatherIcon: function(icon){
 },
 
 getDistance: function(from, to, unit) {
-    if(!from || !to || !from['lat'] || !to['lat'])
+    if(!from || !to || !from.coords)
       return 0;
 
-		var lat = parseFloat(from['lat']);
-		var lon1 = parseFloat(from['lng']);
-		var lat2 = parseFloat(to['lat']);
-		var lon2 = parseFloat(to['lng']);
-    unit = unit || 'mi';//mi or km
+		var lat = parseFloat(from.coords[1]);
+		var lon1 = parseFloat(from.coords[0]);
+		var lat2 = parseFloat(to.coords[1]);
+		var lon2 = parseFloat(to.coords[0]);
+    unit = unit || 'mi'; //mi or km
 
 		lat *= (Math.PI/180);
 		lon1 *= (Math.PI/180);
@@ -197,17 +173,24 @@ getDistance: function(from, to, unit) {
 		if (unit == 'mi') {
 			dist = (dist / 1.609344);
 		}
-		return dist;
+		return this.addCommas(Math.round(dist));
 	},
-
-  getOriginatingCountryCode: function(route) {
+  getSender: function(route) {
     if(route && route.length){
-      for(var r=0; r<route.length; r++){
-        if(typeof route[r].local == 'undefined' && typeof route[r].client == 'undefined' && !!route[r].countryCode){
-          return route[r].countryCode;
+      for (var r = 0; r < route.length; r++){        
+        if (typeof route[r].local == 'undefined' &&          
+          typeof route[r].client == 'undefined' &&
+          Boolean(route[r].countryCode)) {
+          // set icon
+          route[r].icon = '/images/flags/' + route[r].countryCode.toLowerCase() + '.png';
+          // set title
+          route[r].title = (route[r].city && route[r].state)
+            ? `${route[r].city}, ${route[r].state}`
+            : (route[r].city ? `${route[r].city}, ${route[r].countryCode}` : route[r].countryName);
+          return route[r];          
         }
-      };
+      }
     }
-    return '';
+    return null;
   }
 };

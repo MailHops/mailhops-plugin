@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7/semantic.min.css" integrity="sha512-g/MzOGVPy3OQ4ej1U+qe4D/xhLwUn5l5xL0Fa7gdC258ZWVJQGwsbIR47SWMpRxSPjD0tfu/xkilTy+Lhrl3xg==" crossorigin="anonymous" />
+  </head>
+  <body style="padding: 20px;">	
+		<img src="/images/mailhops-logo.png" width="300"/>
+				
+		<div class="ui divider"></div>
+		
+		<form class="ui form">
+			<div class="field">
+				<label>MailHops API Key</label>
+				<input type="text" id="mailhop.api_key" placeholder="Enter your MailHops API Key" style="width: 50%"/>
+				<br/>
+				<a href="https://www.mailhops.com/#pricing" id="join-link"  target="_blank">Join MailHops</a>
+			</div>
+			<div class="field">
+				<label>OpenWeatherMap.org API Key</label>
+				<input type="text" id="mailhop.owm_key" value="" placeholder="Enter your OpenWeatherMap API Key" style="width: 50%"/>
+				<br/>
+				MailHops API uses <a href="https://.openweathermap.org" target="_blank">OpenWeatherMap</a> to get the weather of the sender
+					<br/>Register for an API Key to enable this feature.
+			</div>			
+			<button class="ui primary button" id="save">Save</button>
+		</form>
+					
+		<h3>MailHops Plan Info</h3>
+		<div class="ui divider"></div>
+		<p>
+			<label id="plan-error" class="ui red basic label" style="display: none;"></label><br/>
+			<label id="plan"></label><br/>
+			<label id="status"></label><br/>
+			<label id="rate-limit"></label><br/>
+			<label id="rate-remaining"></label><br/>
+			<label id="rate-reset"></label><br/>
+		</p>
+						
+		<script src="/js/preferences.js"></script>
+
+  </body>
+</html>

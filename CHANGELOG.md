@@ -1,5 +1,10 @@
 # Change Log
 
+## 4.0.0 - 2020-11-10
+- Support for Thunderbird 78.*
+- Complete rewrite of code structure 
+  - (thanks to Jürgen Ernst and his [Display mail user agent](https://addons.thunderbird.net/ja/thunderbird/addon/display-mail-user-agent-t/) for some direction)
+
 ## 3.8.0 - 2020-06-02
 
 ### Added

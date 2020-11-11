@@ -1,0 +1,61 @@
+[
+  {
+    "namespace": "mailHops",
+    "functions": [
+      {
+        "name": "insertBefore",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "basePath",
+            "type": "string"
+          },
+          {
+            "name": "iconPath",
+            "type": "string",
+            "description": "path of icon."
+          },
+          {
+            "name": "iconText",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "target",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "move",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "target",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "remove",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          }
+        ]
+      }
+    ]
+  }
+]
