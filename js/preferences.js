@@ -54,8 +54,7 @@ var mailHopPreferences = {
           document.getElementById("unit_km").setAttribute('checked', 'checked');
       } else {
         document.getElementById("unit_mi").setAttribute('checked', 'checked');
-      }
-      console.log(data.travel_time_junk)
+      }      
       if (typeof data.travel_time_junk != 'undefined') {
         if (data.travel_time_junk == 'on')
           document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');

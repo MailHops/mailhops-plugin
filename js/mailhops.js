@@ -7,6 +7,8 @@
 const MailHops = {
   msgURI:	null,
   isLoaded: false,
+  loading: false,
+  previousId: null,
   options: {
     version: 'MailHops Plugin 4.0.0',    
     api_key: '',
@@ -15,7 +17,7 @@ const MailHops = {
     unit: 'mi',    
     api_http: 'https://',    
     api_host: 'api.Mailhops.com',    
-    debug: false,    
+    debug: true,    
     country_tag: false,    
     travel_time_junk: true,    
     country_filter: []    
@@ -31,7 +33,8 @@ const MailHops = {
       icon: '/images/refresh.png'
       , title: 'Loading...'
       , description: ''
-    }
+    },
+    error: ''
   },
   response: {},
   meta: {}
@@ -39,12 +42,15 @@ const MailHops = {
 
 MailHops.LOG = function(msg) {
   if(!MailHops.options.debug)
-    return;
-  console.log('MailHops', msg);
+    return;  
 };
 
-MailHops.init = function(reload)
+MailHops.init = function(id, headers)
 {
+  // prevent multiple loading
+  if (id == MailHops.previousId) return;
+  previousId = id;
+  
   var getting = browser.storage.local.get();
   getting.then(data => {
     if (data.api_key) {
@@ -62,13 +68,34 @@ MailHops.init = function(reload)
     if (typeof data.travel_time_junk != 'undefined') {
       MailHops.options.travel_time_junk = data.travel_time_junk == 'on' ? true : false;
     } 
-    MailHops.LOG('load MailHops prefs');    
-  }, error => {
-    MailHops.LOG('Error loading MailHops prefs');      
+    MailHops.LOG('load MailHops prefs');  
+    // reset message
+    MailHops.message = {
+      id: id
+      , map_url: ''
+      , time: null
+      , secure: []
+      , headers: headers
+      , auth: []
+      , sender: {
+        icon: '/images/refresh.png'
+        , title: 'Loading...'
+        , description: ''
+      },
+      error: ''
+    };
+    MailHops.getRoute();
+  }, (error) => {
+      MailHops.LOG('Error loading MailHops prefs');   
+      MailHops.loading = false;
   });
+  
 };
 
 MailHops.getRoute = function () {
+  if (MailHops.loading) return;
+  
+  MailHops.loading = true;
   // set loading icon
   browser.messageDisplayAction.setPopup({ popup: '' });
   browser.messageDisplayAction.setIcon({ path: '/images/refresh.png' });
@@ -228,11 +255,15 @@ MailHops.clear = function () {
   };
   browser.messageDisplayAction.setIcon({ path: MailHops.message.sender.icon });
   browser.messageDisplayAction.setTitle({ title: MailHops.message.sender.title });
-  if (browser.mailHopsUI)    
-    browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");
+  if (browser.mailHopsUI) {
+    browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");    
+  }
+  MailHops.isLoaded = true;
+  MailHops.loading = false;
 }
 
-MailHops.error = function(status, data){  
+MailHops.error = function (status, data) {  
+  MailHops.message.error = (data && data.error && data.error.message) ? data && data.error.message : 'Service Unavailable';
   MailHops.message.sender = {
     title: (data && data.error && data.error.message) ? data && data.error.message : 'Service Unavailable',
     countryCode: '',
@@ -241,7 +272,7 @@ MailHops.error = function(status, data){
   browser.messageDisplayAction.setIcon({ path: MailHops.message.sender.icon });
   browser.messageDisplayAction.setTitle({ title: MailHops.message.sender.title });
   if (browser.mailHopsUI)
-    browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");
+    browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");    
 }
 
 MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf, header_unsubscribe) {
@@ -249,11 +280,12 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
   //SPF
   if(header_spf){
     header_spf = header_spf.replace(/^\s+/, "");
+    var headerSPFArr=header_spf.split(' ');
     auth.push({
       type: 'SPF',
       color: 'green',
       icon: '/images/auth/' + headerSPFArr[0] + '.png',
-      copy: header_spf + '\n' + mailHopsUtils.spf(headerSPFArr[0])
+      copy: header_spf + '\n' + MailHopsUtils.spf(headerSPFArr[0])
     });    
   } 
   //Authentication-Results
@@ -281,7 +313,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
         type: 'DKIM',
         color: 'green',
         icon: '/images/auth/' + dkimArr[0].replace('dkim=','') + '.png',
-        copy: dkim_result + '\n' + mailHopsUtils.dkim(dkimArr[0].replace('dkim=', ''))        
+        copy: dkim_result + '\n' + MailHopsUtils.dkim(dkimArr[0].replace('dkim=', ''))        
       });
     } 
     if(spf_result){
@@ -291,7 +323,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
         type: 'SPF',
         color: 'green',
         icon: '/images/auth/' + spfArr[0].replace('spf=','') + '.png',
-        copy: spf_result + '\n' + mailHopsUtils.spf(spfArr[0].replace('spf=', ''))        
+        copy: spf_result + '\n' + MailHopsUtils.spf(spfArr[0].replace('spf=', ''))        
       });
     }
   }   
@@ -301,8 +333,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
       color: 'grey',
       link: header_unsubscribe.replace('<','').replace('>','')
     });
-  }
-  console.log(auth);
+  }  
   return auth;
 }
 
@@ -342,8 +373,7 @@ var xmlhttp = new XMLHttpRequest();
             browser.mailHopsUI.insertBefore("", '/images/local.png', 'Local', "countryIcon", "expandedHeaders2");
         }
           //tag the result
-          MailHops.tagResults(data, data.response.route);
-          MailHops.isLoaded = true;          
+        MailHops.tagResults(data, data.response.route);        
   	   } else if(data.error){
           MailHops.LOG(JSON.stringify(data.error));
   	    	//display the error
@@ -352,8 +382,10 @@ var xmlhttp = new XMLHttpRequest();
      } catch(e){
        MailHops.LOG(e);
        MailHops.error();
-     }
+    }         
   }
+  MailHops.isLoaded = true;
+  MailHops.loading = false;
  };
  xmlhttp.send(null);
 };
@@ -371,6 +403,6 @@ MailHops.tagResults = function(results, route){
       MailHops.LOG( "Junk: Travel time match" );
     }
   } catch(e){
-    MailHops.LOG("Error adding CountryCode tag: " + e);      
+    MailHops.LOG("Error tagging travel_time_junk: " + e);      
   }
 };

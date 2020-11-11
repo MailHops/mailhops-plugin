@@ -19,11 +19,7 @@ messenger.messageDisplay.onMessageDisplayed.addListener((tabId, message) => {
   
   messenger.messages.getFull(message.id).then((messagePart) => {    
     // get route
-    MailHops.init();
-    MailHops.message.id = message.id;
-    MailHops.message.headers = messagePart.headers;
-    MailHops.message.display = true;
-    MailHops.getRoute();
+    MailHops.init(message.id, messagePart.headers);    
   });
   
 });

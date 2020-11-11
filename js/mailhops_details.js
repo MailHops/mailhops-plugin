@@ -3,7 +3,6 @@ port.postMessage({ command: "details" });
 
 port.onMessage.addListener(function(msg) {
   updateContent(msg);  
-  console.log(msg.message.map_url)
   document.getElementById("mh-map-button").addEventListener("click", function () {
     browser.tabs.create({ url: msg.message.map_url });  
   });
@@ -14,6 +13,15 @@ document.getElementById("mh-options-button").addEventListener("click", function 
 });
 
 function updateContent(msg) {    
+  
+  if (msg.message.error) {
+    document.getElementById('hop-message').classList.add('warning');
+    document.getElementById('mh-map-button').style.display = 'none';    
+    document.getElementById('hop-message-header').innerHTML = msg.message.error;
+    return;
+  }
+  document.getElementById('hop-message').classList.remove('warning');
+  document.getElementById('mh-map-button').style.display = 'inline-block';
   
   const route = msg.response.route || [];
   const sender = msg.message.sender || null;
@@ -46,11 +54,11 @@ function updateContent(msg) {
     var description = '<a href="https://mailhops.com/whois/' + route[i].ip + '" target="_blank" title="Who Is?">' + route[i].ip + '</a><br/>';
     
     if (msg.message.secure.indexOf(route[i].ip) !== -1) {
-      description += '<img src="/images/auth/lock.png" title="Used TLS or SSL" />';
+      description += '<img src="/images/auth/lock.png" title="Used TLS or SSL" /> ';
     }
     
     if (route[i].host)          
-        description += route[i].host;
+      description += route[i].host;
     if (route[i].whois && route[i].whois.descr)          
       description += route[i].whois.descr;
     if (route[i].whois && route[i].whois.netname)          
@@ -93,11 +101,9 @@ function updateContent(msg) {
   }
   // hop list
   document.getElementById('hop-list').innerHTML = items.join('');
-  document.getElementById('mh-auth').innerHTML = auth;
-}
-
-function doOpenURL(url) {
-  if (url) {
-    browser.tabs.create({ url: url });    
+  try {
+    document.getElementById('mh-auth').innerHTML = auth;    
+  } catch (error) {
+    console.error('MailHops', error);
   }
 }
