@@ -14,19 +14,19 @@ MailHops is an email route API. It does a few things:
 
 ### MailHops Message View
 
-<img src="images/screenshot-tb78-view.png" alt="MailHops Message View" title="MailHops Message View" style="border: 1px solid #777; width: 400px;" />
+<img src="images/screenshot-tb78-view.png" alt="MailHops Message View" title="MailHops Message View" style="border-radius: 10px; border: 1px solid #777;" width="300" />
 
 ### MailHops Route Map
 
-<img src="images/screenshot-map.png" alt="MailHops Route Map" title="MailHops Route Map" style="border: 1px solid #777; width: 400px;" />
+<img src="images/screenshot-map.png" alt="MailHops Route Map" title="MailHops Route Map" style="border-radius: 10px; border: 1px solid #777;" width="300"/>
 
 ### MailHops Options
 
-<img src="images/screenshot-tb78-preferences.png" alt="MailHops Options" title="MailHops Options" style="border: 1px solid #777; width: 400px;" />
+<img src="images/screenshot-tb78-preferences.png" alt="MailHops Options" title="MailHops Options" style="border-radius: 10px; border: 1px solid #777;" width="300"/>
 
 ### MailHops Dashboard
 
-<img src="images/screenshot-dashboard.png" alt="MailHops Dashboard" title="MailHops Dashboard" style="border: 1px solid #777; width: 400px;" />
+<img src="images/screenshot-dashboard.png" alt="MailHops Dashboard" title="MailHops Dashboard" style="border-radius: 10px; border: 1px solid #777;" width="300"/>
 
 ### Editing the code
 1. After you make changes you can run the [build.sh](build.sh) script
