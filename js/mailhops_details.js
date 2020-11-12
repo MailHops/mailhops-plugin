@@ -25,7 +25,7 @@ function updateContent(msg) {
   
   const route = msg.response.route || [];
   const sender = msg.message.sender || null;
-  const unit = msg.unit || "mi";
+  const unit = msg.options.unit || "mi";
   let client = null;
   let items = [];
   

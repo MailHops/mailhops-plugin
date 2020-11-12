@@ -40,15 +40,15 @@ var mailHopPreferences = {
     getting.then(data => {
       if (data.api_key) {
         self.api_key.value = data.api_key;
-        document.getElementById("join-link").innerHTML = 'My Account';
+        document.getElementById("join-link").innerHTML = 'My Account and Dashboard';
         document.getElementById("join-link").setAttribute('href', 'https://mailhops.com/account/' + data.api_key);
         this.saveAPIKey(true);
       }
       if (data.owm_key) {
         self.owm_key.value = data.owm_key;
       }
-      if (data.distinace_unit) {
-        if (data.distinace_unit == "mi")
+      if (data.unit) {
+        if (data.unit == "mi")
           document.getElementById("unit_mi").setAttribute('checked', 'checked');
         else
           document.getElementById("unit_km").setAttribute('checked', 'checked');
@@ -117,7 +117,7 @@ var mailHopPreferences = {
                 else
                   document.getElementById("rate-reset").innerHTML = "Resets in: " + Math.round(data.account.rate.reset / 60 / 60) + " hr.";
                
-                document.getElementById("join-link").innerHTML = 'My Account';
+                document.getElementById("join-link").innerHTML = 'My Account and Dashboard';
                 document.getElementById("join-link").setAttribute('href','https://mailhops.com/account/'+api_key);
                 
             } else if (xmlhttp.status === 401) { 

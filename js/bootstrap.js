@@ -35,7 +35,7 @@ function connected(p) {
           "message": MailHops.message,
           "response": MailHops.response,
           "meta": MailHops.meta,
-          "unit": MailHops.unit
+          "options": MailHops.options
         });
         break;      
     }
