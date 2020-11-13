@@ -17,7 +17,7 @@ const MailHops = {
     unit: 'mi',    
     api_http: 'https://',    
     api_host: 'api.Mailhops.com',    
-    debug: true,    
+    debug: false,    
     country_tag: false,    
     travel_time_junk: true,    
     country_filter: []    
