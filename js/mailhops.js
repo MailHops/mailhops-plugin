@@ -17,7 +17,7 @@ const MailHops = {
     unit: 'mi',    
     api_http: 'https://',    
     api_host: 'api.Mailhops.com',    
-    debug: false,    
+    debug: true,    
     country_tag: false,    
     travel_time_junk: true,    
     country_filter: []    
@@ -26,6 +26,8 @@ const MailHops = {
     id: null
     , map_url: ''
     , time: null
+    , date: new Date().toISOString()
+    , hash: ''
     , secure: []
     , headers: []   
     , auth: []
@@ -37,12 +39,12 @@ const MailHops = {
     error: ''
   },
   response: {},
-  meta: {}
 };
 
 MailHops.LOG = function(msg) {
   if(!MailHops.options.debug)
     return;  
+  console.log(msg);
 };
 
 MailHops.init = function(id, headers)
@@ -74,6 +76,8 @@ MailHops.init = function(id, headers)
       id: id
       , map_url: ''
       , time: null
+      , date: new Date().toISOString()
+      , hash: ''
       , secure: []
       , headers: headers
       , auth: []
@@ -92,7 +96,7 @@ MailHops.init = function(id, headers)
   
 };
 
-MailHops.getRoute = function () {
+MailHops.getRoute = async function () {
   if (MailHops.loading) return;
   
   MailHops.loading = true;
@@ -125,6 +129,7 @@ MailHops.getRoute = function () {
   //empty secure and time
   MailHops.message.secure = [];
   MailHops.message.time = null;
+  MailHops.message.date = new Date(headDate).toISOString();
   MailHops.message.auth = MailHops.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF, headListUnsubscribe );
 
   //loop through the received headers and parse for IP addresses
@@ -205,9 +210,17 @@ MailHops.getRoute = function () {
   			all_ips.unshift( ip[0] );
     }
 	}
-
-  if ( all_ips.length ){
-    MailHops.lookupRoute ( all_ips ) ;
+  if (all_ips.length) {    
+    // set the message hash
+    MailHops.message.hash = btoa(MailHops.message.date + '' + all_ips.join(','));    
+    const cached = await MailHops.getCacheResponse();
+    if (cached) {
+      MailHops.displayRoute(cached);
+      MailHops.isLoaded = true;
+      MailHops.loading = false;
+    } else {
+      MailHops.lookupRoute( all_ips.join(',') );      
+    }
   } else {
 	  MailHops.clear();
   }
@@ -285,7 +298,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
       type: 'SPF',
       color: 'green',
       icon: '/images/auth/' + headerSPFArr[0] + '.png',
-      copy: header_spf + '\n' + MailHopsUtils.spf(headerSPFArr[0])
+      copy: header_spf + '\n' + MailHopsUtils.spf(headerSPFArr[0]).trim()
     });    
   } 
   //Authentication-Results
@@ -313,7 +326,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
         type: 'DKIM',
         color: 'green',
         icon: '/images/auth/' + dkimArr[0].replace('dkim=','') + '.png',
-        copy: dkim_result + '\n' + MailHopsUtils.dkim(dkimArr[0].replace('dkim=', ''))        
+        copy: dkim_result + '\n' + MailHopsUtils.dkim(dkimArr[0].replace('dkim=', '')).trim()     
       });
     } 
     if(spf_result){
@@ -323,7 +336,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
         type: 'SPF',
         color: 'green',
         icon: '/images/auth/' + spfArr[0].replace('spf=','') + '.png',
-        copy: spf_result + '\n' + MailHopsUtils.spf(spfArr[0].replace('spf=', ''))        
+        copy: spf_result + '\n' + MailHopsUtils.spf(spfArr[0].replace('spf=', '')).trim()        
       });
     }
   }   
@@ -331,7 +344,7 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
     auth.push({
       type: 'Unsubscribe',
       color: 'grey',
-      link: header_unsubscribe.replace('<','').replace('>','')
+      link: header_unsubscribe.replace('<', '').replace('>', '').trim()
     });
   }  
   return auth;
@@ -343,9 +356,11 @@ MailHops.lookupRoute = function(header_route){
  var lookupURL = '?'+MailHopsUtils.getAPIUrlParams(MailHops.options)+'&r='+String(header_route)+'&l='+MailHops.options.lang+'&u='+MailHops.options.unit;
 
  if(MailHops.options.owm_key != '')
-    lookupURL += '&owm_key='+MailHops.options.owm_key;
+   lookupURL += '&owm_key='+MailHops.options.owm_key;
  if(MailHops.message.time != null)
-    lookupURL += '&t='+MailHops.message.time;
+   lookupURL += '&t=' + MailHops.message.time;
+  if(MailHops.message.date != null)
+   lookupURL += '&d='+MailHops.message.date;
   
   MailHops.message.map_url = MailHopsUtils.getAPIUrl() + '/map/' + lookupURL;  
   
@@ -357,21 +372,8 @@ var xmlhttp = new XMLHttpRequest();
     try {
        var data = JSON.parse(xmlhttp.responseText);
       if (xmlhttp.status === 200) {          
-        MailHops.response = data.response;
-        MailHops.meta = data.meta;         
-        MailHops.message.sender = MailHopsUtils.getSender(data.response.route); 
-        
-        if (MailHops.message.sender) {
-          browser.messageDisplayAction.setIcon({ path: MailHops.message.sender.icon });
-          browser.messageDisplayAction.setTitle({ title: MailHops.message.sender.title });
-          if (browser.mailHopsUI)
-            browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");
-        } else {
-          browser.messageDisplayAction.setIcon({ path: '/images/local.png' });
-          browser.messageDisplayAction.setTitle({ title: 'Local' });
-          if (browser.mailHopsUI)
-            browser.mailHopsUI.insertBefore("", '/images/local.png', 'Local', "countryIcon", "expandedHeaders2");
-        }
+        MailHops.cacheResponse(data.response);
+        MailHops.displayRoute(data.response);
           //tag the result
         MailHops.tagResults(data, data.response.route);        
   	   } else if(data.error){
@@ -388,6 +390,51 @@ var xmlhttp = new XMLHttpRequest();
   MailHops.loading = false;
  };
  xmlhttp.send(null);
+};
+
+MailHops.displayRoute = function (response) {
+  MailHops.response = response;
+  MailHops.message.sender = MailHopsUtils.getSender(response.route); 
+  
+  if (MailHops.message.sender) {
+    browser.messageDisplayAction.setIcon({ path: MailHops.message.sender.icon });
+    browser.messageDisplayAction.setTitle({ title: MailHops.message.sender.title });
+    if (browser.mailHopsUI)
+      browser.mailHopsUI.insertBefore("", MailHops.message.sender.icon, MailHops.message.sender.title, "countryIcon", "expandedHeaders2");
+  } else {
+    browser.messageDisplayAction.setIcon({ path: '/images/local.png' });
+    browser.messageDisplayAction.setTitle({ title: 'Local' });
+    if (browser.mailHopsUI)
+      browser.mailHopsUI.insertBefore("", '/images/local.png', 'Local', "countryIcon", "expandedHeaders2");
+  }
+};
+
+// keep a daily cache
+MailHops.cacheResponse = async function (response) {
+  let data = await browser.storage.local.get('messages');
+  let cached_date = new Date();
+  let messages = {
+    cached: cached_date.getUTCFullYear()+'-'+cached_date.getUTCMonth()+'-'+cached_date.getUTCDate(),
+    list: []
+  };
+  if (data.messages && data.messages.list && data.messages.cached === messages.cached) {
+    messages.list = data.messages.list; 
+  }
+  messages.list[MailHops.message.hash] = response;
+  browser.storage.local.set({
+    messages: messages
+  });
+  MailHops.LOG('Cached Message '+MailHops.message.id+' hash '+MailHops.message.hash);
+};
+
+// get cached message
+MailHops.getCacheResponse = async function () {
+  let data = await browser.storage.local.get('messages');
+  if (data.messages && data.messages.list[MailHops.message.hash]) {   
+    MailHops.LOG('Found Cached Message '+MailHops.message.hash);
+    return data.messages.list[MailHops.message.hash];
+  }
+  return false;
 };
 
 MailHops.tagResults = function(results, route){

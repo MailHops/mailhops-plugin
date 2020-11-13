@@ -1,5 +1,14 @@
 # Change Log
 
+## 4.1.0 - 2020-11-12
+
+- Added daily message cache.
+- Added retrieve API key in preferences.
+
+## 4.0.3 - 2020-11-11
+
+- Fixed km distance unit
+
 ## 4.0.2 - 2020-11-11
 
 - TB78 Updates

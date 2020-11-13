@@ -34,7 +34,6 @@ function connected(p) {
           "cmd": m.command,
           "message": MailHops.message,
           "response": MailHops.response,
-          "meta": MailHops.meta,
           "options": MailHops.options
         });
         break;      

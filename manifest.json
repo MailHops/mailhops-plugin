@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
-  "version": "4.0.3",
+  "version": "4.1.0",
   "author": "Hopsware LLC",
   "developer": {
     "name": "Andrew Van Tassel",
@@ -29,14 +29,22 @@
     }
   },
   "options_ui": {
-    "page": "content/preferences.html"
+    "page": "content/preferences.html",
+    "open_in_tab": true
   },
   "permissions": [
-    "messagesRead", "storage", "accountsRead"
+    "accountsRead",
+    "messagesRead", 
+    "storage"
   ],
   "message_display_action": {
   },
   "background": {
-    "scripts": ["js/utils.js", "js/mailhops.js", "js/bootstrap.js"]
+    "scripts": [
+      "js/utils.js", 
+      "js/mailhops.js", 
+      "js/preferences.js", 
+      "js/bootstrap.js"
+    ]
   }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+		<title>MailHops Preferences</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7/semantic.min.css" integrity="sha512-g/MzOGVPy3OQ4ej1U+qe4D/xhLwUn5l5xL0Fa7gdC258ZWVJQGwsbIR47SWMpRxSPjD0tfu/xkilTy+Lhrl3xg==" crossorigin="anonymous" />
   </head>
@@ -12,6 +13,11 @@
 		<div id="saved_message" class="ui positive message" style="display: none; min-height: 70px;">
 			<div class="header">Saved</div>
 			<p>Settings have been saved.</p>
+		</div>
+		
+		<div id="error_message" class="ui negative message" style="display: none; min-height: 70px;">
+			<div class="header">Error</div>
+			<p>There was a problem with your request.  Please try again.</p>
 		</div>
 		
 		<div class="ui two top attached unstackable steps">
@@ -41,6 +47,13 @@
 						<a href="https://www.mailhops.com/#pricing" id="join-link" target="_blank">Join MailHops</a>						
 					</div>
 					<div class="field">
+						<label>Send My API Key for</label>
+						<div class="ui action input">
+							<select class="ui selection dropdown" id="accounts" style="padding: 2px;"></select>
+							<button class="ui button" id="mh-send-key">Send API Key</button>
+						</div>
+					</div>
+					<div class="field">
 						<label>OpenWeatherMap.org API Key</label>
 						<input type="text" id="mailhop.owm_key" value="" placeholder="Enter your OpenWeatherMap API Key"/>
 						<br/>
@@ -48,7 +61,7 @@
 							<br/>Register for an API Key to enable this feature.
 					</div>			
 					<div style="text-align: center; padding: 10px;">
-						<button class="ui primary button" id="save">Save</button>
+						<button class="ui primary button" id="mh-save">Save</button>
 					</div>
 				</form>
 							
@@ -70,13 +83,13 @@
 					<div class="field">
 						<div class="ui radio checkbox">
 							<input type="radio" id="unit_mi" name="unit" value="mi" />
-							<label for="unit_mi">Miles</label>
+							<label for="unit_mi">Miles and &deg;F</label>
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui radio checkbox">
 							<input type="radio" id="unit_km" name="unit" value="km" />
-							<label for="unit_km">Kilometers</label>
+							<label for="unit_km">Kilometers and &deg;C</label>
 						</div>
 					</div>
 				</div>
@@ -98,7 +111,7 @@
 					</div>
 				</div>
 				<div style="text-align: center; padding: 10px;">
-					<button class="ui primary button" id="save-options">Save</button>					
+					<button class="ui primary button" id="mh-save-options">Save</button>					
 				</div>
 			</div>
 		</div>

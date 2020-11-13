@@ -12,7 +12,19 @@ document.getElementById("mh-options-button").addEventListener("click", function 
   browser.tabs.create({ url: '/content/preferences.html' });  
 });
 
-function updateContent(msg) {    
+function updateContent(msg) {  
+  //setup reload
+  document.getElementById("mh-reload-button").addEventListener("click", async function () { 
+    let data = await browser.storage.local.get('messages');
+    if (data.messages && data.messages.list[msg.message.hash]) {
+      delete data.messages.list[msg.message.hash];
+      browser.storage.local.set({
+        messages: data.messages
+      });      
+    }
+    this.innerHTML = "Removed!";
+    document.location.reload();
+  });
   
   if (msg.message.error) {
     document.getElementById('hop-message').classList.add('warning');
@@ -104,6 +116,7 @@ function updateContent(msg) {
   try {
     document.getElementById('mh-auth').innerHTML = auth;    
   } catch (error) {
-    console.error('MailHops', error);
+    if(error)
+      console.error('MailHops', error);
   }
 }
