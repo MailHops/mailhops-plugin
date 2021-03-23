@@ -2,12 +2,15 @@ const MailHopPreferences = {
   api_key: '', //api key
   valid_api_key: false,
   unit: 'mi',
+  theme: 'light',
   owm_key: '', //OpenWeatherMap.org api key
   
   init: async function(){
     var self = this;
     this.api_key = document.getElementById("mailhop.api_key");
     this.owm_key = document.getElementById("mailhop.owm_key");
+    
+    if (!this.api_key) return;
     
     document.getElementById("mh-save").addEventListener("click", function (event) {
       event.preventDefault();
@@ -60,14 +63,44 @@ const MailHopPreferences = {
         document.getElementById("unit_km").setAttribute('checked', 'checked');
     } else {
       document.getElementById("unit_mi").setAttribute('checked', 'checked');
-    }      
+    }
+    if (data.theme) {
+      if (data.theme == "dark")
+        document.getElementById("theme_dark").setAttribute('checked', 'checked');
+      else
+        document.getElementById("theme_light").setAttribute('checked', 'checked');
+    } else {
+      document.getElementById("theme_light").setAttribute('checked', 'checked');
+    }   
     if (typeof data.travel_time_junk != 'undefined') {
       if (data.travel_time_junk == 'on')
         document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');
       else
         document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
     } else {
-      document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');
+      document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
+    }
+    
+    if (data.theme && data.theme == "dark") {
+      if (!document.getElementById("mh-main-segment").classList.contains("inverted")) {
+        document.getElementById("mh-main-segment").classList.add("inverted");
+        document.getElementById("mh-steps").classList.add("inverted");
+        document.getElementById("mh-segment").classList.add("inverted");
+        document.getElementById("mh-form").classList.add("inverted");
+        document.getElementById("step_settings").classList.add("inverted");
+        document.getElementById("mh-save").classList.add("inverted");
+        document.getElementById("mh-save-options").classList.add("inverted");
+      }
+    } else {
+      if (document.getElementById("mh-main-segment").classList.contains("inverted")) {
+        document.getElementById("mh-main-segment").classList.remove("inverted");
+        document.getElementById("mh-steps").classList.remove("inverted");
+        document.getElementById("mh-segment").classList.remove("inverted");
+        document.getElementById("mh-form").classList.remove("inverted");
+        document.getElementById("step_settings").classList.remove("inverted");
+        document.getElementById("mh-save").classList.remove("inverted");
+        document.getElementById("mh-save-options").classList.remove("inverted");
+      }
     }
     
     await this.saveAPIKey(true);
@@ -98,10 +131,34 @@ const MailHopPreferences = {
       api_key: self.api_key.value.trim(),
       owm_key: self.owm_key.value.trim(),
       unit: document.querySelector('input[name="unit"]:checked').value,
+      theme: document.querySelector('input[name="theme"]:checked').value,
       travel_time_junk: document.querySelector('input[name="travel_time_junk"]:checked').value,
     });    
     if(!init)
-      document.getElementById("saved_message").style.display = 'block';    
+      document.getElementById("saved_message").style.display = 'block';
+    
+    this.theme = document.querySelector('input[name="theme"]:checked').value
+    if (this.theme == "dark") {
+      if (!document.getElementById("mh-main-segment").classList.contains("inverted")) {
+        document.getElementById("mh-main-segment").classList.add("inverted");
+        document.getElementById("mh-steps").classList.add("inverted");
+        document.getElementById("mh-segment").classList.add("inverted");
+        document.getElementById("mh-form").classList.add("inverted");
+        document.getElementById("step_settings").classList.add("inverted");
+        document.getElementById("mh-save").classList.add("inverted");
+        document.getElementById("mh-save-options").classList.add("inverted");
+      }
+    } else {
+      if (document.getElementById("mh-main-segment").classList.contains("inverted")) {
+        document.getElementById("mh-main-segment").classList.remove("inverted");
+        document.getElementById("mh-steps").classList.remove("inverted");
+        document.getElementById("mh-segment").classList.remove("inverted");
+        document.getElementById("mh-form").classList.remove("inverted");
+        document.getElementById("step_settings").classList.remove("inverted");
+        document.getElementById("mh-save").classList.remove("inverted");
+        document.getElementById("mh-save-options").classList.remove("inverted");
+      }
+    }
     return true;
   },
 

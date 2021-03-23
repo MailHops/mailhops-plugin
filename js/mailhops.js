@@ -10,16 +10,17 @@ const MailHops = {
   loading: false,
   previousId: null,
   options: {
-    version: 'MailHops Plugin 4.1.1',    
+    version: 'MailHops Plugin 4.2.0',    
     api_key: '',
     owm_key: '',
     lang: 'en',    
-    unit: 'mi',    
+    unit: 'mi',
+    theme: 'light',
     api_http: 'https://',    
     api_host: 'api.Mailhops.com',    
     debug: false,    
     country_tag: false,    
-    travel_time_junk: true,    
+    travel_time_junk: false,    
     country_filter: []    
   },
   message: {
@@ -66,7 +67,10 @@ MailHops.init = function(id, headers)
     }
     if (data.unit) {
       MailHops.options.unit = data.unit;
-    }   
+    }
+    if (data.theme) {
+      MailHops.options.theme = data.theme;
+    } 
     if (typeof data.travel_time_junk != 'undefined') {
       MailHops.options.travel_time_junk = data.travel_time_junk == 'on' ? true : false;
     } 

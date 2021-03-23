@@ -5,7 +5,10 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7/semantic.min.css" integrity="sha512-g/MzOGVPy3OQ4ej1U+qe4D/xhLwUn5l5xL0Fa7gdC258ZWVJQGwsbIR47SWMpRxSPjD0tfu/xkilTy+Lhrl3xg==" crossorigin="anonymous" />
   </head>
-  <body style="padding: 20px; margin-bottom: 20px; height: 100%;">	
+  <body>	
+		
+		<div id="mh-main-segment" class="ui segment" style="padding: 20px; margin-bottom: 20px; height: 100%;">
+			
 		<img src="/images/mailhops-logo.png" width="300"/>
 				
 		<div class="ui divider"></div>
@@ -20,7 +23,7 @@
 			<p>There was a problem with your request.  Please try again.</p>
 		</div>
 		
-		<div class="ui two top attached unstackable steps">
+		<div id="mh-steps" class="ui two top attached unstackable steps">
 			<div id="step_one" class="step active">
 				<i class="key icon"></i>
 				<div class="content">
@@ -36,10 +39,10 @@
 				</div>
 			</div>			
 		</div>
-		<div class="ui attached segment">
+		<div id="mh-segment" class="ui attached segment">
 		
 		<div id="step_api_keys" class="content">
-				<form class="ui form">
+				<form id="mh-form" class="ui form">
 					<div class="field">
 						<label>MailHops API Key</label>
 						<input type="text" id="mailhop.api_key" placeholder="Enter your MailHops API Key"/>
@@ -77,10 +80,26 @@
 				</p>						
 			</div>
 				
-			<div id="step_settings" style="display: none;">				
+			<div id="step_settings" class="ui form" style="display: none;">		
 				<div class="grouped fields">
-					<label style="font-weight: bold;">Distance Unit</label>
 					<div class="field">
+						<label>Theme Unit</label>
+						<div class="ui radio checkbox">
+							<input type="radio" id="theme_dark" name="theme" value="dark" />
+							<label for="theme_dark">Dark</label>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input type="radio" id="theme_light" name="theme" value="light" />
+							<label for="theme_light">Light</label>
+						</div>
+					</div>
+				</div>
+				<br/>		
+				<div class="grouped fields">
+					<div class="field">
+						<label>Distance Unit</label>
 						<div class="ui radio checkbox">
 							<input type="radio" id="unit_mi" name="unit" value="mi" />
 							<label for="unit_mi">Miles and &deg;F</label>
@@ -94,10 +113,9 @@
 					</div>
 				</div>
 				<br/>
-				<div class="grouped fields">
-					<label style="font-weight: bold;">Travel Time Junk</label>
-					<p>Flag messages as junk if travel time takes longer than normal.</p>
+				<div class="grouped fields">					
 					<div class="field">
+						<label>Travel Time Junk</label>
 						<div class="ui radio checkbox">
 							<input type="radio" id="travel_time_junk_on" name="travel_time_junk" value="on" />
 							<label for="travel_time_junk_on">On</label>
@@ -109,6 +127,7 @@
 							<label for="travel_time_junk_off">Off</label>
 						</div>
 					</div>
+					<p>Flag messages as junk if travel time takes longer than normal.</p>
 				</div>
 				<div style="text-align: center; padding: 10px;">
 					<button class="ui primary button" id="mh-save-options">Save</button>					
@@ -117,6 +136,7 @@
 		</div>
 								
 		<script src="/js/preferences.js"></script>
-
+		</div>
+		
   </body>
 </html>

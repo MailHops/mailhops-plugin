@@ -192,5 +192,8 @@ getDistance: function(from, to, unit) {
       }
     }
     return null;
+  },
+  htmlEncode: function (text) {
+    return text.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
   }
 };

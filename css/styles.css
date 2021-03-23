@@ -1,0 +1,7 @@
+#mh-body {
+  background-color: #FFF;
+}
+
+#mh-body.inverted {
+  background-color: #121212;
+}

@@ -17,6 +17,7 @@ function updateContent(msg) {
   document.getElementById("mh-reload-button").addEventListener("click", async function () { 
     let data = await browser.storage.local.get('messages');
     if (data.messages && data.messages.list[msg.message.hash]) {
+      console.log(data.messages);
       delete data.messages.list[msg.message.hash];
       browser.storage.local.set({
         messages: data.messages
@@ -38,8 +39,32 @@ function updateContent(msg) {
   const route = msg.response.route || [];
   const sender = msg.message.sender || null;
   const unit = msg.options.unit || "mi";
+  const theme = msg.options.theme || "light";
   let client = null;
   let items = [];
+  
+  // update theme
+  if (theme == "dark") {
+    if (!document.getElementById("hop-message").classList.contains("inverted")) {
+      document.getElementById('mh-body').classList.add('inverted');
+      document.getElementById('hop-message').classList.add('brown');
+      document.getElementById('hop-list').classList.add('inverted');
+      document.getElementById('mh-pop-segment').classList.add('inverted');
+      document.getElementById('mh-map-button').classList.add('inverted');
+      document.getElementById('mh-reload-button').classList.add('inverted');
+      document.getElementById('mh-options-button').classList.add('inverted');
+    }
+  } else {
+    if (document.getElementById("hop-message").classList.contains("inverted")) {
+      document.getElementById('mh-body').classList.remove('inverted');
+      document.getElementById('hop-message').classList.remove('brown');
+      document.getElementById('hop-list').classList.remove('inverted');
+      document.getElementById('mh-pop-segment').classList.remove('inverted');
+      document.getElementById('mh-map-button').classList.remove('inverted');
+      document.getElementById('mh-reload-button').classList.remove('inverted');
+      document.getElementById('mh-options-button').classList.remove('inverted');
+    }
+  }
   
   for (var i = 0; i < route.length; i++) { 
     var header = 'Private';
@@ -72,9 +97,9 @@ function updateContent(msg) {
     if (route[i].host)          
       description += route[i].host;
     if (route[i].whois && route[i].whois.descr)          
-      description += route[i].whois.descr;
+      description += MailHopsUtils.htmlEncode(route[i].whois.descr);
     if (route[i].whois && route[i].whois.netname)          
-      description += route[i].whois.netname;
+      description += MailHopsUtils.htmlEncode(route[i].whois.netname);
     
     var weather = '';
     if (route[i].weather) {
@@ -85,7 +110,7 @@ function updateContent(msg) {
       
     var asn = '';
     if (route[i].asn) {
-      asn = '<br/>ASN Org: ' + route[i].asn.autonomous_system_organization;
+      asn = '<br/>ASN Org: ' + MailHopsUtils.htmlEncode(route[i].asn.autonomous_system_organization);
       asn += ' (<a href="https://dnschecker.org/asn-whois-lookup.php?query='+route[i].asn.autonomous_system_number+'" target="_blank" title="ASN Lookup">' + route[i].asn.autonomous_system_number + '</a>)'
     }
     
@@ -99,12 +124,7 @@ function updateContent(msg) {
       }
     }
     // append child
-    items.push('<div class="item">\
-    <div class="content">\
-    <div class="header"><img src="'+ icon + '" /> ' + header + weather +' <label class="ui circular label icon" style="float: right;">'+ (i + 1) +'</label></div>\
-    <div class="description">'+ description + asn + '</div>\
-    </div>\
-    </div>');    
+    items.push('<div class="item"><div class="content"><div class="header"><img src="'+ icon + '" /> ' + header + weather +' <label class="ui circular label icon" style="float: right;">'+ (i + 1) +'</label></div><div class="description">'+ description + asn + '</div></div></div>');    
   }
   // header
   document.getElementById('hop-message-header').innerHTML = `${route.length} Hops`;

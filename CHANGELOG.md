@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.2.0 - 2021-03-23
+
+- Added dark/light mode option.
+- Fixed display if html characters exist in ASN name.
+- Changed default for travel_time_junk option to off.
+
 ## 4.1.0 - 2020-11-12
 
 - Added daily message cache.
