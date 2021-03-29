@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.2.1 - 2021-03-29
+
+- Added a check for parsing the mail date.  A bad formatted message date was failing to load the plugin.
+
 ## 4.2.0 - 2021-03-23
 
 - Added dark/light mode option.

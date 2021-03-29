@@ -10,7 +10,7 @@ const MailHops = {
   loading: false,
   previousId: null,
   options: {
-    version: 'MailHops Plugin 4.2.0',    
+    version: 'MailHops Plugin 4.2.1',    
     api_key: '',
     owm_key: '',
     lang: 'en',    
@@ -129,11 +129,23 @@ MailHops.getRoute = async function () {
   var headListUnsubscribe = MailHops.message.headers['list-unsubscribe'] ? MailHops.message.headers['list-unsubscribe'][0] : '';
 
   var all_ips = new Array();
-  var rline = '',firstDate=headDate,lastDate;
+  var rline = '';
+  var firstDate = headDate;
+  var lastDate;
   //empty secure and time
   MailHops.message.secure = [];
   MailHops.message.time = null;
-  MailHops.message.date = new Date(headDate).toISOString();
+  try {
+    MailHops.message.date = new Date(headDate).toISOString();
+  } catch (error) {
+    headDate = headDate.substring(0, headDate.lastIndexOf(' '));
+  }
+  try {
+    MailHops.message.date = new Date(headDate).toISOString();
+  } catch (error) {
+    headDate = new Date();
+  }
+  
   MailHops.message.auth = MailHops.auth( headXMailer, headUserAgent, headXMimeOLE, headAuth, headReceivedSPF, headListUnsubscribe );
 
   //loop through the received headers and parse for IP addresses
