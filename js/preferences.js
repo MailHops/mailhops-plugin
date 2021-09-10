@@ -128,6 +128,14 @@ const MailHopPreferences = {
     else
       document.getElementById("debug_off").setAttribute('checked', 'checked');
   
+    this.updateTheme();
+    this.updateCountries();
+    
+    await this.saveAPIKey(true);    
+    await this.loadAccounts();
+  },
+  
+  updateTheme: function () {
     if (this.theme == "dark") {
       if (!document.getElementById("mh-main-segment").classList.contains("inverted")) {
         document.getElementById("mh-main-segment").classList.add("inverted");
@@ -154,12 +162,6 @@ const MailHopPreferences = {
         document.getElementById("mh-clear-filter").classList.remove("inverted");
       }
     }
-    
-    await this.saveAPIKey(true);
-    
-    await this.loadAccounts();
-    
-    this.updateCountries();
   },
   
   loadAccounts: async function () {
@@ -213,36 +215,8 @@ const MailHopPreferences = {
     if(!init)
       document.getElementById("saved_message").style.display = 'block';
     
-    this.theme = document.querySelector('input[name="theme"]:checked').value
-    if (this.theme == "dark") {
-      if (!document.getElementById("mh-main-segment").classList.contains("inverted")) {
-        document.getElementById("mh-main-segment").classList.add("inverted");
-        document.getElementById("mh-steps").classList.add("inverted");
-        document.getElementById("mh-segment").classList.add("inverted");
-        document.getElementById("mh-form").classList.add("inverted");
-        document.getElementById("step_settings").classList.add("inverted");
-        document.getElementById("step_api_keys").classList.add("inverted");
-        document.getElementById("step_filter").classList.add("inverted");
-        document.getElementById("mh-save").classList.add("inverted");
-        document.getElementById("mh-save-options").classList.add("inverted");
-        document.getElementById("mh-save-filter").classList.add("inverted");
-        document.getElementById("mh-clear-filter").classList.add("inverted");
-      }
-    } else {
-      if (document.getElementById("mh-main-segment").classList.contains("inverted")) {
-        document.getElementById("mh-main-segment").classList.remove("inverted");
-        document.getElementById("mh-steps").classList.remove("inverted");
-        document.getElementById("mh-segment").classList.remove("inverted");
-        document.getElementById("mh-form").classList.remove("inverted");
-        document.getElementById("step_settings").classList.remove("inverted");
-        document.getElementById("step_api_keys").classList.remove("inverted");
-        document.getElementById("step_filter").classList.remove("inverted");
-        document.getElementById("mh-save").classList.remove("inverted");
-        document.getElementById("mh-save-options").classList.remove("inverted");
-        document.getElementById("mh-save-filter").classList.remove("inverted");
-        document.getElementById("mh-clear-filter").classList.remove("inverted");
-      }
-    }
+    this.theme = document.querySelector('input[name="theme"]:checked').value;
+    this.updateTheme();
     this.updateCountries();
     return true;
   },
