@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.3.0 - 2021-09-10
+
+- Added support for Thunderbird 93
+- Added country filter option
+- Fixes map launching on cached messages
+
 ## 4.2.1 - 2021-03-29
 
 - Added a check for parsing the mail date.  A bad formatted message date was failing to load the plugin.

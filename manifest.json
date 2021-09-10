@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "author": "Hopsware LLC",
   "developer": {
     "name": "Andrew Van Tassel",
@@ -11,7 +11,8 @@
   "applications": {
     "gecko": {
       "id": "thunderbird@mailhops.com",
-      "strict_min_version": "74.0"
+      "strict_min_version": "74.0",
+      "strict_max_version": "93.*"
     }
   },
   "default_locale": "en",

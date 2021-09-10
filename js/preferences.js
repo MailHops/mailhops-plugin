@@ -3,7 +3,10 @@ const MailHopPreferences = {
   valid_api_key: false,
   unit: 'mi',
   theme: 'light',
+  debug: false,
+  travel_time_junk: false,
   owm_key: '', //OpenWeatherMap.org api key
+  countries: [],
   
   init: async function(){
     var self = this;
@@ -28,9 +31,20 @@ const MailHopPreferences = {
       self.savePreferences();
     });
     
+    document.getElementById("mh-save-filter").addEventListener("click", function () {
+      self.savePreferences();
+    });
+    
+    document.getElementById("mh-clear-filter").addEventListener("click", function () {
+      self.clearCountries();
+      self.savePreferences();
+    });
+    
     document.getElementById("step_one").addEventListener("click", function () {
       document.getElementById("step_two").classList.remove('active');
+      document.getElementById("step_three").classList.remove('active');
       this.classList.add('active');
+      document.getElementById("step_filter").style.display = 'none';
       document.getElementById("step_settings").style.display = 'none';
       document.getElementById("step_api_keys").style.display = 'block';
       document.getElementById("saved_message").style.display = 'none';   
@@ -39,49 +53,82 @@ const MailHopPreferences = {
     
     document.getElementById("step_two").addEventListener("click", function () {
       document.getElementById("step_one").classList.remove('active');
-      this.classList.add('active');      
+      document.getElementById("step_three").classList.remove('active');
+      this.classList.add('active');
+      document.getElementById("step_filter").style.display = 'none';
       document.getElementById("step_settings").style.display = 'block';
       document.getElementById("step_api_keys").style.display = 'none';     
       document.getElementById("saved_message").style.display = 'none';   
       document.getElementById("error_message").style.display = 'none';
     });
     
+    document.getElementById("step_three").addEventListener("click", function () {
+      document.getElementById("step_one").classList.remove('active');
+      document.getElementById("step_two").classList.remove('active');
+      this.classList.add('active');
+      document.getElementById("step_filter").style.display = 'block';
+      document.getElementById("step_settings").style.display = 'none';
+      document.getElementById("step_api_keys").style.display = 'none';
+      document.getElementById("saved_message").style.display = 'none';   
+      document.getElementById("error_message").style.display = 'none';
+    });
+        
     const data = await browser.storage.local.get();
+    
+    this.theme = data.theme || 'light';
+    this.unit = data.unit || 'mi';
+    this.travel_time_junk = Boolean(data.travel_time_junk);
+    this.debug = Boolean(data.debug);
+    
+    if (data.countries) {
+      this.countries = data.countries.split(',');
+    }
+    
+    let countries = document.getElementsByClassName("country");
+    
+    for(var i = 0; i < countries.length; i++) {
+      (function(index) {
+        countries[index].addEventListener("click", function () {
+          if (this.checked) {
+            self.countries.push(this.value);
+          } else if (self.countries.indexOf(this.value) != -1) {
+            self.countries.splice(self.countries.indexOf(this.value), 1);
+          }
+        });
+      })(i);
+    }
     
     if (data.api_key) {
       self.api_key.value = data.api_key;
       document.getElementById("join-link").innerHTML = 'My Account and Dashboard';
-      document.getElementById("join-link").setAttribute('href', 'https://mailhops.com/account/' + data.api_key);        
-    }      
+      document.getElementById("join-link").setAttribute('href', 'https://www.mailhops.com/account/' + data.api_key);        
+    }
+    
     if (data.owm_key) {
       self.owm_key.value = data.owm_key;
     }
-    if (data.unit) {
-      if (data.unit == "mi")
-        document.getElementById("unit_mi").setAttribute('checked', 'checked');
-      else
-        document.getElementById("unit_km").setAttribute('checked', 'checked');
-    } else {
-      document.getElementById("unit_mi").setAttribute('checked', 'checked');
-    }
-    if (data.theme) {
-      if (data.theme == "dark")
-        document.getElementById("theme_dark").setAttribute('checked', 'checked');
-      else
-        document.getElementById("theme_light").setAttribute('checked', 'checked');
-    } else {
-      document.getElementById("theme_light").setAttribute('checked', 'checked');
-    }   
-    if (typeof data.travel_time_junk != 'undefined') {
-      if (data.travel_time_junk == 'on')
-        document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');
-      else
-        document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
-    } else {
-      document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
-    }
     
-    if (data.theme && data.theme == "dark") {
+    if (data.unit == "mi")
+      document.getElementById("unit_mi").setAttribute('checked', 'checked');
+    else
+      document.getElementById("unit_km").setAttribute('checked', 'checked');
+    
+    if (this.theme == "dark")
+      document.getElementById("theme_dark").setAttribute('checked', 'checked');
+    else
+      document.getElementById("theme_light").setAttribute('checked', 'checked');  
+    
+    if (this.travel_time_junk)
+      document.getElementById("travel_time_junk_on").setAttribute('checked', 'checked');
+    else
+      document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
+    
+    if (this.debug)
+      document.getElementById("debug_on").setAttribute('checked', 'checked');
+    else
+      document.getElementById("debug_off").setAttribute('checked', 'checked');
+  
+    if (this.theme == "dark") {
       if (!document.getElementById("mh-main-segment").classList.contains("inverted")) {
         document.getElementById("mh-main-segment").classList.add("inverted");
         document.getElementById("mh-steps").classList.add("inverted");
@@ -90,6 +137,8 @@ const MailHopPreferences = {
         document.getElementById("step_settings").classList.add("inverted");
         document.getElementById("mh-save").classList.add("inverted");
         document.getElementById("mh-save-options").classList.add("inverted");
+        document.getElementById("mh-save-filter").classList.add("inverted");
+        document.getElementById("mh-clear-filter").classList.add("inverted");
       }
     } else {
       if (document.getElementById("mh-main-segment").classList.contains("inverted")) {
@@ -100,39 +149,66 @@ const MailHopPreferences = {
         document.getElementById("step_settings").classList.remove("inverted");
         document.getElementById("mh-save").classList.remove("inverted");
         document.getElementById("mh-save-options").classList.remove("inverted");
+        document.getElementById("mh-save-filter").classList.remove("inverted");
+        document.getElementsByClassName("checkbox").classList.remove("inverted");
+        document.getElementById("mh-clear-filter").classList.remove("inverted");
       }
     }
     
     await this.saveAPIKey(true);
     
     await this.loadAccounts();
+    
+    this.updateCountries();
   },
   
   loadAccounts: async function () {
     let accounts = await messenger.accounts.list();
     if (accounts.length) {
       accounts.map(a => { 
-        if (a.identities.length) {
-          if (a.identities.length && a.identities[0].email) {
-            var option = document.createElement('option');
-            option.value = a.identities[0].email;
-            option.text = a.identities[0].email;              
-            document.getElementById("accounts").add(option);
-          }          
+        if (a.identities.length && a.identities[0].email) {          
+          var option = document.createElement('option');
+          option.value = a.identities[0].email;
+          option.text = a.identities[0].email;              
+          document.getElementById("email-accounts").add(option);                  
         }
       });
-      document.getElementById("accounts").selectedIndex = 0;
+      document.getElementById("email-accounts").selectedIndex = 0;
     }
   },
   
-  savePreferences: function (init) {
+  updateCountries: function (clear) {
+    var countries = document.getElementById("country-list").getElementsByClassName("checkbox");
     var self = this;
-    browser.storage.local.set({
+    for(var i = 0; i < countries.length; i++) {
+      (function (index) {
+        if (clear)
+          countries[index].children[0].checked = false;
+        else if (self.countries.indexOf(countries[index].children[0].value) != -1)
+          countries[index].children[0].checked = true;
+        if (self.theme == 'dark')
+          countries[index].classList.add("inverted");
+        else
+          countries[index].classList.remove("inverted");
+      })(i);
+    }
+  },
+  
+  clearCountries: function () {
+    this.countries = [];
+    this.updateCountries(true);
+  },
+  
+  savePreferences: async function (init) {
+    var self = this;
+    await browser.storage.local.set({      
       api_key: self.api_key.value.trim(),
       owm_key: self.owm_key.value.trim(),
       unit: document.querySelector('input[name="unit"]:checked').value,
       theme: document.querySelector('input[name="theme"]:checked').value,
-      travel_time_junk: document.querySelector('input[name="travel_time_junk"]:checked').value,
+      travel_time_junk: document.querySelector('input[name="travel_time_junk"]:checked').value == 'on' ? true : false,
+      debug: document.querySelector('input[name="debug"]:checked').value == 'on' ? true : false,
+      countries: self.countries.join(','),
     });    
     if(!init)
       document.getElementById("saved_message").style.display = 'block';
@@ -145,8 +221,12 @@ const MailHopPreferences = {
         document.getElementById("mh-segment").classList.add("inverted");
         document.getElementById("mh-form").classList.add("inverted");
         document.getElementById("step_settings").classList.add("inverted");
+        document.getElementById("step_api_keys").classList.add("inverted");
+        document.getElementById("step_filter").classList.add("inverted");
         document.getElementById("mh-save").classList.add("inverted");
         document.getElementById("mh-save-options").classList.add("inverted");
+        document.getElementById("mh-save-filter").classList.add("inverted");
+        document.getElementById("mh-clear-filter").classList.add("inverted");
       }
     } else {
       if (document.getElementById("mh-main-segment").classList.contains("inverted")) {
@@ -155,19 +235,23 @@ const MailHopPreferences = {
         document.getElementById("mh-segment").classList.remove("inverted");
         document.getElementById("mh-form").classList.remove("inverted");
         document.getElementById("step_settings").classList.remove("inverted");
+        document.getElementById("step_api_keys").classList.remove("inverted");
+        document.getElementById("step_filter").classList.remove("inverted");
         document.getElementById("mh-save").classList.remove("inverted");
         document.getElementById("mh-save-options").classList.remove("inverted");
+        document.getElementById("mh-save-filter").classList.remove("inverted");
+        document.getElementById("mh-clear-filter").classList.remove("inverted");
       }
     }
+    this.updateCountries();
     return true;
   },
 
   sendAPIKey: async function () {
     document.getElementById("saved_message").style.display = 'none';
     document.getElementById("error_message").style.display = 'none';
-    
-    if (document.getElementById("accounts").selectedIndex && document.getElementById("accounts").selectedIndex >= 0) {
-      var email = document.getElementById("accounts").options[document.getElementById("accounts").selectedIndex].text;
+    if (document.getElementById("email-accounts").selectedIndex && document.getElementById("email-accounts").selectedIndex >= 0) {
+      var email = document.getElementById("email-accounts").options[document.getElementById("email-accounts").selectedIndex].text;
       if (email) {
         var xmlhttp = new XMLHttpRequest();
         var apiBase = 'https://www.mailhops.com/account/lostkey.php'; 
@@ -224,16 +308,16 @@ const MailHopPreferences = {
                 document.getElementById("plan-error").style.display = 'none';
                 // set plan info
                if (data.account.subscriptions) {
-                 document.getElementById("plan").innerHTML = "Plan: "+data.account.subscriptions.data[0].plan.name;
-                 document.getElementById("status").innerHTML = "Status: "+data.account.subscriptions.data[0].status;                 
+                 document.getElementById("plan").innerHTML = "Plan: " + data.account.subscriptions.data[0].plan.name;
+                 document.getElementById("status").innerHTML = "Status: " + data.account.subscriptions.data[0].status;                 
                } else {
                 document.getElementById("plan").innerHTML = "Plan: No Plan Yet";
                 document.getElementById("status").innerHTML = "Status: Not Active";                 
                }
-                document.getElementById("rate-limit").innerHTML = "Limit: "+data.account.rate.limit;
-                document.getElementById("rate-remaining").innerHTML = "Remaining: "+data.account.rate.remaining;
-                if(data.account.rate.reset/60 < 60)
-                  document.getElementById("rate-reset").innerHTML = "Resets in: "+Math.round(data.account.rate.reset/60)+" min.";
+                document.getElementById("rate-limit").innerHTML = "Limit: " + data.account.rate.limit;
+                document.getElementById("rate-remaining").innerHTML = "Remaining: " + data.account.rate.remaining;
+               if (data.account.rate.reset / 60 < 60)                  
+                  document.getElementById("rate-reset").innerHTML = "Resets in: " + Math.round(data.account.rate.reset / 60) + " min.";                  
                 else
                   document.getElementById("rate-reset").innerHTML = "Resets in: " + Math.round(data.account.rate.reset / 60 / 60) + " hr.";
                
@@ -250,7 +334,7 @@ const MailHopPreferences = {
              }
              MailHopPreferences.savePreferences(init);
            } catch (e){
-             self.planError('Connection Failed to\n '+e+'!');
+             self.planError('Connection Failed to\n ' + e + '!');
            }
          }
        };

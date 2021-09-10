@@ -3,7 +3,7 @@
   <head>
 		<title>MailHops Preferences</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7/semantic.min.css" integrity="sha512-g/MzOGVPy3OQ4ej1U+qe4D/xhLwUn5l5xL0Fa7gdC258ZWVJQGwsbIR47SWMpRxSPjD0tfu/xkilTy+Lhrl3xg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css" />
   </head>
   <body>	
 		
@@ -23,7 +23,7 @@
 			<p>There was a problem with your request.  Please try again.</p>
 		</div>
 		
-		<div id="mh-steps" class="ui two top attached unstackable steps">
+		<div id="mh-steps" class="ui three top attached unstackable steps">
 			<div id="step_one" class="step active">
 				<i class="key icon"></i>
 				<div class="content">
@@ -37,7 +37,14 @@
 					<div class="title">Options</div>
 					<div class="description">General Options</div>
 				</div>
-			</div>			
+			</div>		
+			<div id="step_three" class="step">
+				<i class="world icon"></i>
+				<div class="content">
+					<div class="title">Filter</div>
+					<div class="description">Country Filter</div>
+				</div>
+			</div>		
 		</div>
 		<div id="mh-segment" class="ui attached segment">
 		
@@ -52,7 +59,7 @@
 					<div class="field">
 						<label>Send My API Key for</label>
 						<div class="ui action input">
-							<select class="ui selection dropdown" id="accounts" style="padding: 2px;"></select>
+							<select class="ui selection dropdown" id="email-accounts" style="padding: 2px;"></select>
 							<button class="ui button" id="mh-send-key">Send API Key</button>
 						</div>
 					</div>
@@ -129,10 +136,790 @@
 					</div>
 					<p>Flag messages as junk if travel time takes longer than normal.</p>
 				</div>
+				<div class="grouped fields">					
+					<div class="field">
+						<label>Debug Messages</label>
+						<div class="ui radio checkbox">
+							<input type="radio" id="debug_on" name="debug" value="on" />
+							<label for="debug_on">On</label>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input type="radio" id="debug_off" name="debug" value="off" />
+							<label for="debug_off">Off</label>
+						</div>
+					</div>
+					<p>Error log debug messages.</p>
+				</div>
 				<div style="text-align: center; padding: 10px;">
 					<button class="ui primary button" id="mh-save-options">Save</button>					
 				</div>
 			</div>
+			
+			<div id="step_filter" class="ui form" style="display: none;">				
+				<p>Select countries to filter and flag as spam.</p>		
+				<div style="text-align: center; padding: 10px;">
+					<button class="ui default button" id="mh-clear-filter">Clear</button>					
+					<button class="ui primary button" id="mh-save-filter">Save</button>
+				</div>		
+				<div id="country-list">
+					<div class="ui grid">						
+						
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AD" id="country-AD" /><label for="country-AD" style="cursor: pointer;"><i class="ad flag"></i> AD - Andorra</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AE" id="country-AE" /><label for="country-AE" style="cursor: pointer;"><i class="ae flag"></i> AE - United Arab Emirates</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AF" id="country-AF" /><label for="country-AF" style="cursor: pointer;"><i class="af flag"></i> AF - Afghanistan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AG" id="country-AG" /><label for="country-AG" style="cursor: pointer;"><i class="ag flag"></i> AG - Antigua and Barbuda</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AI" id="country-AI" /><label for="country-AI" style="cursor: pointer;"><i class="ai flag"></i> AI - Anguilla</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AL" id="country-AL" /><label for="country-AL" style="cursor: pointer;"><i class="al flag"></i> AL - Albania</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AM" id="country-AM" /><label for="country-AM" style="cursor: pointer;"><i class="am flag"></i> AM - Armenia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AO" id="country-AO" /><label for="country-AO" style="cursor: pointer;"><i class="ao flag"></i> AO - Angola</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AQ" id="country-AQ" /><label for="country-AQ" style="cursor: pointer;"><i class="aq flag"></i> AQ - Antarctica</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AR" id="country-AR" /><label for="country-AR" style="cursor: pointer;"><i class="ar flag"></i> AR - Argentina</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AS" id="country-AS" /><label for="country-AS" style="cursor: pointer;"><i class="as flag"></i> AS - American Samoa</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AT" id="country-AT" /><label for="country-AT" style="cursor: pointer;"><i class="at flag"></i> AT - Austria</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AU" id="country-AU" /><label for="country-AU" style="cursor: pointer;"><i class="au flag"></i> AU - Australia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AW" id="country-AW" /><label for="country-AW" style="cursor: pointer;"><i class="aw flag"></i> AW - Aruba</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AX" id="country-AX" /><label for="country-AX" style="cursor: pointer;"><i class="ax flag"></i> AX - Aland Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="AZ" id="country-AZ" /><label for="country-AZ" style="cursor: pointer;"><i class="az flag"></i> AZ - Azerbaijan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BA" id="country-BA" /><label for="country-BA" style="cursor: pointer;"><i class="ba flag"></i> BA - Bosnia and Herzegovina</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BB" id="country-BB" /><label for="country-BB" style="cursor: pointer;"><i class="bb flag"></i> BB - Barbados</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BD" id="country-BD" /><label for="country-BD" style="cursor: pointer;"><i class="bd flag"></i> BD - Bangladesh</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BE" id="country-BE" /><label for="country-BE" style="cursor: pointer;"><i class="be flag"></i> BE - Belgium</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BF" id="country-BF" /><label for="country-BF" style="cursor: pointer;"><i class="bf flag"></i> BF - Burkina Faso</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BG" id="country-BG" /><label for="country-BG" style="cursor: pointer;"><i class="bg flag"></i> BG - Bulgaria</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BH" id="country-BH" /><label for="country-BH" style="cursor: pointer;"><i class="bh flag"></i> BH - Bahrain</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BI" id="country-BI" /><label for="country-BI" style="cursor: pointer;"><i class="bi flag"></i> BI - Burundi</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BJ" id="country-BJ" /><label for="country-BJ" style="cursor: pointer;"><i class="bj flag"></i> BJ - Benin</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BL" id="country-BL" /><label for="country-BL" style="cursor: pointer;"><i class="bl flag"></i> BL - Saint Barthelemy</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BM" id="country-BM" /><label for="country-BM" style="cursor: pointer;"><i class="bm flag"></i> BM - Bermuda</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BN" id="country-BN" /><label for="country-BN" style="cursor: pointer;"><i class="bn flag"></i> BN - Brunei</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BO" id="country-BO" /><label for="country-BO" style="cursor: pointer;"><i class="bo flag"></i> BO - Bolivia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BQ" id="country-BQ" /><label for="country-BQ" style="cursor: pointer;"><i class="bq flag"></i> BQ - Bonaire, Saint Eustatius and Saba </label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BR" id="country-BR" /><label for="country-BR" style="cursor: pointer;"><i class="br flag"></i> BR - Brazil</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BS" id="country-BS" /><label for="country-BS" style="cursor: pointer;"><i class="bs flag"></i> BS - Bahamas</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BT" id="country-BT" /><label for="country-BT" style="cursor: pointer;"><i class="bt flag"></i> BT - Bhutan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BV" id="country-BV" /><label for="country-BV" style="cursor: pointer;"><i class="bv flag"></i> BV - Bouvet Island</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BW" id="country-BW" /><label for="country-BW" style="cursor: pointer;"><i class="bw flag"></i> BW - Botswana</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BY" id="country-BY" /><label for="country-BY" style="cursor: pointer;"><i class="by flag"></i> BY - Belarus</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="BZ" id="country-BZ" /><label for="country-BZ" style="cursor: pointer;"><i class="bz flag"></i> BZ - Belize</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CA" id="country-CA" /><label for="country-CA" style="cursor: pointer;"><i class="ca flag"></i> CA - Canada</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CC" id="country-CC" /><label for="country-CC" style="cursor: pointer;"><i class="cc flag"></i> CC - Cocos Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CD" id="country-CD" /><label for="country-CD" style="cursor: pointer;"><i class="cd flag"></i> CD - Democratic Republic of the Congo</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CF" id="country-CF" /><label for="country-CF" style="cursor: pointer;"><i class="cf flag"></i> CF - Central African Republic</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CG" id="country-CG" /><label for="country-CG" style="cursor: pointer;"><i class="cg flag"></i> CG - Republic of the Congo</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CH" id="country-CH" /><label for="country-CH" style="cursor: pointer;"><i class="ch flag"></i> CH - Switzerland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CI" id="country-CI" /><label for="country-CI" style="cursor: pointer;"><i class="ci flag"></i> CI - Ivory Coast</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CK" id="country-CK" /><label for="country-CK" style="cursor: pointer;"><i class="ck flag"></i> CK - Cook Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CL" id="country-CL" /><label for="country-CL" style="cursor: pointer;"><i class="cl flag"></i> CL - Chile</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CM" id="country-CM" /><label for="country-CM" style="cursor: pointer;"><i class="cm flag"></i> CM - Cameroon</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CN" id="country-CN" /><label for="country-CN" style="cursor: pointer;"><i class="cn flag"></i> CN - China</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CO" id="country-CO" /><label for="country-CO" style="cursor: pointer;"><i class="co flag"></i> CO - Colombia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CR" id="country-CR" /><label for="country-CR" style="cursor: pointer;"><i class="cr flag"></i> CR - Costa Rica</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CU" id="country-CU" /><label for="country-CU" style="cursor: pointer;"><i class="cu flag"></i> CU - Cuba</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CV" id="country-CV" /><label for="country-CV" style="cursor: pointer;"><i class="cv flag"></i> CV - Cape Verde</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CW" id="country-CW" /><label for="country-CW" style="cursor: pointer;"><i class="cw flag"></i> CW - Curacao</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CX" id="country-CX" /><label for="country-CX" style="cursor: pointer;"><i class="cx flag"></i> CX - Christmas Island</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CY" id="country-CY" /><label for="country-CY" style="cursor: pointer;"><i class="cy flag"></i> CY - Cyprus</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="CZ" id="country-CZ" /><label for="country-CZ" style="cursor: pointer;"><i class="cz flag"></i> CZ - Czech Republic</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="DE" id="country-DE" /><label for="country-DE" style="cursor: pointer;"><i class="de flag"></i> DE - Germany</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="DJ" id="country-DJ" /><label for="country-DJ" style="cursor: pointer;"><i class="dj flag"></i> DJ - Djibouti</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="DK" id="country-DK" /><label for="country-DK" style="cursor: pointer;"><i class="dk flag"></i> DK - Denmark</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="DM" id="country-DM" /><label for="country-DM" style="cursor: pointer;"><i class="dm flag"></i> DM - Dominica</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="DO" id="country-DO" /><label for="country-DO" style="cursor: pointer;"><i class="do flag"></i> DO - Dominican Republic</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="DZ" id="country-DZ" /><label for="country-DZ" style="cursor: pointer;"><i class="dz flag"></i> DZ - Algeria</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="EC" id="country-EC" /><label for="country-EC" style="cursor: pointer;"><i class="ec flag"></i> EC - Ecuador</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="EE" id="country-EE" /><label for="country-EE" style="cursor: pointer;"><i class="ee flag"></i> EE - Estonia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="EG" id="country-EG" /><label for="country-EG" style="cursor: pointer;"><i class="eg flag"></i> EG - Egypt</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="EH" id="country-EH" /><label for="country-EH" style="cursor: pointer;"><i class="eh flag"></i> EH - Western Sahara</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ER" id="country-ER" /><label for="country-ER" style="cursor: pointer;"><i class="er flag"></i> ER - Eritrea</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ES" id="country-ES" /><label for="country-ES" style="cursor: pointer;"><i class="es flag"></i> ES - Spain</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ET" id="country-ET" /><label for="country-ET" style="cursor: pointer;"><i class="et flag"></i> ET - Ethiopia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="FI" id="country-FI" /><label for="country-FI" style="cursor: pointer;"><i class="fi flag"></i> FI - Finland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="FJ" id="country-FJ" /><label for="country-FJ" style="cursor: pointer;"><i class="fj flag"></i> FJ - Fiji</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="FK" id="country-FK" /><label for="country-FK" style="cursor: pointer;"><i class="fk flag"></i> FK - Falkland Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="FM" id="country-FM" /><label for="country-FM" style="cursor: pointer;"><i class="fm flag"></i> FM - Micronesia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="FO" id="country-FO" /><label for="country-FO" style="cursor: pointer;"><i class="fo flag"></i> FO - Faroe Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="FR" id="country-FR" /><label for="country-FR" style="cursor: pointer;"><i class="fr flag"></i> FR - France</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GA" id="country-GA" /><label for="country-GA" style="cursor: pointer;"><i class="ga flag"></i> GA - Gabon</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GB" id="country-GB" /><label for="country-GB" style="cursor: pointer;"><i class="gb flag"></i> GB - United Kingdom</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GD" id="country-GD" /><label for="country-GD" style="cursor: pointer;"><i class="gd flag"></i> GD - Grenada</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GE" id="country-GE" /><label for="country-GE" style="cursor: pointer;"><i class="ge flag"></i> GE - Georgia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GF" id="country-GF" /><label for="country-GF" style="cursor: pointer;"><i class="gf flag"></i> GF - French Guiana</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GG" id="country-GG" /><label for="country-GG" style="cursor: pointer;"><i class="gg flag"></i> GG - Guernsey</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GH" id="country-GH" /><label for="country-GH" style="cursor: pointer;"><i class="gh flag"></i> GH - Ghana</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GI" id="country-GI" /><label for="country-GI" style="cursor: pointer;"><i class="gi flag"></i> GI - Gibraltar</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GL" id="country-GL" /><label for="country-GL" style="cursor: pointer;"><i class="gl flag"></i> GL - Greenland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GM" id="country-GM" /><label for="country-GM" style="cursor: pointer;"><i class="gm flag"></i> GM - Gambia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GN" id="country-GN" /><label for="country-GN" style="cursor: pointer;"><i class="gn flag"></i> GN - Guinea</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GP" id="country-GP" /><label for="country-GP" style="cursor: pointer;"><i class="gp flag"></i> GP - Guadeloupe</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GQ" id="country-GQ" /><label for="country-GQ" style="cursor: pointer;"><i class="gq flag"></i> GQ - Equatorial Guinea</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GR" id="country-GR" /><label for="country-GR" style="cursor: pointer;"><i class="gr flag"></i> GR - Greece</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GS" id="country-GS" /><label for="country-GS" style="cursor: pointer;"><i class="gs flag"></i> GS - South Georgia and the South Sandwich Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GT" id="country-GT" /><label for="country-GT" style="cursor: pointer;"><i class="gt flag"></i> GT - Guatemala</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GU" id="country-GU" /><label for="country-GU" style="cursor: pointer;"><i class="gu flag"></i> GU - Guam</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GW" id="country-GW" /><label for="country-GW" style="cursor: pointer;"><i class="gw flag"></i> GW - Guinea-Bissau</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="GY" id="country-GY" /><label for="country-GY" style="cursor: pointer;"><i class="gy flag"></i> GY - Guyana</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="HK" id="country-HK" /><label for="country-HK" style="cursor: pointer;"><i class="hk flag"></i> HK - Hong Kong</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="HM" id="country-HM" /><label for="country-HM" style="cursor: pointer;"><i class="hm flag"></i> HM - Heard Island and McDonald Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="HN" id="country-HN" /><label for="country-HN" style="cursor: pointer;"><i class="hn flag"></i> HN - Honduras</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="HR" id="country-HR" /><label for="country-HR" style="cursor: pointer;"><i class="hr flag"></i> HR - Croatia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="HT" id="country-HT" /><label for="country-HT" style="cursor: pointer;"><i class="ht flag"></i> HT - Haiti</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="HU" id="country-HU" /><label for="country-HU" style="cursor: pointer;"><i class="hu flag"></i> HU - Hungary</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ID" id="country-ID" /><label for="country-ID" style="cursor: pointer;"><i class="id flag"></i> ID - Indonesia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IE" id="country-IE" /><label for="country-IE" style="cursor: pointer;"><i class="ie flag"></i> IE - Ireland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IL" id="country-IL" /><label for="country-IL" style="cursor: pointer;"><i class="il flag"></i> IL - Israel</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IM" id="country-IM" /><label for="country-IM" style="cursor: pointer;"><i class="im flag"></i> IM - Isle of Man</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IN" id="country-IN" /><label for="country-IN" style="cursor: pointer;"><i class="in flag"></i> IN - India</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IO" id="country-IO" /><label for="country-IO" style="cursor: pointer;"><i class="io flag"></i> IO - British Indian Ocean Territory</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IQ" id="country-IQ" /><label for="country-IQ" style="cursor: pointer;"><i class="iq flag"></i> IQ - Iraq</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IR" id="country-IR" /><label for="country-IR" style="cursor: pointer;"><i class="ir flag"></i> IR - Iran</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IS" id="country-IS" /><label for="country-IS" style="cursor: pointer;"><i class="is flag"></i> IS - Iceland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="IT" id="country-IT" /><label for="country-IT" style="cursor: pointer;"><i class="it flag"></i> IT - Italy</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="JE" id="country-JE" /><label for="country-JE" style="cursor: pointer;"><i class="je flag"></i> JE - Jersey</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="JM" id="country-JM" /><label for="country-JM" style="cursor: pointer;"><i class="jm flag"></i> JM - Jamaica</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="JO" id="country-JO" /><label for="country-JO" style="cursor: pointer;"><i class="jo flag"></i> JO - Jordan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="JP" id="country-JP" /><label for="country-JP" style="cursor: pointer;"><i class="jp flag"></i> JP - Japan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KE" id="country-KE" /><label for="country-KE" style="cursor: pointer;"><i class="ke flag"></i> KE - Kenya</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KG" id="country-KG" /><label for="country-KG" style="cursor: pointer;"><i class="kg flag"></i> KG - Kyrgyzstan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KH" id="country-KH" /><label for="country-KH" style="cursor: pointer;"><i class="kh flag"></i> KH - Cambodia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KI" id="country-KI" /><label for="country-KI" style="cursor: pointer;"><i class="ki flag"></i> KI - Kiribati</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KM" id="country-KM" /><label for="country-KM" style="cursor: pointer;"><i class="km flag"></i> KM - Comoros</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KN" id="country-KN" /><label for="country-KN" style="cursor: pointer;"><i class="kn flag"></i> KN - Saint Kitts and Nevis</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KP" id="country-KP" /><label for="country-KP" style="cursor: pointer;"><i class="kp flag"></i> KP - North Korea</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KR" id="country-KR" /><label for="country-KR" style="cursor: pointer;"><i class="kr flag"></i> KR - South Korea</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KW" id="country-KW" /><label for="country-KW" style="cursor: pointer;"><i class="kw flag"></i> KW - Kuwait</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KY" id="country-KY" /><label for="country-KY" style="cursor: pointer;"><i class="ky flag"></i> KY - Cayman Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="KZ" id="country-KZ" /><label for="country-KZ" style="cursor: pointer;"><i class="kz flag"></i> KZ - Kazakhstan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LA" id="country-LA" /><label for="country-LA" style="cursor: pointer;"><i class="la flag"></i> LA - Laos</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LB" id="country-LB" /><label for="country-LB" style="cursor: pointer;"><i class="lb flag"></i> LB - Lebanon</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LC" id="country-LC" /><label for="country-LC" style="cursor: pointer;"><i class="lc flag"></i> LC - Saint Lucia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LI" id="country-LI" /><label for="country-LI" style="cursor: pointer;"><i class="li flag"></i> LI - Liechtenstein</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LK" id="country-LK" /><label for="country-LK" style="cursor: pointer;"><i class="lk flag"></i> LK - Sri Lanka</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LR" id="country-LR" /><label for="country-LR" style="cursor: pointer;"><i class="lr flag"></i> LR - Liberia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LS" id="country-LS" /><label for="country-LS" style="cursor: pointer;"><i class="ls flag"></i> LS - Lesotho</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LT" id="country-LT" /><label for="country-LT" style="cursor: pointer;"><i class="lt flag"></i> LT - Lithuania</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LU" id="country-LU" /><label for="country-LU" style="cursor: pointer;"><i class="lu flag"></i> LU - Luxembourg</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LV" id="country-LV" /><label for="country-LV" style="cursor: pointer;"><i class="lv flag"></i> LV - Latvia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="LY" id="country-LY" /><label for="country-LY" style="cursor: pointer;"><i class="ly flag"></i> LY - Libya</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MA" id="country-MA" /><label for="country-MA" style="cursor: pointer;"><i class="ma flag"></i> MA - Morocco</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MC" id="country-MC" /><label for="country-MC" style="cursor: pointer;"><i class="mc flag"></i> MC - Monaco</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MD" id="country-MD" /><label for="country-MD" style="cursor: pointer;"><i class="md flag"></i> MD - Moldova</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ME" id="country-ME" /><label for="country-ME" style="cursor: pointer;"><i class="me flag"></i> ME - Montenegro</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MF" id="country-MF" /><label for="country-MF" style="cursor: pointer;"><i class="mf flag"></i> MF - Saint Martin</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MG" id="country-MG" /><label for="country-MG" style="cursor: pointer;"><i class="mg flag"></i> MG - Madagascar</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MH" id="country-MH" /><label for="country-MH" style="cursor: pointer;"><i class="mh flag"></i> MH - Marshall Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MK" id="country-MK" /><label for="country-MK" style="cursor: pointer;"><i class="mk flag"></i> MK - Macedonia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ML" id="country-ML" /><label for="country-ML" style="cursor: pointer;"><i class="ml flag"></i> ML - Mali</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MM" id="country-MM" /><label for="country-MM" style="cursor: pointer;"><i class="mm flag"></i> MM - Myanmar</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MN" id="country-MN" /><label for="country-MN" style="cursor: pointer;"><i class="mn flag"></i> MN - Mongolia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MO" id="country-MO" /><label for="country-MO" style="cursor: pointer;"><i class="mo flag"></i> MO - Macao</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MP" id="country-MP" /><label for="country-MP" style="cursor: pointer;"><i class="mp flag"></i> MP - Northern Mariana Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MQ" id="country-MQ" /><label for="country-MQ" style="cursor: pointer;"><i class="mq flag"></i> MQ - Martinique</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MR" id="country-MR" /><label for="country-MR" style="cursor: pointer;"><i class="mr flag"></i> MR - Mauritania</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MS" id="country-MS" /><label for="country-MS" style="cursor: pointer;"><i class="ms flag"></i> MS - Montserrat</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MT" id="country-MT" /><label for="country-MT" style="cursor: pointer;"><i class="mt flag"></i> MT - Malta</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MU" id="country-MU" /><label for="country-MU" style="cursor: pointer;"><i class="mu flag"></i> MU - Mauritius</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MV" id="country-MV" /><label for="country-MV" style="cursor: pointer;"><i class="mv flag"></i> MV - Maldives</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MW" id="country-MW" /><label for="country-MW" style="cursor: pointer;"><i class="mw flag"></i> MW - Malawi</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MX" id="country-MX" /><label for="country-MX" style="cursor: pointer;"><i class="mx flag"></i> MX - Mexico</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MY" id="country-MY" /><label for="country-MY" style="cursor: pointer;"><i class="my flag"></i> MY - Malaysia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="MZ" id="country-MZ" /><label for="country-MZ" style="cursor: pointer;"><i class="mz flag"></i> MZ - Mozambique</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NA" id="country-NA" /><label for="country-NA" style="cursor: pointer;"><i class="na flag"></i> NA - Namibia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NC" id="country-NC" /><label for="country-NC" style="cursor: pointer;"><i class="nc flag"></i> NC - New Caledonia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NE" id="country-NE" /><label for="country-NE" style="cursor: pointer;"><i class="ne flag"></i> NE - Niger</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NF" id="country-NF" /><label for="country-NF" style="cursor: pointer;"><i class="nf flag"></i> NF - Norfolk Island</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NG" id="country-NG" /><label for="country-NG" style="cursor: pointer;"><i class="ng flag"></i> NG - Nigeria</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NI" id="country-NI" /><label for="country-NI" style="cursor: pointer;"><i class="ni flag"></i> NI - Nicaragua</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NL" id="country-NL" /><label for="country-NL" style="cursor: pointer;"><i class="nl flag"></i> NL - Netherlands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NO" id="country-NO" /><label for="country-NO" style="cursor: pointer;"><i class="no flag"></i> NO - Norway</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NP" id="country-NP" /><label for="country-NP" style="cursor: pointer;"><i class="np flag"></i> NP - Nepal</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NR" id="country-NR" /><label for="country-NR" style="cursor: pointer;"><i class="nr flag"></i> NR - Nauru</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NU" id="country-NU" /><label for="country-NU" style="cursor: pointer;"><i class="nu flag"></i> NU - Niue</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="NZ" id="country-NZ" /><label for="country-NZ" style="cursor: pointer;"><i class="nz flag"></i> NZ - New Zealand</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="OM" id="country-OM" /><label for="country-OM" style="cursor: pointer;"><i class="om flag"></i> OM - Oman</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PA" id="country-PA" /><label for="country-PA" style="cursor: pointer;"><i class="pa flag"></i> PA - Panama</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PE" id="country-PE" /><label for="country-PE" style="cursor: pointer;"><i class="pe flag"></i> PE - Peru</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PF" id="country-PF" /><label for="country-PF" style="cursor: pointer;"><i class="pf flag"></i> PF - French Polynesia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PG" id="country-PG" /><label for="country-PG" style="cursor: pointer;"><i class="pg flag"></i> PG - Papua New Guinea</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PH" id="country-PH" /><label for="country-PH" style="cursor: pointer;"><i class="ph flag"></i> PH - Philippines</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PK" id="country-PK" /><label for="country-PK" style="cursor: pointer;"><i class="pk flag"></i> PK - Pakistan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PL" id="country-PL" /><label for="country-PL" style="cursor: pointer;"><i class="pl flag"></i> PL - Poland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PM" id="country-PM" /><label for="country-PM" style="cursor: pointer;"><i class="pm flag"></i> PM - Saint Pierre and Miquelon</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PN" id="country-PN" /><label for="country-PN" style="cursor: pointer;"><i class="pn flag"></i> PN - Pitcairn</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PR" id="country-PR" /><label for="country-PR" style="cursor: pointer;"><i class="pr flag"></i> PR - Puerto Rico</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PS" id="country-PS" /><label for="country-PS" style="cursor: pointer;"><i class="ps flag"></i> PS - Palestinian Territory</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PT" id="country-PT" /><label for="country-PT" style="cursor: pointer;"><i class="pt flag"></i> PT - Portugal</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PW" id="country-PW" /><label for="country-PW" style="cursor: pointer;"><i class="pw flag"></i> PW - Palau</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="PY" id="country-PY" /><label for="country-PY" style="cursor: pointer;"><i class="py flag"></i> PY - Paraguay</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="QA" id="country-QA" /><label for="country-QA" style="cursor: pointer;"><i class="qa flag"></i> QA - Qatar</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="RE" id="country-RE" /><label for="country-RE" style="cursor: pointer;"><i class="re flag"></i> RE - Reunion</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="RO" id="country-RO" /><label for="country-RO" style="cursor: pointer;"><i class="ro flag"></i> RO - Romania</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="RS" id="country-RS" /><label for="country-RS" style="cursor: pointer;"><i class="rs flag"></i> RS - Serbia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="RU" id="country-RU" /><label for="country-RU" style="cursor: pointer;"><i class="ru flag"></i> RU - Russia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="RW" id="country-RW" /><label for="country-RW" style="cursor: pointer;"><i class="rw flag"></i> RW - Rwanda</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SA" id="country-SA" /><label for="country-SA" style="cursor: pointer;"><i class="sa flag"></i> SA - Saudi Arabia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SB" id="country-SB" /><label for="country-SB" style="cursor: pointer;"><i class="sb flag"></i> SB - Solomon Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SC" id="country-SC" /><label for="country-SC" style="cursor: pointer;"><i class="sc flag"></i> SC - Seychelles</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SD" id="country-SD" /><label for="country-SD" style="cursor: pointer;"><i class="sd flag"></i> SD - Sudan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SE" id="country-SE" /><label for="country-SE" style="cursor: pointer;"><i class="se flag"></i> SE - Sweden</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SG" id="country-SG" /><label for="country-SG" style="cursor: pointer;"><i class="sg flag"></i> SG - Singapore</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SH" id="country-SH" /><label for="country-SH" style="cursor: pointer;"><i class="sh flag"></i> SH - Saint Helena</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SI" id="country-SI" /><label for="country-SI" style="cursor: pointer;"><i class="si flag"></i> SI - Slovenia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SJ" id="country-SJ" /><label for="country-SJ" style="cursor: pointer;"><i class="sj flag"></i> SJ - Svalbard and Jan Mayen</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SK" id="country-SK" /><label for="country-SK" style="cursor: pointer;"><i class="sk flag"></i> SK - Slovakia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SL" id="country-SL" /><label for="country-SL" style="cursor: pointer;"><i class="sl flag"></i> SL - Sierra Leone</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SM" id="country-SM" /><label for="country-SM" style="cursor: pointer;"><i class="sm flag"></i> SM - San Marino</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SN" id="country-SN" /><label for="country-SN" style="cursor: pointer;"><i class="sn flag"></i> SN - Senegal</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SO" id="country-SO" /><label for="country-SO" style="cursor: pointer;"><i class="so flag"></i> SO - Somalia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SR" id="country-SR" /><label for="country-SR" style="cursor: pointer;"><i class="sr flag"></i> SR - Suriname</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SS" id="country-SS" /><label for="country-SS" style="cursor: pointer;"><i class="ss flag"></i> SS - South Sudan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ST" id="country-ST" /><label for="country-ST" style="cursor: pointer;"><i class="st flag"></i> ST - Sao Tome and Principe</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SV" id="country-SV" /><label for="country-SV" style="cursor: pointer;"><i class="sv flag"></i> SV - El Salvador</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SX" id="country-SX" /><label for="country-SX" style="cursor: pointer;"><i class="sx flag"></i> SX - Sint Maarten</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SY" id="country-SY" /><label for="country-SY" style="cursor: pointer;"><i class="sy flag"></i> SY - Syria</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="SZ" id="country-SZ" /><label for="country-SZ" style="cursor: pointer;"><i class="sz flag"></i> SZ - Swaziland</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TC" id="country-TC" /><label for="country-TC" style="cursor: pointer;"><i class="tc flag"></i> TC - Turks and Caicos Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TD" id="country-TD" /><label for="country-TD" style="cursor: pointer;"><i class="td flag"></i> TD - Chad</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TF" id="country-TF" /><label for="country-TF" style="cursor: pointer;"><i class="tf flag"></i> TF - French Southern Territories</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TG" id="country-TG" /><label for="country-TG" style="cursor: pointer;"><i class="tg flag"></i> TG - Togo</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TH" id="country-TH" /><label for="country-TH" style="cursor: pointer;"><i class="th flag"></i> TH - Thailand</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TJ" id="country-TJ" /><label for="country-TJ" style="cursor: pointer;"><i class="tj flag"></i> TJ - Tajikistan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TK" id="country-TK" /><label for="country-TK" style="cursor: pointer;"><i class="tk flag"></i> TK - Tokelau</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TL" id="country-TL" /><label for="country-TL" style="cursor: pointer;"><i class="tl flag"></i> TL - East Timor</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TM" id="country-TM" /><label for="country-TM" style="cursor: pointer;"><i class="tm flag"></i> TM - Turkmenistan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TN" id="country-TN" /><label for="country-TN" style="cursor: pointer;"><i class="tn flag"></i> TN - Tunisia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TO" id="country-TO" /><label for="country-TO" style="cursor: pointer;"><i class="to flag"></i> TO - Tonga</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TR" id="country-TR" /><label for="country-TR" style="cursor: pointer;"><i class="tr flag"></i> TR - Turkey</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TT" id="country-TT" /><label for="country-TT" style="cursor: pointer;"><i class="tt flag"></i> TT - Trinidad and Tobago</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TV" id="country-TV" /><label for="country-TV" style="cursor: pointer;"><i class="tv flag"></i> TV - Tuvalu</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TW" id="country-TW" /><label for="country-TW" style="cursor: pointer;"><i class="tw flag"></i> TW - Taiwan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="TZ" id="country-TZ" /><label for="country-TZ" style="cursor: pointer;"><i class="tz flag"></i> TZ - Tanzania</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="UA" id="country-UA" /><label for="country-UA" style="cursor: pointer;"><i class="ua flag"></i> UA - Ukraine</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="UG" id="country-UG" /><label for="country-UG" style="cursor: pointer;"><i class="ug flag"></i> UG - Uganda</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="UM" id="country-UM" /><label for="country-UM" style="cursor: pointer;"><i class="um flag"></i> UM - United States Minor Outlying Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="US" id="country-US" /><label for="country-US" style="cursor: pointer;"><i class="us flag"></i> US - United States</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="UY" id="country-UY" /><label for="country-UY" style="cursor: pointer;"><i class="uy flag"></i> UY - Uruguay</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="UZ" id="country-UZ" /><label for="country-UZ" style="cursor: pointer;"><i class="uz flag"></i> UZ - Uzbekistan</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VA" id="country-VA" /><label for="country-VA" style="cursor: pointer;"><i class="va flag"></i> VA - Vatican</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VC" id="country-VC" /><label for="country-VC" style="cursor: pointer;"><i class="vc flag"></i> VC - Saint Vincent and the Grenadines</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VE" id="country-VE" /><label for="country-VE" style="cursor: pointer;"><i class="ve flag"></i> VE - Venezuela</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VG" id="country-VG" /><label for="country-VG" style="cursor: pointer;"><i class="vg flag"></i> VG - British Virgin Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VI" id="country-VI" /><label for="country-VI" style="cursor: pointer;"><i class="vi flag"></i> VI - U.S. Virgin Islands</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VN" id="country-VN" /><label for="country-VN" style="cursor: pointer;"><i class="vn flag"></i> VN - Vietnam</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="VU" id="country-VU" /><label for="country-VU" style="cursor: pointer;"><i class="vu flag"></i> VU - Vanuatu</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="WF" id="country-WF" /><label for="country-WF" style="cursor: pointer;"><i class="wf flag"></i> WF - Wallis and Futuna</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="WS" id="country-WS" /><label for="country-WS" style="cursor: pointer;"><i class="ws flag"></i> WS - Samoa</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="XK" id="country-XK" /><label for="country-XK" style="cursor: pointer;"><i class="xk flag"></i> XK - Kosovo</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="YE" id="country-YE" /><label for="country-YE" style="cursor: pointer;"><i class="ye flag"></i> YE - Yemen</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="YT" id="country-YT" /><label for="country-YT" style="cursor: pointer;"><i class="yt flag"></i> YT - Mayotte</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ZA" id="country-ZA" /><label for="country-ZA" style="cursor: pointer;"><i class="za flag"></i> ZA - South Africa</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ZM" id="country-ZM" /><label for="country-ZM" style="cursor: pointer;"><i class="zm flag"></i> ZM - Zambia</label></div>
+  </div>
+	<div class="four wide column"><div class="ui checkbox">
+    <input class="country" type="checkbox" value="ZW" id="country-ZW" /><label for="country-ZW" style="cursor: pointer;"><i class="zw flag"></i> ZW - Zimbabw</label></div>
+  </div>
+
+					</div>
+				</div>
+			</div>			
 		</div>
 								
 		<script src="/js/preferences.js"></script>

@@ -4,32 +4,22 @@
 <head>
     <meta charset="utf-8" />
     <title>MailHops</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.7/semantic.min.css" integrity="sha512-g/MzOGVPy3OQ4ej1U+qe4D/xhLwUn5l5xL0Fa7gdC258ZWVJQGwsbIR47SWMpRxSPjD0tfu/xkilTy+Lhrl3xg==" crossorigin="anonymous" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css" />    
     <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body id="mh-body">
-    <div class="popup-page" style="max-width: 405px;">
-        <div id="mh-pop-segment" class="ui segment">
-        
+    <div id="mh-pop-segment" class="ui segment popup-page" style="max-width: 405px; max-height: 405px; overflow-y: scroll; border: 0;">
         <div id="hop-message" class="ui message" style="width: 100%;">
             <div id="hop-message-header" class="header" style="text-align: center;"></div>
         </div>
-        
         <div id="hop-list" class="ui relaxed divided list" style="padding: 10px;"></div>
-        
-        <div id="mh-auth" style="padding-left: 10px;padding-right: 10px;"></div>
-        
-        <div class="ui divider"></div>
-        
+        <div id="mh-auth" style="padding-left: 10px; padding-right: 10px;"></div>
         <div class="wrapbutton" style="margin: 4px;">
             <button type="button" class="ui green button" id="mh-map-button">Map</button>
             <button type="button" class="ui blue button" id="mh-reload-button">Reload</button>
             <button type="button" class="ui icon button" id="mh-options-button" style="float: right;">Options</button>        
         </div>
-        
-        </div>
     </div>
-    
     <script src="/js/utils.js"></script>
     <script src="/js/mailhops_details.js" defer="true"></script>
 </body>

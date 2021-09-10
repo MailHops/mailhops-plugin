@@ -10,7 +10,7 @@ const MailHops = {
   loading: false,
   previousId: null,
   options: {
-    version: 'MailHops Plugin 4.2.1',    
+    version: 'MailHops Plugin 4.3.0',    
     api_key: '',
     owm_key: '',
     lang: 'en',    
@@ -19,7 +19,6 @@ const MailHops = {
     api_http: 'https://',    
     api_host: 'api.Mailhops.com',    
     debug: false,    
-    country_tag: false,    
     travel_time_junk: false,    
     country_filter: []    
   },
@@ -70,10 +69,16 @@ MailHops.init = function(id, headers)
     }
     if (data.theme) {
       MailHops.options.theme = data.theme;
-    } 
-    if (typeof data.travel_time_junk != 'undefined') {
-      MailHops.options.travel_time_junk = data.travel_time_junk == 'on' ? true : false;
-    } 
+    }
+    if (data.travel_time_junk && data.travel_time_junk != 'off') {
+      MailHops.options.travel_time_junk = Boolean(data.travel_time_junk);
+    }
+    if (data.debug) {
+      MailHops.options.debug = Boolean(data.debug);
+    }        
+    if (data.countries) {
+      MailHops.options.country_filter = data.countries.split(',');
+    }
     MailHops.LOG('load MailHops prefs');  
     // reset message
     MailHops.message = {
@@ -369,16 +374,16 @@ MailHops.auth = function (header_xmailer, header_useragent, header_xmimeole, hea
 //mailhops lookup
 MailHops.lookupRoute = function(header_route){
 
- var lookupURL = '?'+MailHopsUtils.getAPIUrlParams(MailHops.options)+'&r='+String(header_route)+'&l='+MailHops.options.lang+'&u='+MailHops.options.unit;
+ let lookupURL = '?'+MailHopsUtils.getAPIUrlParams(MailHops.options)+'&r='+String(header_route)+'&l='+MailHops.options.lang+'&u='+MailHops.options.unit;
 
  if(MailHops.options.owm_key != '')
    lookupURL += '&owm_key='+MailHops.options.owm_key;
  if(MailHops.message.time != null)
    lookupURL += '&t=' + MailHops.message.time;
-  if(MailHops.message.date != null)
+ if(MailHops.message.date != null)
    lookupURL += '&d='+MailHops.message.date;
   
-  MailHops.message.map_url = MailHopsUtils.getAPIUrl() + '/map/' + lookupURL;  
+  MailHops.message.map_url = MailHopsUtils.getAPIUrl() + '/map/' + lookupURL;
   
 //call mailhops api for lookup
 var xmlhttp = new XMLHttpRequest();  
@@ -386,8 +391,8 @@ var xmlhttp = new XMLHttpRequest();
  xmlhttp.onreadystatechange=function() {
   if (xmlhttp.readyState===4){
     try {
-       var data = JSON.parse(xmlhttp.responseText);
-      if (xmlhttp.status === 200) {          
+      let data = JSON.parse(xmlhttp.responseText);
+      if (xmlhttp.status === 200) {
         MailHops.cacheResponse(data.response);
         MailHops.displayRoute(data.response);
           //tag the result
@@ -437,10 +442,8 @@ MailHops.cacheResponse = async function (response) {
     messages.list = data.messages.list; 
   }
   messages.list[MailHops.message.hash] = response;
-  browser.storage.local.set({
-    messages: messages
-  });
-  MailHops.LOG('Cached Message '+MailHops.message.id+' hash '+MailHops.message.hash);
+  await browser.storage.local.set({messages: messages});
+  MailHops.LOG('Cached Message ' + MailHops.message.id + ' hash ' + MailHops.message.hash);  
 };
 
 // get cached message
@@ -463,9 +466,15 @@ MailHops.tagResults = function(results, route){
   try {      
     if(Boolean(MailHops.options.travel_time_junk) && MailHops.message.time != null && MailHops.message.time > 10000){
       messenger.messages.update(MailHops.message.id, { 'junk': true });
-      MailHops.LOG( "Junk: Travel time match" );
+      MailHops.LOG( "Junk: Travel time match for " + MailHops.message.time );
+    }    
+    if (MailHops.options.country_filter.length && MailHops.message.sender && MailHops.message.sender.countryCode) {      
+      if (MailHops.options.country_filter.indexOf(MailHops.message.sender.countryCode.toUpperCase()) != -1) {
+        messenger.messages.update(MailHops.message.id, { 'junk': true });
+        MailHops.LOG( "Junk: Country code match for " + MailHops.message.sender.countryCode );
+      }
     }
   } catch(e){
-    MailHops.LOG("Error tagging travel_time_junk: " + e);      
+    MailHops.LOG("Error tagResults: " + e);      
   }
 };

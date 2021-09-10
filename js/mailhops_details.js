@@ -1,10 +1,25 @@
 var port = browser.runtime.connect({ name: "MailHops" });
 port.postMessage({ command: "details" });
 
-port.onMessage.addListener(function(msg) {
-  updateContent(msg);  
+port.onMessage.addListener(function (msg) {
+  updateContent(msg);
   document.getElementById("mh-map-button").addEventListener("click", function () {
-    browser.tabs.create({ url: msg.message.map_url });  
+    // rebuild map url if it's not there
+    if (!msg.message.map_url && msg.response && msg.response.route && msg.response.route.length) {
+      let header_route = msg.response.route.map(r => r.ip).join(',');
+      let lookupURL = '?'+MailHopsUtils.getAPIUrlParams(msg.options)+'&r='+String(header_route)+'&l='+msg.options.lang+'&u='+msg.options.unit;
+
+      if(msg.options.owm_key != '')
+        lookupURL += '&owm_key='+msg.options.owm_key;
+      if(msg.message.time != null)
+        lookupURL += '&t=' + msg.message.time;
+      if(msg.message.date != null)
+        lookupURL += '&d='+msg.message.date;
+      
+      msg.message.map_url = MailHopsUtils.getAPIUrl() + '/map/' + lookupURL;
+    }
+    if(msg.message.map_url)
+      browser.tabs.create({ url: msg.message.map_url });  
   });
 });
 
@@ -12,16 +27,13 @@ document.getElementById("mh-options-button").addEventListener("click", function 
   browser.tabs.create({ url: '/content/preferences.html' });  
 });
 
-function updateContent(msg) {  
+function updateContent(msg, noauth) {  
   //setup reload
   document.getElementById("mh-reload-button").addEventListener("click", async function () { 
     let data = await browser.storage.local.get('messages');
     if (data.messages && data.messages.list[msg.message.hash]) {
-      console.log(data.messages);
       delete data.messages.list[msg.message.hash];
-      browser.storage.local.set({
-        messages: data.messages
-      });      
+      await browser.storage.local.set({messages: data.messages});      
     }
     this.innerHTML = "Removed!";
     document.location.reload();
@@ -69,7 +81,6 @@ function updateContent(msg) {
   for (var i = 0; i < route.length; i++) { 
     var header = 'Private';
     var icon = '/images/local.png';
-    var distance = '';
     // set the client route
     if (route[i].client)
       client = route[i];
@@ -88,7 +99,7 @@ function updateContent(msg) {
     else if (route[i].countryName)           
       header = route[i].countryName;                
     
-    var description = '<a href="https://mailhops.com/whois/' + route[i].ip + '" target="_blank" title="Who Is?">' + route[i].ip + '</a><br/>';
+    var description = '<a href="https://www.mailhops.com/whois/' + route[i].ip + '" target="_blank" title="Who Is?">' + route[i].ip + '</a><br/>';
     
     if (msg.message.secure.indexOf(route[i].ip) !== -1) {
       description += '<img src="/images/auth/lock.png" title="Used TLS or SSL" /> ';
@@ -115,12 +126,19 @@ function updateContent(msg) {
     }
     
     var auth = '';
-    if (msg.message.auth.length) {
+    if (!noauth && msg.message.auth.length) {
       for (var a = 0; a < msg.message.auth.length; a++){
-        if(msg.message.auth[a].icon)
-          auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';        
-        else if(msg.message.auth[a].link)
-          auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';        
+        if (msg.message.auth[a].icon) {
+          auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';          
+        }
+        else if (msg.message.auth[a].link) {
+          if (msg.message.auth[a].link.indexOf(',')) {
+            auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';            
+          }
+          else {
+            auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';            
+          }
+        }
       }
     }
     // append child
@@ -131,6 +149,7 @@ function updateContent(msg) {
   if (sender && client) {    
     document.getElementById('hop-message-header').innerHTML += ' over '+MailHopsUtils.getDistance(sender, client, unit) + ' ' + unit;    
   }
+
   // hop list
   document.getElementById('hop-list').innerHTML = items.join('');
   try {
@@ -138,5 +157,8 @@ function updateContent(msg) {
   } catch (error) {
     if(error)
       console.error('MailHops', error);
+    // if auth has bad html load without auth
+    if(!noauth)
+      updateContent(msg, true);
   }
 }
