@@ -22,11 +22,11 @@ const mailHopsUI = class extends ExtensionCommon.ExtensionAPI {
                     mailHops.setAttribute("image", basePath + iconPath);
                     mailHops.setAttribute("tooltiptext", iconText);
                     mailHops.setAttribute("style", "flex-shrink: 0; padding: 0; margin:" + marginTop + "px 2px 0 2px");
-                    for (let elm of mailHops.children) {
-                        if (elm.nodeName == "image") {
-                            elm.width = iconSize;
-                            elm.height = iconSize;
-                            elm.setAttribute("style", "margin: 0 2px 0 2px");
+                    for (let mhc of mailHops.children) {
+                        if (mhc.nodeName == "image") {
+                            mhc.width = iconSize;
+                            mhc.height = iconSize;
+                            mhc.setAttribute("style", "margin: 0 2px 0 2px");
                             break;
                         }
                     }
@@ -40,11 +40,11 @@ const mailHopsUI = class extends ExtensionCommon.ExtensionAPI {
                         wd.document.getElementById("mailhops-messageDisplayAction-toolbarbutton").click();
                     }, false);
                     wd.document.getElementById(ehb).insertBefore(mailHops, elm);
-                    for (let elm of mailHops.children) {
-                        if (elm.nodeName == "image") {
-                            elm.width = iconSize;
-                            elm.height = iconSize;
-                            elm.setAttribute("style", "margin: 0 2px 0 2px");
+                    for (let mhc of mailHops.children) {
+                        if (mhc.nodeName == "image") {
+                            mhc.width = iconSize;
+                            mhc.height = iconSize;
+                            mhc.setAttribute("style", "margin: 0 2px 0 2px");
                             break;
                         }
                     }

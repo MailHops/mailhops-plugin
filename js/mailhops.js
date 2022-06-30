@@ -10,7 +10,7 @@ const MailHops = {
   loading: false,
   previousId: null,
   options: {
-    version: 'MailHops Plugin 4.3.1',    
+    version: 'MailHops Plugin 4.3.3',    
     api_key: '',
     owm_key: '',
     lang: 'en',    
