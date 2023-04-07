@@ -1,5 +1,9 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const tabId = parseInt(urlParams.get("tabId"), 10);
+
 var port = browser.runtime.connect({ name: "MailHops" });
-port.postMessage({ command: "details" });
+port.postMessage({ command: "details", tabId });
 
 port.onMessage.addListener(function (msg) {
   updateContent(msg);

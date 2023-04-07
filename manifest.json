@@ -11,23 +11,12 @@
   "applications": {
     "gecko": {
       "id": "thunderbird@mailhops.com",
-      "strict_min_version": "74.0",
-      "strict_max_version": "102.*"
+      "strict_min_version": "112.0"
     }
   },
   "default_locale": "en",
   "icons": {
     "32": "images/mailhops32.png"
-  },
-  "experiment_apis": {
-    "mailHopsUI": {
-      "schema": "schema.json",
-      "parent": {
-        "scopes": ["addon_parent"],
-        "paths": [["mailHopsUI"]],
-        "script": "js/experiment_apis.js"
-      }
-    }
   },
   "options_ui": {
     "page": "content/preferences.html",
