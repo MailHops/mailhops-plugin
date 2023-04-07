@@ -1,5 +1,13 @@
 # Change Log
 
+## 4.4.0 - 2023-04-07
+
+- Refactored by @jobisoft to removed experimental framework and updated to work with TB 112.*
+
+## 4.3.3 - 2022-06-20
+
+- Added support for Thunderbird 102.*
+
 ## 4.3.0 - 2021-09-10
 
 - Added support for Thunderbird 93
