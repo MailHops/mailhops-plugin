@@ -299,17 +299,44 @@ class MailHops {
     browser.messageDisplayAction.setTitle({ title: this.message.sender.title, tabId: this.tabId });
   }
 
+  sanitizeString(str) {
+    return str.replace (/\t/g, ' ').replace (/\s+/g, ' ').replace (/</g, '&lt;').replace (/>/g, '&gt;').trim ();
+  }
+
   auth(header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf, header_unsubscribe) {
     let auth = [];
     //SPF
     if (header_spf) {
-      header_spf = header_spf.replace(/^\s+/, "");
+      // Compact whitespace, make sure addresses enclosed in <> parse as valid
+      // XHTMl later on.
+      header_spf = this.sanitizeString (header_spf);
+
+      // Split value on whitespace. We'll extract data from this.
       var headerSPFArr = header_spf.split(' ');
+
+      // First element should always indicate the state.
+      var spfState = headerSPFArr.shift ();
+
+      // Additionally, we might have a reason description, enclosed in parenthesis.
+      // Example: spfState = "Pass", reason description: "(mailfrom)"
+      var spfStateReason = '';
+      if (-1 != headerSPFArr[0].search (/^\(.*\)$/)) {
+        spfStateReason = ' ' + headerSPFArr.shift ();
+      }
+
+      // Put it all together, with extra information if requested.
+      var copy = spfState + spfStateReason;
+      if (this.options.extrainfo) {
+        copy += '\n<br />' + headerSPFArr.join (' ') + '\n<br />';
+      }
+      copy += '\n<br />' + MailHopsUtils.spf(spfState.toLowerCase ()).trim ();
+
+      this.LOG ("SPF state and data: " + copy);
       auth.push({
         type: 'SPF',
         color: 'green',
-        icon: '/images/auth/' + headerSPFArr[0].toLowerCase () + '.png',
-        copy: header_spf + '\n' + MailHopsUtils.spf(headerSPFArr[0].toLowerCase ()).trim()
+        icon: '/images/auth/' + spfState.toLowerCase () + '.png',
+        copy: copy
       });
     }
     //Authentication-Results
