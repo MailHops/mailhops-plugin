@@ -129,25 +129,26 @@ function updateContent(msg, noauth) {
       asn = '<br/>ASN Org: ' + MailHopsUtils.htmlEncode(route[i].asn.autonomous_system_organization);
       asn += ' (<a href="https://dnschecker.org/asn-whois-lookup.php?query='+route[i].asn.autonomous_system_number+'" target="_blank" title="ASN Lookup">' + route[i].asn.autonomous_system_number + '</a>)'
     }
-    
-    var auth = '';
-    if (!noauth && msg.message.auth.length) {
-      for (var a = 0; a < msg.message.auth.length; a++){
-        if (msg.message.auth[a].icon) {
-          auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';          
+
+    // append child
+    items.push('<div class="item"><div class="content"><div class="header"><img src="'+ icon + '" /> ' + header + weather +' <label class="ui circular label icon" style="float: right;">'+ (i + 1) +'</label></div><div class="description">'+ description + asn + '</div></div></div>');
+  }
+
+  var auth = '';
+  if (!noauth && msg.message.auth.length) {
+    for (var a = 0; a < msg.message.auth.length; a++){
+      if (msg.message.auth[a].icon) {
+        auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';
+      }
+      else if (msg.message.auth[a].link) {
+        if (-1 !== msg.message.auth[a].link.indexOf(',')) {
+          auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';
         }
-        else if (msg.message.auth[a].link) {
-          if (-1 !== msg.message.auth[a].link.indexOf(',')) {
-            auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';            
-          }
-          else {
-            auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';            
-          }
+        else {
+          auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';
         }
       }
     }
-    // append child
-    items.push('<div class="item"><div class="content"><div class="header"><img src="'+ icon + '" /> ' + header + weather +' <label class="ui circular label icon" style="float: right;">'+ (i + 1) +'</label></div><div class="description">'+ description + asn + '</div></div></div>');    
   }
 
   // header
