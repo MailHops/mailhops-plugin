@@ -379,11 +379,15 @@ class MailHops {
       }
     }
     if (header_unsubscribe) {
-      auth.push({
-        type: 'Unsubscribe',
-        color: 'grey',
-        link: header_unsubscribe.replace('<', '').replace('>', '').trim()
-      });
+      var unsubscribeArr = header_unsubscribe.split(',');
+
+      for (var i = 0; i < unsubscribeArr.length; ++i) {
+        auth.push({
+          type: 'Unsubscribe',
+          color: 'grey',
+          link: unsubscribeArr[i].replace(/</, '').replace(/>/, '').trim()
+        });
+      }
     }
     return auth;
   }

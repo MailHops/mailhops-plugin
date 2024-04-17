@@ -147,6 +147,11 @@ function updateContent(msg, noauth) {
       }
       else if (msg.message.auth[a].link) {
         var add = '';
+
+        // We only check for a comma in case our base code failed to split
+        // the header links up correctly.
+        // Usually, it should work fine and add multiple buttons for
+        // multiple links.
         if (-1 != msg.message.auth[a].link.indexOf(',')) {
           add = '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';
         }
