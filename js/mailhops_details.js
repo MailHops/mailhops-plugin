@@ -47,10 +47,11 @@ function updateContent(msg, noauth) {
     document.getElementById('hop-message').classList.add('warning');
     document.getElementById('mh-map-button').style.display = 'none';    
     document.getElementById('hop-message-header').innerHTML = msg.message.error;
-    return;
   }
-  document.getElementById('hop-message').classList.remove('warning');
-  document.getElementById('mh-map-button').style.display = 'inline-block';
+  else {
+    document.getElementById('hop-message').classList.remove('warning');
+    document.getElementById('mh-map-button').style.display = 'inline-block';
+  }
   
   const route = msg.response.route || [];
   const sender = msg.message.sender || null;
@@ -148,10 +149,13 @@ function updateContent(msg, noauth) {
     // append child
     items.push('<div class="item"><div class="content"><div class="header"><img src="'+ icon + '" /> ' + header + weather +' <label class="ui circular label icon" style="float: right;">'+ (i + 1) +'</label></div><div class="description">'+ description + asn + '</div></div></div>');    
   }
+
   // header
-  document.getElementById('hop-message-header').innerHTML = `${route.length} Hops`;
-  if (sender && client) {    
-    document.getElementById('hop-message-header').innerHTML += ' over '+MailHopsUtils.getDistance(sender, client, unit) + ' ' + unit;    
+  if (!msg.message.error) {
+    document.getElementById('hop-message-header').innerHTML = `${route.length} Hops`;
+    if (sender && client) {
+      document.getElementById('hop-message-header').innerHTML += ' over '+MailHopsUtils.getDistance(sender, client, unit) + ' ' + unit;
+    }
   }
 
   // hop list
