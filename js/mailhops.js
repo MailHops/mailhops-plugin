@@ -299,6 +299,53 @@ class MailHops {
     browser.messageDisplayAction.setTitle({ title: this.message.sender.title, tabId: this.tabId });
   }
 
+  extractMaybeQuotedValue(line, key) {
+    let ret = [ ];
+    let new_line = line;
+
+    console.assert (key.length);
+
+    // The possible combinations we might be interested in.
+    let dQuote = new RegExp (key + '="(.*?)"');
+    let sQuote = new RegExp (key + "='(.*?)'");
+    let nQuote = new RegExp (key + '=(.*?)(?:\\s|$)');
+
+    let match = line.match (dQuote);
+    if (null !== match) {
+      ret.push (match[1]);
+    }
+
+    if (!ret.length) {
+      match = line.match (sQuote);
+      if (null !== match) {
+        ret.push (match[1]);
+      }
+    }
+
+    if (!ret.length) {
+      match = line.match (nQuote);
+      if (null !== match) {
+        ret.push (match[1]);
+      }
+    }
+
+    if (ret.length) {
+      // Match length must be non-zero.
+      console.assert (match[0].length);
+
+      // Drop data leading up to the match.
+      new_line = new_line.substring (match.index);
+
+      // Drop the match itself.
+      new_line = new_line.substring (match[0].length);
+
+      // Add to return value.
+      ret.push (new_line);
+    }
+
+    return ret;
+  }
+
   sanitizeString(str) {
     return str.replace (/\t/g, ' ').replace (/\s+/g, ' ').replace (/</g, '&lt;').replace (/>/g, '&gt;').trim ();
   }
@@ -342,39 +389,192 @@ class MailHops {
     //Authentication-Results
     //http://tools.ietf.org/html/rfc8601
     if (header_auth) {
-      var headerAuthArr = header_auth.split(';');
-      var dkim_result;
-      var spf_result;
-      for (var h = 0; h < headerAuthArr.length; h++) {
-        if (headerAuthArr[h].indexOf('dkim=') != -1) {
-          dkim_result = headerAuthArr[h];
-          if (header_spf)
-            break;
+      this.LOG ('Authentication-Results header found, parsing...\n');
+      var headerAuthArr = [];
+
+      // The header might contain multiple lines, so iterate above them.
+      var headerAuthArr_ = header_auth.split('\n');
+      var dkimState = '';
+      var spfState = '';
+      var dkimReason = '';
+      var spfReason = '';
+      var dkimAux = '';
+      var spfAux = '';
+      var gotDkimState = false;
+      var gotSpfState = false;
+      for (var i = 0; i < headerAuthArr_.length; ++i) {
+        var curLine = headerAuthArr_[i];
+        this.LOG ('current header line: ' + curLine + '\n');
+
+        // This is the actual fun part.
+        // The AH can very funky and naïve field splitting often leads to
+        // wrong results.
+        // We'll heave to tread carefully and parse data in a more
+        // sophisticated way, relying on arcane knowledge.
+        //
+        // It might be temping to try to merge the dkim and spf sections below,
+        // but doing so is not really possible, since the formats are
+        // different.
+        let statePos = 0;
+        let stateWork = curLine;
+        while ((!gotDkimState) &&
+               (-1 !== (statePos = stateWork.indexOf ('dkim=')))) {
+          // Fetch "dkim=" value, potentially quoted.
+          // While the RFC doesn't mention anything about quote-enclosing
+          // values, it probably doesn't hurt to support it.
+          let extract = this.extractMaybeQuotedValue (stateWork, 'dkim');
+
+          if (extract.length) {
+            dkimState = extract[0];
+            stateWork = extract[1];
+            gotDkimState = true;
+            this.LOG ("extracted DKIM state: " + dkimState + "; continuing with new line: " + stateWork);
+          }
+          else {
+            // Nothing found on this line, continue.
+            this.LOG ("nothing found on current line (leftover) '" + truncatedWork + "', continuing...");
+            continue;
+          }
+
+          // Look ahead to find the next "dkim=" section. This will mark the
+          // end of our current chunk (if it exists).
+          let stateEnd = -1;
+          let truncatedWork = stateWork;
+          if (-1 !== (stateEnd = stateWork.indexOf ('dkim=', 5))) {
+            truncatedWork = truncatedWork.substring (0, stateEnd);
+          }
+
+          // Now fetch additional data.
+          // Typically, that should be "reason=".
+          extract = this.extractMaybeQuotedValue (truncatedWork, 'reason');
+
+          if (extract.length) {
+            dkimReason = extract[0];
+            truncatedWork = extract[1];
+            this.LOG ("extracted DKIM reason: " + dkimReason + "; continuing with new line: " + truncatedWork);
+          }
+
+          // Same MTA append a string such as "(1024-bit key; unprotected)",
+          // add this to the reason.
+          const key_data = new RegExp ('\\(\\d+-bit key(?:; .+?)?\\)');
+          let match = truncatedWork.match (key_data);
+          if (null !== match) {
+            if (dkimReason.length) {
+              dkimReason += ' ';
+            }
+            dkimReason += match[0];
+            truncatedWork = truncatedWork.substring (match.index);
+            truncatedWork = truncatedWork.substring (match[0].length);
+          }
+
+          // Others enclose the reason in parentheses.
+          const paren_reason = new RegExp ('\\(.+?\\)');
+          match = truncatedWork.match (paren_reason);
+          if (null !== match) {
+            if (dkimReason.length) {
+              dkimReason += ' ';
+            }
+            dkimReason += match[0];
+            truncatedWork = truncatedWork.substring (match.index);
+            truncatedWork = truncatedWork.substring (match[0].length);
+          }
+
+          // Everything else should be additional data, up until the first
+          // semicolon or end of the line.
+          const aux_data = new RegExp ('(.+?)(?:;|$)');
+          match = truncatedWork.match (aux_data);
+          if (null !== match) {
+            dkimAux = match[1];
+          }
         }
-        if (!header_spf && headerAuthArr[h].indexOf('spf=') != -1) {
-          spf_result = headerAuthArr[h];
-          if (dkim_result)
-            break;
+
+        // Do the same for SPF data.
+        statePos = 0;
+        stateWork = curLine;
+        while ((!gotSpfState) &&
+               (-1 !== (statePos = stateWork.indexOf ('spf=')))) {
+          // Refer to the DKIM section above for more information.
+          let extract = this.extractMaybeQuotedValue (stateWork, 'spf');
+
+          if (extract.length) {
+            spfState = extract[0];
+            stateWork = extract[1];
+            gotSpfState = true;
+          }
+          else {
+            // Nothing found on this line, continue.
+            this.LOG ("nothing found on current line (leftover) '" + stateWork + "', continuing...");
+            continue;
+          }
+
+          let stateEnd = -1;
+          let truncatedWork = stateWork;
+          if (-1 !== (stateEnd = stateWork.indexOf ('spf=', 4))) {
+            truncatedWork = truncatedWork.substring (0, stateEnd);
+          }
+
+          // Now fetch additional data.
+          // Reason is usually enclosed in parentheses.
+          const paren_reason = new RegExp ('\\(.+?\\)');
+          let match = truncatedWork.match (paren_reason);
+          if (null !== match) {
+            spfReason = match[0];
+            truncatedWork = truncatedWork.substring (match.index);
+            truncatedWork = truncatedWork.substring (match[0].length);
+          }
+
+          // Everything else is additional data.
+          const aux_data = new RegExp ('(.+?)[;|$]');
+          match = truncatedWork.match (aux_data);
+          if (null !== match) {
+            spfAux = match[1];
+          }
         }
       }
-      if (dkim_result) {
-        dkim_result = dkim_result.replace(/^\s+/, "");
-        var dkimArr = dkim_result.split(' ');
+
+      if (gotDkimState) {
+        // Just sanitize our data.
+        dkimState = this.sanitizeString (dkimState);
+        dkimReason = this.sanitizeString (dkimReason);
+        dkimAux = this.sanitizeString (dkimAux);
+
+        var copy = dkimState;
+        if (dkimReason.length) {
+          copy += ' - ' + dkimReason;
+        }
+        if ((this.options.extrainfo) && (dkimAux.length)) {
+          copy += '\n<br />' + dkimAux;
+        }
+        copy += '\n<br />\n<br />' + MailHopsUtils.dkim(dkimState).trim();
+
+        this.LOG ("DKIM state and data: " + copy);
         auth.push({
           type: 'DKIM',
           color: 'green',
-          icon: '/images/auth/' + dkimArr[0].replace('dkim=', '') + '.png',
-          copy: dkim_result + '\n' + MailHopsUtils.dkim(dkimArr[0].replace('dkim=', '')).trim()
+          icon: '/images/auth/' + dkimState.toLowerCase () + '.png',
+          copy: copy
         });
       }
-      if (spf_result) {
-        spf_result = spf_result.replace(/^\s+/, "");
-        var spfArr = spf_result.split(' ');
+      if (gotSpfState) {
+        spfState = this.sanitizeString (spfState);
+        spfReason = this.sanitizeString (spfReason);
+        spfAux = this.sanitizeString (spfAux);
+
+        var copy = spfState;
+        if (spfReason.length) {
+          copy += ' ' + spfReason;
+        }
+        if ((this.options.extrainfo) && (spfAux.length)) {
+          copy += '\n<br />' + spfAux;
+        }
+        copy += '\n<br />\n<br />' + MailHopsUtils.spf(spfState).trim();
+
+        this.LOG ("SPF state and data: " + copy);
         auth.push({
           type: 'SPF',
           color: 'green',
-          icon: '/images/auth/' + spfArr[0].replace('spf=', '') + '.png',
-          copy: spf_result + '\n' + MailHopsUtils.spf(spfArr[0].replace('spf=', '')).trim()
+          icon: '/images/auth/' + spfState.toLowerCase () + '.png',
+          copy: copy
         });
       }
     }
