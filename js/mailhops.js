@@ -340,7 +340,7 @@ class MailHops {
       });
     }
     //Authentication-Results
-    //http://tools.ietf.org/html/rfc5451
+    //http://tools.ietf.org/html/rfc8601
     if (header_auth) {
       var headerAuthArr = header_auth.split(';');
       var dkim_result;
