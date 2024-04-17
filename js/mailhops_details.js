@@ -57,6 +57,7 @@ function updateContent(msg, noauth) {
   const sender = msg.message.sender || null;
   const unit = msg.options.unit || "mi";
   const theme = msg.options.theme || "light";
+  const debug = msg.options.debug || false;
   let client = null;
   let items = [];
   
@@ -138,15 +139,24 @@ function updateContent(msg, noauth) {
   if (!noauth && msg.message.auth.length) {
     for (var a = 0; a < msg.message.auth.length; a++){
       if (msg.message.auth[a].icon) {
-        auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';
+        var add = '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';
+        if (debug) {
+          console.log("adding to auth (type icon): '" + add + "'");
+        }
+        auth += add;
       }
       else if (msg.message.auth[a].link) {
-        if (-1 !== msg.message.auth[a].link.indexOf(',')) {
-          auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';
+        var add = '';
+        if (-1 != msg.message.auth[a].link.indexOf(',')) {
+          add = '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';
         }
         else {
-          auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';
+          add = '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link+'" target="_blank">' + msg.message.auth[a].type + '</a>';
         }
+        if (debug) {
+          console.log("adding to auth (type link): '" + add + "'");
+        }
+        auth += add;
       }
     }
   }
