@@ -308,8 +308,8 @@ class MailHops {
       auth.push({
         type: 'SPF',
         color: 'green',
-        icon: '/images/auth/' + headerSPFArr[0] + '.png',
-        copy: header_spf + '\n' + MailHopsUtils.spf(headerSPFArr[0]).trim()
+        icon: '/images/auth/' + headerSPFArr[0].toLowerCase () + '.png',
+        copy: header_spf + '\n' + MailHopsUtils.spf(headerSPFArr[0].toLowerCase ()).trim()
       });
     }
     //Authentication-Results
