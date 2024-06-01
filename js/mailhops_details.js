@@ -136,7 +136,7 @@ function updateContent(msg, noauth) {
           auth += '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';          
         }
         else if (msg.message.auth[a].link) {
-          if (msg.message.auth[a].link.indexOf(',')) {
+          if (-1 !== msg.message.auth[a].link.indexOf(',')) {
             auth += '<a class="tiny ui label ' + msg.message.auth[a].color + '" href="'+msg.message.auth[a].link.substr(0,msg.message.auth[a].link.indexOf(','))+'" target="_blank">' + msg.message.auth[a].type + '</a>';            
           }
           else {
