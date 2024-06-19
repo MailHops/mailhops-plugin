@@ -18,8 +18,9 @@ class MailHops {
     theme: 'light',
     api_http: 'https://',
     api_host: 'api.Mailhops.com',
-    debug: false,
     travel_time_junk: false,
+    extrainfo: false,
+    debug: false,
     country_filter: []
   }
   message = {
@@ -67,6 +68,9 @@ class MailHops {
       }
       if (data.travel_time_junk && data.travel_time_junk != 'off') {
         this.options.travel_time_junk = Boolean(data.travel_time_junk);
+      }
+      if (data.extrainfo) {
+        this.options.extrainfo = Boolean(data.extrainfo);
       }
       if (data.debug) {
         this.options.debug = Boolean(data.debug);
