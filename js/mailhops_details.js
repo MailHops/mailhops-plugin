@@ -139,7 +139,7 @@ function updateContent(msg, noauth) {
   if (!noauth && msg.message.auth.length) {
     for (var a = 0; a < msg.message.auth.length; a++){
       if (msg.message.auth[a].icon) {
-        var add = '<label class="tiny ui label ' + msg.message.auth[a].color + '"><img src="' + msg.message.auth[a].icon + '"/>' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label>';
+        var add = '<div style="padding: 2px;"><label class="tiny ui label ' + msg.message.auth[a].color + '">' + msg.message.auth[a].type + ' ' + msg.message.auth[a].copy + '</label></div>';
         if (debug) {
           console.log("adding to auth (type icon): '" + add + "'");
         }

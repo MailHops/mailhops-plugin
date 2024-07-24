@@ -352,39 +352,12 @@ class MailHops {
 
   auth(header_xmailer, header_useragent, header_xmimeole, header_auth, header_spf, header_unsubscribe) {
     let auth = [];
+    var color = 'green';
     //SPF
     if (header_spf) {
       // Compact whitespace, make sure addresses enclosed in <> parse as valid
       // XHTMl later on.
       header_spf = this.sanitizeString (header_spf);
-
-      // Split value on whitespace. We'll extract data from this.
-      var headerSPFArr = header_spf.split(' ');
-
-      // First element should always indicate the state.
-      var spfState = headerSPFArr.shift ();
-
-      // Additionally, we might have a reason description, enclosed in parenthesis.
-      // Example: spfState = "Pass", reason description: "(mailfrom)"
-      var spfStateReason = '';
-      if (-1 != headerSPFArr[0].search (/^\(.*\)$/)) {
-        spfStateReason = ' ' + headerSPFArr.shift ();
-      }
-
-      // Put it all together, with extra information if requested.
-      var copy = spfState + spfStateReason;
-      if (this.options.extrainfo) {
-        copy += '\n<br />' + headerSPFArr.join (' ') + '\n<br />';
-      }
-      copy += '\n<br />' + MailHopsUtils.spf(spfState.toLowerCase ()).trim ();
-
-      this.LOG ("SPF state and data: " + copy);
-      auth.push({
-        type: 'SPF',
-        color: 'green',
-        icon: '/images/auth/' + spfState.toLowerCase () + '.png',
-        copy: copy
-      });
     }
     //Authentication-Results
     //http://tools.ietf.org/html/rfc8601
@@ -393,7 +366,7 @@ class MailHops {
       var headerAuthArr = [];
 
       // The header might contain multiple lines, so iterate above them.
-      var headerAuthArr_ = header_auth.split('\n');
+      var headerAuthArr = header_auth.split('\n');
       var dkimState = '';
       var spfState = '';
       var dkimReason = '';
@@ -402,8 +375,8 @@ class MailHops {
       var spfAux = '';
       var gotDkimState = false;
       var gotSpfState = false;
-      for (var i = 0; i < headerAuthArr_.length; ++i) {
-        var curLine = headerAuthArr_[i];
+      for (var i = 0; i < headerAuthArr.length; ++i) {
+        var curLine = headerAuthArr[i];
         this.LOG ('current header line: ' + curLine + '\n');
 
         // This is the actual fun part.
@@ -531,7 +504,6 @@ class MailHops {
           }
         }
       }
-
       if (gotDkimState) {
         // Just sanitize our data.
         dkimState = this.sanitizeString (dkimState);
@@ -548,9 +520,15 @@ class MailHops {
         copy += '\n<br />\n<br />' + MailHopsUtils.dkim(dkimState).trim();
 
         this.LOG ("DKIM state and data: " + copy);
+        color = 'green';
+        if(dkimState.toLowerCase().indexOf('soft') != -1 || dkimState.toLowerCase().indexOf('temperror') != -1){
+          color = 'yellow';
+        } else if(dkimState.toLowerCase().indexOf('fail') != -1 || dkimState.toLowerCase().indexOf('error') != -1){
+          color = 'red';
+        }
         auth.push({
           type: 'DKIM',
-          color: 'green',
+          color: color,
           icon: '/images/auth/' + dkimState.toLowerCase () + '.png',
           copy: copy
         });
@@ -569,10 +547,16 @@ class MailHops {
         }
         copy += '\n<br />\n<br />' + MailHopsUtils.spf(spfState).trim();
 
+        color = 'green';
+        if(spfState.toLowerCase().indexOf('soft') != -1 || spfState.toLowerCase().indexOf('temperror') != -1){
+          color = 'yellow';
+        } else if(spfState.toLowerCase().indexOf('fail') != -1 || spfState.toLowerCase().indexOf('error') != -1){
+          color = 'red';
+        }
         this.LOG ("SPF state and data: " + copy);
         auth.push({
           type: 'SPF',
-          color: 'green',
+          color: color,
           icon: '/images/auth/' + spfState.toLowerCase () + '.png',
           copy: copy
         });
