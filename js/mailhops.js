@@ -10,7 +10,7 @@ class MailHops {
   loading = false
   tabId = null
   options = {
-    version: 'MailHops Plugin 4.4.2',
+    version: 'MailHops Plugin 4.5.0',
     api_key: '',
     owm_key: '',
     lang: 'en',
