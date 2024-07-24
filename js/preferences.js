@@ -3,8 +3,9 @@ const MailHopPreferences = {
   valid_api_key: false,
   unit: 'mi',
   theme: 'light',
-  debug: false,
   travel_time_junk: false,
+  extrainfo: false,
+  debug: false,
   owm_key: '', //OpenWeatherMap.org api key
   countries: [],
   
@@ -78,6 +79,7 @@ const MailHopPreferences = {
     this.theme = data.theme || 'light';
     this.unit = data.unit || 'mi';
     this.travel_time_junk = Boolean(data.travel_time_junk);
+    this.extrainfo = Boolean(data.extrainfo);
     this.debug = Boolean(data.debug);
     
     if (data.countries) {
@@ -123,6 +125,11 @@ const MailHopPreferences = {
     else
       document.getElementById("travel_time_junk_off").setAttribute('checked', 'checked');
     
+    if (this.extrainfo)
+      document.getElementById("extrainfo_on").setAttribute('checked', 'checked');
+    else
+      document.getElementById("extrainfo_off").setAttribute('checked', 'checked');
+
     if (this.debug)
       document.getElementById("debug_on").setAttribute('checked', 'checked');
     else
@@ -209,6 +216,7 @@ const MailHopPreferences = {
       unit: document.querySelector('input[name="unit"]:checked').value,
       theme: document.querySelector('input[name="theme"]:checked').value,
       travel_time_junk: document.querySelector('input[name="travel_time_junk"]:checked').value == 'on' ? true : false,
+      extrainfo: document.querySelector('input[name="extrainfo"]:checked').value == 'on' ? true : false,
       debug: document.querySelector('input[name="debug"]:checked').value == 'on' ? true : false,
       countries: self.countries.join(','),
     });    
